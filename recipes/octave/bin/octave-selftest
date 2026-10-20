@@ -1,0 +1,70 @@
+#!{{PREFIX}}/bin/sh
+# octave 自检：矩阵/解方程/特征值，gnuplot 无头出 PNG/SVG；
+# 真机有系统 CJK 字体时写中文标题，CI 里没有就退回英文。
+# 不联网，不读用户初始化文件（--norc），只写 $TMPDIR。
+set -eu
+
+: "${TMPDIR:={{PREFIX}}/tmp}"
+TMP=$(mktemp -d "$TMPDIR/octave-selftest.XXXXXX")
+trap 'rm -rf "$TMP"' EXIT HUP INT TERM
+
+fail() { echo "✗ $*" >&2; exit 1; }
+
+command -v octave-cli >/dev/null 2>&1 || fail "找不到 octave-cli"
+command -v octave >/dev/null 2>&1 || fail "找不到 octave"
+command -v gnuplot >/dev/null 2>&1 || fail "找不到 gnuplot（无头绘图需要）"
+
+ver=$(octave-cli --version 2>/dev/null | sed -n '1p')
+case "$ver" in
+  "GNU Octave"*) ;;
+  *) fail "octave-cli --version 输出异常：$ver" ;;
+esac
+
+# 有系统 CJK 字体就测中文；CI 里没有 /system/fonts 就退回英文。
+if [ -f /system/fonts/NotoSansCJK-Regular.ttc ]; then
+  TITLE="中文标题：苹果香蕉"
+  FONTS=CJK
+else
+  TITLE="Octave selftest plot"
+  FONTS=ASCII
+fi
+
+cat > "$TMP/selftest.m" <<EOF
+graphics_toolkit('gnuplot');
+A = [1 2; 3 4];
+b = [5; 11];
+x = A \ b;
+assert(norm(x - [1; 2]) < 1e-12);
+assert(abs(det(A) + 2) < 1e-12);
+assert(abs(sum(eig(A)) - trace(A)) < 1e-9);
+printf('matrix OK x=%g,%g det=%g\n', x(1), x(2), det(A));
+f = figure('visible', 'off');
+plot(1:10, (1:10).^2);
+title('$TITLE');
+xlabel('x');
+print(f, '-dpngcairo', '-r120', '$TMP/plot.png');
+print(f, '-dsvg', '-r120', '$TMP/plot.svg');
+close(f);
+I = imread('$TMP/plot.png');
+assert(size(I, 1) > 100 && size(I, 2) > 100);
+assert(numel(unique(I)) > 10);
+printf('plot OK %dx%d\n', size(I, 2), size(I, 1));
+EOF
+
+if ! octave-cli --quiet --no-gui --norc "$TMP/selftest.m" >"$TMP/out" 2>"$TMP/err"; then
+  grep -v 'unable to normalize' "$TMP/err" | tail -20 >&2 || true
+  fail "octave 计算或绘图失败"
+fi
+cat "$TMP/out"
+grep -q '^matrix OK ' "$TMP/out" || fail "矩阵/解方程结果不对"
+grep -q '^plot OK ' "$TMP/out" || fail "没有生成有效的 PNG"
+
+[ -s "$TMP/plot.png" ] || fail "PNG 文件不存在或为空"
+[ -s "$TMP/plot.svg" ] || fail "SVG 文件不存在或为空"
+grep -qF "$TITLE" "$TMP/plot.svg" || fail "SVG 里找不到标题文字：$TITLE"
+
+PNG_BYTES=$(wc -c < "$TMP/plot.png" | tr -d ' ')
+SVG_BYTES=$(wc -c < "$TMP/plot.svg" | tr -d ' ')
+echo "octave: $ver"
+echo "png=${PNG_BYTES} bytes svg=${SVG_BYTES} bytes title=$TITLE"
+echo "===== 总结 ===== octave=OK matrix=OK plot=OK fonts=$FONTS"

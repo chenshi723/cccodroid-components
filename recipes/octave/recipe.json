@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "id": "octave",
+  "kind": "termux",
+  "revision": 1,
+  "version": "11.3.0",
+  "name": { "zh": "GNU Octave", "en": "GNU Octave" },
+  "desc": {
+    "zh": "MATLAB 兼容的命令行数值计算：矩阵运算、解线性方程、特征值、无头画 PNG/SVG。自带 gnuplot；中文标题用 -dpngcairo。",
+    "en": "MATLAB-compatible numerical computing (CLI): matrix algebra, linear systems, eigenvalues, headless PNG/SVG plots. Bundles gnuplot; use -dpngcairo for Chinese labels."
+  },
+  "roots": ["octave", "gnuplot"],
+  "bin": ["octave", "octave-cli", "gnuplot"],
+  "selftest": "octave-selftest",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "science",
+  "license": "GPL-3.0-or-later AND gnuplot",
+  "homepage": "https://octave.org",
+  "maintainers": ["greyoak111"],
+  "notes": "闭包 14 包，下载 29.0 MB / 解开 162.1 MB（2026-10 仓库快照）。Termux 包的 rpath 带 epoch（2:11.3.0），启动会打印 unable to normalize \"11.3.0\" 警告，无害。只有 gnuplot 图形后端：-dpng 走 libgd，中文标题会整个丢失；-dpngcairo 走 cairo/fontconfig，中文正常。forge 包 control 需要 Fortran 编译器：mkoctfile 的 F77=flang-new，本组件不带 flang（62 MB 下载 / 920 MB 解开），所以 control 编译失败、signal 因依赖 control 也装不上；skill 里如实写不支持。"
+}
