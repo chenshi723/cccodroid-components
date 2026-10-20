@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "rclone",
+  "kind": "termux",
+  "revision": 1,
+  "version": "1.75.2",
+  "name": { "zh": "rclone", "en": "rclone" },
+  "desc": {
+    "zh": "云存储同步与备份：本地目录、WebDAV、S3、Google Drive 等；copy / sync / check，先 --dry-run 看再做。",
+    "en": "Cloud storage sync and backup for local paths, WebDAV, S3, Google Drive and more; copy, sync, check, with --dry-run first."
+  },
+  "roots": ["rclone"],
+  "bin": ["rclone"],
+  "selftest": "rclone-selftest",
+  "files": {
+    "usr/bin/rclone-selftest": { "src": "bin/rclone-selftest", "mode": "755" }
+  },
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "net",
+  "license": "MIT",
+  "homepage": "https://rclone.org",
+  "maintainers": ["greyoak111"],
+  "notes": "Termux 官方包，无依赖：下载 19 MB / 装后 84 MB。selftest 只用本地后端（copy/check/sync --dry-run）+ 检查 webdav 后端在列，不联网。配置默认在 ~/.config/rclone/rclone.conf，含令牌；skill 明确禁止读取/打印。OAuth 回调监听 127.0.0.1:53682，实测本地 /auth 页面可达（307 跳 Google），但没有账号，未做完整授权。"
+}

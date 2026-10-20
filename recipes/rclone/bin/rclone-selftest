@@ -1,0 +1,63 @@
+#!{{PREFIX}}/bin/sh
+# rclone 自检：本地目录 copy / check / sync --dry-run，并确认 webdav 后端在列。
+# 不联网，不读用户配置（--config 指向 $TMPDIR 里的空文件），只写 $TMPDIR。
+set -eu
+
+: "${TMPDIR:={{PREFIX}}/tmp}"
+TMP=$(mktemp -d "$TMPDIR/rclone-selftest.XXXXXX")
+trap 'rm -rf "$TMP"' EXIT HUP INT TERM
+
+fail() { echo "✗ $*" >&2; exit 1; }
+
+command -v rclone >/dev/null 2>&1 || fail "找不到 rclone"
+ver=$(rclone version 2>/dev/null | sed -n '1p')
+case "$ver" in
+  "rclone v"*) ;;
+  *) fail "rclone version 输出异常：$ver" ;;
+esac
+
+: > "$TMP/empty.conf"
+R="rclone --config $TMP/empty.conf"
+
+mkdir -p "$TMP/src/sub" "$TMP/dst"
+printf 'hello rclone\n中文内容：苹果香蕉\n' > "$TMP/src/a.txt"
+printf 'nested\n' > "$TMP/src/sub/b.txt"
+dd if=/dev/zero of="$TMP/src/zeros.bin" bs=1024 count=64 status=none
+
+$R copy "$TMP/src" "$TMP/dst" >"$TMP/copy.out" 2>"$TMP/copy.err" || {
+  tail -20 "$TMP/copy.err" >&2 || true
+  fail "rclone copy 失败"
+}
+[ -f "$TMP/dst/a.txt" ] || fail "copy 后目标目录没有 a.txt"
+[ -f "$TMP/dst/sub/b.txt" ] || fail "copy 后目标目录没有 sub/b.txt"
+cmp -s "$TMP/src/zeros.bin" "$TMP/dst/zeros.bin" || fail "copy 后二进制文件内容不一致"
+echo "copy OK"
+
+$R check "$TMP/src" "$TMP/dst" --checksum >"$TMP/check.out" 2>&1 || {
+  tail -20 "$TMP/check.out" >&2 || true
+  fail "rclone check 报差异"
+}
+grep -q '0 differences found' "$TMP/check.out" || {
+  tail -20 "$TMP/check.out" >&2 || true
+  fail "rclone check 没有报 0 differences"
+}
+echo "check OK"
+
+# 源端删一个文件后 sync --dry-run：应提示跳过删除，目标文件必须还在。
+rm "$TMP/src/a.txt"
+$R sync "$TMP/src" "$TMP/dst" --dry-run -v >"$TMP/dry.out" 2>&1 || {
+  tail -20 "$TMP/dry.out" >&2 || true
+  fail "rclone sync --dry-run 失败"
+}
+grep -q 'Skipped delete as --dry-run is set' "$TMP/dry.out" || {
+  tail -20 "$TMP/dry.out" >&2 || true
+  fail "sync --dry-run 没有提示跳过删除"
+}
+[ -f "$TMP/dst/a.txt" ] || fail "sync --dry-run 竟然删了目标文件"
+echo "dry-run OK"
+
+rclone help backends 2>/dev/null | grep -q '^  webdav ' || fail "rclone 没有 webdav 后端"
+echo "webdav backend OK"
+
+echo "rclone: $ver"
+echo "===== 总结 ===== rclone=OK copy=OK check=OK dryrun=OK webdav=present"
