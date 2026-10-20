@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "octave",
   "kind": "termux",
-  "revision": 1,
+  "revision": 2,
   "version": "11.3.0",
   "name": { "zh": "GNU Octave", "en": "GNU Octave" },
   "desc": {
@@ -12,6 +12,9 @@
   "roots": ["octave", "gnuplot"],
   "bin": ["octave", "octave-cli", "gnuplot"],
   "selftest": "octave-selftest",
+  "files": {
+    "usr/bin/octave-selftest": { "src": "bin/octave-selftest", "mode": "755" }
+  },
   "needs": { "shizuku": false, "display": false, "gpu": false },
   "category": "science",
   "license": "GPL-3.0-or-later AND gnuplot",
