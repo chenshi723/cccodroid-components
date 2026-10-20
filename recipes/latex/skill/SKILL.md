@@ -33,7 +33,7 @@ tectonic（本组件，$PREFIX/bin/tectonic）
 
 ## 第一次编译要联网（重要）
 
-Tectonic 本体只有 3.9 MB，**TeX 资源包是运行时按需下载的**。本机实测（家庭网络）：
+Tectonic 本体只有 3.9 MB，**TeX 资源包是运行时按需下载的**。本机实测（测试设备的网络经境外出口；**国内直连能不能访问资源站、速度如何，没有验证**）：
 
 | 文档 | 首次下载/缓存 | 首次耗时 | 热缓存耗时 |
 |---|---|---|---|
@@ -138,6 +138,7 @@ Hello, beamer! English slide.
 
 | 现象 | 原因 / 处理 |
 |---|---|
+| 下载失败或极慢（国内网络） | 资源站 `relay.fullyjustified.net` / `data1b.fullyjustified.net` 在境外，国内直连没有验证过；如实告诉用户可能需要能访问境外网络，或改用 typst |
 | 第一次编译很慢、卡在 downloading | 资源包逐文件下载，属正常；先告诉用户要联网和大致体积 |
 | `sfnt: table not found` | 指向了系统 TTC 中文字体；改用 ctex 默认 Fandol |
 | `this bundle isn't cached…` / 退出码 101 | 离线且缓存为空；联网编译一次 |
