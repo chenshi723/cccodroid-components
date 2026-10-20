@@ -1,0 +1,67 @@
+#!{{PREFIX}}/bin/sh
+# re-tools 自检：rizin 读 ELF 信息并反汇编入口，binwalk 扫描一个自造的 gzip 固件样本。
+# 不联网、不读用户文件，只写 $TMPDIR。
+set -eu
+
+: "${TMPDIR:={{PREFIX}}/tmp}"
+TMP=$(mktemp -d "$TMPDIR/re-tools-selftest.XXXXXX")
+trap 'rm -rf "$TMP"' EXIT HUP INT TERM
+
+fail() { echo "✗ $*" >&2; exit 1; }
+
+command -v rizin >/dev/null 2>&1 || fail "找不到 rizin"
+command -v rz-bin >/dev/null 2>&1 || fail "找不到 rz-bin"
+command -v binwalk >/dev/null 2>&1 || fail "找不到 binwalk"
+
+rzv=$(rz-bin -v 2>/dev/null | sed -n '1p')
+bwv=$(binwalk --version 2>/dev/null | sed -n '1p')
+case "$rzv" in
+  "rz-bin 0.9."*) ;;
+  *) fail "rz-bin -v 输出异常：$rzv" ;;
+esac
+case "$bwv" in
+  "binwalk 3."*) ;;
+  *) fail "binwalk --version 输出异常：$bwv" ;;
+esac
+
+RZ_BIN=$(command -v rz-bin)
+RZ=$(command -v rizin)
+
+# ELF 信息：检查的是 rz-bin 自己，不依赖外部文件
+rz-bin -I "$RZ_BIN" >"$TMP/info.out" 2>"$TMP/info.err" || {
+  tail -20 "$TMP/info.err" >&2 || true
+  fail "rz-bin -I 失败"
+}
+grep -q 'bintype' "$TMP/info.out" || fail "rz-bin -I 没有输出 bintype"
+grep -q 'elf' "$TMP/info.out" || fail "rz-bin -I 没有识别出 ELF"
+grep -q 'bits' "$TMP/info.out" || fail "rz-bin -I 没有输出 bits"
+echo "rz-bin info OK"
+
+# 反汇编入口 4 条指令
+rizin -q -e scr.color=0 -c 'pd 4 @ entry0; q' "$RZ" >"$TMP/disasm.out" 2>"$TMP/disasm.err" || {
+  tail -20 "$TMP/disasm.err" >&2 || true
+  fail "rizin 反汇编失败"
+}
+grep -qE '(bti|mov|ret|sub|nop|adr|ldr)' "$TMP/disasm.out" || {
+  tail -20 "$TMP/disasm.out" >&2 || true
+  fail "rizin 反汇编输出里没有指令"
+}
+echo "rizin disasm OK"
+
+# 自造固件样本：头部 + gzip 流，binwalk 应认出 gzip
+printf 'FIRMWARE' > "$TMP/fw.bin"
+printf 'hello firmware\n' > "$TMP/payload.txt"
+gzip -c "$TMP/payload.txt" >> "$TMP/fw.bin"
+binwalk "$TMP/fw.bin" >"$TMP/bw.out" 2>"$TMP/bw.err" || {
+  tail -20 "$TMP/bw.err" >&2 || true
+  fail "binwalk 扫描失败"
+}
+grep -q 'gzip compressed data' "$TMP/bw.out" || {
+  tail -20 "$TMP/bw.out" >&2 || true
+  fail "binwalk 没有识别出 gzip 样本"
+}
+echo "binwalk scan OK"
+
+echo "rizin: $rzv"
+echo "binwalk: $bwv"
+echo "===== 总结 ===== rizin=OK binwalk=OK scan=OK"
