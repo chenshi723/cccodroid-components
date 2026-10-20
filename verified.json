@@ -552,5 +552,49 @@
         "by": "greyoak111"
       }
     }
+  },
+  "diagrams": {
+    "1.2026.9-r2": {
+      "f41102448255": {
+        "date": "2026-10-20",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.3",
+        "checks": "installed from signed index; placed 4, shared 114; skill diagrams installed; selftest exit 0: ===== 总结 ===== graphviz=OK plantuml=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "hugo": {
+    "0.168.0-r1": {
+      "f41102448255": {
+        "date": "2026-10-20",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.3",
+        "checks": "installed from signed index; placed 4, shared 49; skill hugo installed; selftest exit 0: ===== 总结 ===== hugo=OK build=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "latex": {
+    "0.17.0-r1": {
+      "f41102448255": {
+        "date": "2026-10-20",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.3",
+        "checks": "installed from signed index; placed 4, shared 3; skill latex installed; selftest exit 0: ===== 总结 ===== tectonic=OK offline=skip fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "octave": {
+    "11.3.0-r2": {
+      "f41102448255": {
+        "date": "2026-10-20",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.3",
+        "checks": "installed from signed index; placed 4, shared 3809; skill octave installed; selftest exit 0: ===== 总结 ===== octave=OK matrix=OK plot=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
   }
 }
