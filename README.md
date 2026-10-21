@@ -49,7 +49,7 @@ The app won't offer "Snapdragon only" components on devices with other chips. Fo
 
 ## Adding a component
 
-Read the [authoring rules](.claude/skills/component-authoring/SKILL.md), then [CONTRIBUTING.md](CONTRIBUTING.md) and the [recipe format](docs/recipe.md). The quickest start is to copy `recipes/gh/`. For larger examples with wrapper scripts, see `recipes/iverilog/` or `recipes/llama-cpp/`.
+Read the [authoring rules](.claude/skills/component-authoring/SKILL.md), then [CONTRIBUTING.md](CONTRIBUTING.md) and the [recipe format](docs/recipe.md). Looking for something to build? [Wanted components](docs/wanted.md) lists candidates the maintainer won't build alone, with the test results so far; claim one in [#52](https://github.com/greyoak111/cccodroid-components/issues/52). The quickest start is to copy `recipes/gh/`. For larger examples with wrapper scripts, see `recipes/iverilog/` or `recipes/llama-cpp/`.
 
 If an AI assistant writes the component for you, [AGENTS.md](AGENTS.md) at the repository root is written for it.
 

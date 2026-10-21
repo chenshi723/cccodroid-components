@@ -49,7 +49,7 @@ cccodroid 从 0.1.10 起读这个仓库。浏览器（Chromium）这类预置组
 
 ## 添加组件
 
-先读 [组件编写规则](.claude/skills/component-authoring/SKILL.md)，再看 [CONTRIBUTING.md](CONTRIBUTING.md) 和 [配方格式](docs/recipe.md)。最快的办法是复制 `recipes/gh/` 来改；带包装脚本的复杂例子可以参考 `recipes/iverilog/` 或 `recipes/llama-cpp/`。
+先读 [组件编写规则](.claude/skills/component-authoring/SKILL.md)，再看 [CONTRIBUTING.md](CONTRIBUTING.md) 和 [配方格式](docs/recipe.md)。不知道做什么的话，看 [组件征集](docs/wanted.md)：维护者不再自己做的候选和已有的实测结论都在里面，认领在 [#52](https://github.com/greyoak111/cccodroid-components/issues/52)。最快的办法是复制 `recipes/gh/` 来改；带包装脚本的复杂例子可以参考 `recipes/iverilog/` 或 `recipes/llama-cpp/`。
 
 用 AI 助手写组件的话，仓库根目录的 [AGENTS.md](AGENTS.md) 就是写给它看的。
 
