@@ -90,6 +90,8 @@ for (const r of recipes()) {
         url: `https://github.com/${REPO}/releases/download/${encodeURIComponent(r.id)}/${encodeURIComponent(m.asset)}`, asset: m.asset,
         sha256: m.gz.sha256, bytes: m.gz.bytes, installed: m.installed,
         bin: m.bin, skill: m.skill, selftest: m.selftest, packages: m.packages.length,
+        // 依赖链里由底座提供的包：cccodroid 0.4.0 起的模块化工具包据此算出组件要先装哪些模块
+        baseDeps: (m.baseDeps || []).map((d) => d.name),
         verified: v,
       };
     }),
