@@ -46,6 +46,10 @@
 | `ml-onnx` | onnxruntime + OpenCV 端上推理 | 先量体积；模型许可证要能再分发 |
 | `video-edit` | MLT（melt）无头剪辑 | 比直接写 ffmpeg 好在哪；体积 |
 | `dotnet` | .NET 8 SDK | `pkg install` 已能装，组件的价值只在 skill |
+| `docsearch` | 在 PDF 等文档里全文搜索：pdfgrep + ripgrep-all（rga） | rga 是 AGPL-3.0-or-later；和已有的 `pdf-tools`（已含 poppler、qpdf）怎么分工，别重复打包 |
+| `kiwix` | kiwix-tools：本机开离线知识库（维基百科等 ZIM 文件）服务 | 自检需要一个能再分发的小 ZIM；ZIM 本体由用户自己下 |
+| `recoll` | Recoll 全文索引，中文走 CJK n-gram | Termux 包只有 `recollindex`，没有查询命令，要用 recoll-python 写一个查询包装脚本 |
+| `tiddlywiki` | TiddlyWiki 个人笔记维基（npm，约 37 MB） | 配方走 npm，要钉版本和完整性哈希 |
 
 常驻服务类（tunnel、databases）如果证明进程活不下来，需要 App 提供「后台服务」支持，请在 issue 里提，别自己改 App。
 
@@ -106,6 +110,10 @@ It works: qemu-system-x86-64-headless 11.1.2 with the Alpine virt ISO; serial lo
 | `ml-onnx` | onnxruntime + OpenCV on-device inference | Measure the size first; model licenses must allow redistribution |
 | `video-edit` | MLT (melt) headless editing | What it does better than plain ffmpeg; size |
 | `dotnet` | .NET 8 SDK | `pkg install` already works; a component only adds the skill |
+| `docsearch` | Full-text search inside PDFs and other documents: pdfgrep + ripgrep-all (rga) | rga is AGPL-3.0-or-later; split the work with the existing `pdf-tools` (which already has poppler and qpdf) instead of packaging them twice |
+| `kiwix` | kiwix-tools: serve offline knowledge bases (Wikipedia etc. as ZIM files) locally | The self-test needs a small redistributable ZIM; users download the real ZIMs themselves |
+| `recoll` | Recoll full-text indexing, with CJK n-grams for Chinese | The Termux package only has `recollindex`, no query command; a query wrapper has to be written with recoll-python |
+| `tiddlywiki` | TiddlyWiki personal notes wiki (npm, about 37 MB) | npm recipe; pin the version and integrity hash |
 
 If long-running services (tunnel, databases) turn out not to survive, the app needs "background service" support. Raise it in the issue rather than changing the app yourself.
 
