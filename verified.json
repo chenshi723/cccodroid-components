@@ -596,5 +596,27 @@
         "by": "greyoak111"
       }
     }
+  },
+  "rclone": {
+    "1.75.2-r1": {
+      "f41102448255": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.5",
+        "checks": "installed from signed index; placed 4, shared 4; skill rclone installed; selftest exit 0: ===== 总结 ===== rclone=OK copy=OK check=OK dryrun=OK webdav=present; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "re-tools": {
+    "0.9.1-r1": {
+      "f41102448255": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.5",
+        "checks": "installed from signed index; placed 4, shared 699; skill re-tools installed; selftest exit 0: ===== 总结 ===== rizin=OK binwalk=OK scan=OK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
   }
 }
