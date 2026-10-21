@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "re-tools",
+  "kind": "termux",
+  "revision": 1,
+  "version": "0.9.1",
+  "name": { "zh": "逆向工具（rizin + binwalk）", "en": "Reverse-engineering tools (rizin + binwalk)" },
+  "desc": {
+    "zh": "二进制分析：rizin 看 ELF/so 信息、反汇编函数；binwalk 扫描固件里的 zip/gzip/文件系统签名。",
+    "en": "Binary analysis: rizin for ELF/.so info and function disassembly; binwalk for scanning firmware signatures such as zip, gzip and filesystems."
+  },
+  "roots": ["rizin", "binwalk"],
+  "bin": ["rizin", "rz-bin", "binwalk"],
+  "selftest": "re-tools-selftest",
+  "files": {
+    "usr/bin/re-tools-selftest": { "src": "bin/re-tools-selftest", "mode": "755" }
+  },
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "dev",
+  "license": "LGPL-3.0-or-later AND MIT",
+  "homepage": "https://rizin.re",
+  "maintainers": ["greyoak111"],
+  "notes": "rizin 0.9.1（Termux main）+ binwalk 3.1.0（Termux main，Rust 版）。binwalk -e 只带 gzip 等内置解压，zip/固件文件系统需要外部工具（7z、unsquashfs 等），本组件不带；实测 -e 对 zip 报错但退出码仍为 0，skill 里要求看输出不要只看退出码。"
+}
