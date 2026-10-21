@@ -605,6 +605,13 @@
         "app": "cccodroid 0.2.15",
         "checks": "installed from signed index; placed 11, shared 1110; skill ocr installed; selftest exit 0: ===== 总结 ===== langs=OK image=OK pdf=OK searchable=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 11, shared 1111; skill ocr installed; selftest exit 0: ===== 总结 ===== langs=OK image=OK pdf=OK searchable=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -626,6 +633,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.2.15",
         "checks": "installed from signed index; placed 6, shared 1356; skill pdf-tools installed; selftest exit 0: ===== 总结 ===== qpdf=OK text=OK png=OK mutool=OK shrink=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 1294, shared 69; skill pdf-tools installed; selftest exit 0: ===== 总结 ===== qpdf=OK text=OK png=OK mutool=OK shrink=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
