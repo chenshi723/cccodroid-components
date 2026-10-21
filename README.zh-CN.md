@@ -41,7 +41,7 @@ cccodroid 从 0.1.10 起读这个仓库。浏览器（Chromium）这类预置组
 | `cloudflare` | Cloudflare 官方命令行（wrangler）：部署 Workers / Pages，管 R2 / KV / D1，本地跑 `wrangler dev` | 网络 | 用 `cf-login` 粘贴令牌登录 | (MIT OR Apache-2.0) AND Apache-2.0 |
 | `rclone` | rclone：本地目录、WebDAV、S3、Google Drive 等云存储的同步与备份 | 网络 | | MIT |
 
-表里的组件都在当前工具包（devkit-2026.10.18）上真机验证过：有的直接验，有的从旧工具包上的验证记录自动继承（见下面「真机验证」）。具体记录在 [`verified.json`](verified.json)。
+表里的组件都在当前工具包（devkit-2026.10.22）上真机验证过：有的直接验，有的从旧工具包上的验证记录自动继承（见下面「真机验证」）。具体记录在 [`verified.json`](verified.json)。
 
 「仅骁龙」的组件，App 在别家芯片的设备上不给装。有依赖的组件，App 会先让你装好依赖，依赖也不能在它之前卸载。
 

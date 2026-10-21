@@ -34,6 +34,15 @@
         "by": "greyoak111",
         "carriedFrom": "2.102.0-r1"
       }
+    },
+    "2.102.1-r2": {
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 239, shared 0; skill github-cli installed; selftest exit 0: https://github.com/cli/cli/releases/tag/v2.102.1; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "gpu-driver-glibc": {
@@ -69,6 +78,13 @@
         "checks": "相对 24.2.6-r1 只改了 SKILL.md（加「运行链路」）与 revision，包内程序与脚本未变，沿用其真机验证。 原记录：tools/verify-device.mjs on devkit-2026.10.15: installed from signed index; placed 8680, shared 3; skill gpu-driver-glibc installed; selftest lgpu-info exit 0: Turnip=OK; removed cleanly; devkit base unchanged",
         "by": "greyoak111",
         "carriedFrom": "24.2.6-r1"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 8680, shared 3; skill gpu-driver-glibc installed; selftest exit 0: ===== 总结 ===== Turnip=OK zink-Mesa=未就位; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -105,6 +121,13 @@
         "checks": "相对 2026.10.15-r1 只改了 SKILL.md（加「运行链路」）与 revision，包内程序与脚本未变，沿用其真机验证。 原记录：tools/verify-device.mjs on devkit-2026.10.15: installed from signed index; dependency gpu-driver-glibc installed by the script first; placed 9, shared 1; skill clvk-glibc installed; selftest clvk-info exit 0: OpenCL 3.0 CLVK on Turnip Adreno, kernel compile OK, vector add PASS (0/4096 wrong); removed cleanly; devkit base unchanged",
         "by": "greyoak111",
         "carriedFrom": "2026.10.15-r1"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 9, shared 1; skill clvk-glibc installed; selftest exit 0: 向量加: PASS（0/4096 个不对）; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -208,6 +231,13 @@
         "app": "cccodroid 0.2.14",
         "checks": "installed from signed index; placed 4284, shared 5; skill godot installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 4283, shared 6; skill godot installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -286,6 +316,15 @@
         "checks": "installed from signed index; placed 7610, shared 240; skill office-convert installed; selftest exit 0: ===== 总结 ===== 转换=OK 输出=PDF 中文=OK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "26.8.1.1-2-r2": {
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 7614, shared 240; skill office-convert installed; selftest exit 0: ===== 总结 ===== 转换=OK 输出=PDF 中文=缺字体; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "llama-cpp": {
@@ -313,6 +352,13 @@
         "date": "2026-10-18",
         "device": "nubia NX769J / Android 14",
         "app": "cccodroid 0.2.10",
+        "checks": "installed from signed index; placed 87, shared 0; skill llama-cpp installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 87, shared 0; skill llama-cpp installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
@@ -364,6 +410,13 @@
         "app": "cccodroid 0.2.14",
         "checks": "installed from signed index; placed 349, shared 0; skill openscad installed; selftest exit 0: ===== 总结 ===== 导出=OK MCAD=OK 版本=2026.07.19; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 349, shared 0; skill openscad installed; selftest exit 0: ===== 总结 ===== 导出=OK MCAD=OK 版本=2026.07.19; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -390,6 +443,13 @@
         "date": "2026-10-19",
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.2.14",
+        "checks": "installed from signed index; placed 1482, shared 0; skill yosys installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 1482, shared 0; skill yosys installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
@@ -420,6 +480,13 @@
         "app": "cccodroid 0.2.14",
         "checks": "installed from signed index; placed 363, shared 0; skill lilypond installed; selftest exit 0: ===== 总结 ===== 排版=OK 输出=PDF+MIDI 版本=2.26.0; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 363, shared 0; skill lilypond installed; selftest exit 0: ===== 总结 ===== 排版=OK 输出=PDF+MIDI 版本=2.26.0; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -447,6 +514,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.2.14",
         "checks": "installed from signed index; placed 2185, shared 1; skill music installed; selftest exit 0: ===== 总结 ===== 渲染=OK 合成=OK 后期=OK 分析=OK 超时=OK fluidsynth=2.6.1 scsynth=3.14.1; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 2184, shared 2; skill music installed; selftest exit 0: ===== 总结 ===== 渲染=OK 合成=OK 后期=OK 分析=OK 超时=OK fluidsynth=2.6.1 scsynth=3.14.1; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -478,6 +552,13 @@
         "app": "cccodroid 0.2.10",
         "checks": "installed from signed index; placed 8, shared 0; skill blender installed; selftest exit 0: ===== 总结 ===== 合成=OK 输出=PNG+MP4 帧数=12 版本=4.3.2; removed cleanly; devkit base unchanged; upgraded from r2 on device: selftest auto-installed the patched Mesa (11 MB) on top of the existing debroot; EEVEE monkey 640x480/32spp renderer=zink Vulkan 1.4 (Turnip Adreno 725), 6.68 s warm vs llvmpipe 84.00 s",
         "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 8, shared 0; skill blender installed; selftest exit 0: ===== 总结 ===== 合成=OK 输出=PNG+MP4 帧数=12 版本=4.3.2; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -504,6 +585,13 @@
         "date": "2026-10-19",
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.2.14",
+        "checks": "installed from signed index; placed 1649, shared 0; skill cloudflare installed; selftest exit 0: ===== 总结 ===== wrangler=4.151.1 workerd=2026-10-12 dev=OK 请求=40/40; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 1649, shared 0; skill cloudflare installed; selftest exit 0: ===== 总结 ===== wrangler=4.151.1 workerd=2026-10-12 dev=OK 请求=40/40; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
@@ -550,6 +638,13 @@
         "app": "cccodroid 0.2.15",
         "checks": "installed from signed index; placed 12, shared 4952; skill sci-python installed; selftest exit 0: ===== 总结 ===== numpy=OK scipy=OK matplotlib=OK pillow=OK pyarrow=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 753, shared 4211; skill sci-python installed; selftest exit 0: ===== 总结 ===== numpy=OK scipy=OK matplotlib=OK pillow=OK pyarrow=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -560,6 +655,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.3",
         "checks": "installed from signed index; placed 4, shared 114; skill diagrams installed; selftest exit 0: ===== 总结 ===== graphviz=OK plantuml=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 117, shared 1; skill diagrams installed; selftest exit 0: ===== 总结 ===== graphviz=OK plantuml=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -583,6 +685,13 @@
         "app": "cccodroid 0.3.3",
         "checks": "installed from signed index; placed 4, shared 3; skill latex installed; selftest exit 0: ===== 总结 ===== tectonic=OK offline=skip fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 6, shared 1; skill latex installed; selftest exit 0: ===== 总结 ===== tectonic=OK offline=skip fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -593,6 +702,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.3",
         "checks": "installed from signed index; placed 4, shared 3809; skill octave installed; selftest exit 0: ===== 总结 ===== octave=OK matrix=OK plot=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 3791, shared 40; skill octave installed; selftest exit 0: ===== 总结 ===== octave=OK matrix=OK plot=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -615,6 +731,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.5",
         "checks": "installed from signed index; placed 4, shared 699; skill re-tools installed; selftest exit 0: ===== 总结 ===== rizin=OK binwalk=OK scan=OK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b515a09887cc": {
+        "date": "2026-10-21",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.9",
+        "checks": "installed from signed index; placed 684, shared 19; skill re-tools installed; selftest exit 0: ===== 总结 ===== rizin=OK binwalk=OK scan=OK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
