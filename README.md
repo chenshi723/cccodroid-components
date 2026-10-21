@@ -14,23 +14,34 @@ cccodroid reads this repository since 0.1.10. Preset components such as the brow
 |---|---|---|---|---|
 | `gh` | GitHub CLI: pull requests, issues, releases, Actions | Dev | | MIT |
 | `godot` | Godot 4 engine: headless runs, Android APK export | Dev | | MIT |
+| `diagrams` | Diagrams from text: Graphviz (flowcharts, structure diagrams) + PlantUML (sequence, class diagrams), to SVG / PNG, with Chinese labels | Dev | | EPL-2.0 AND GPL-3.0-or-later AND GPL-2.0-with-classpath-exception |
+| `hugo` | Hugo: static websites from Markdown, with local preview and builds | Dev | | Apache-2.0 |
+| `re-tools` | Reverse engineering: rizin for ELF / .so info and disassembly; binwalk for archives and filesystems inside firmware | Dev | | LGPL-3.0-or-later AND MIT |
 | `blender` | Headless Blender 4.3: Python-scripted compositing, motion graphics and video output; 3D rendering on the Adreno GPU (Vulkan 1.4) | Media | Downloads the engine on first use: about 267 MB from Debian plus an 11 MB patched Mesa for the GPU (the setup follows [blender-cli-android](https://github.com/greyoak111/blender-cli-android)) | GPL-2.0-or-later |
 | `lilypond` | LilyPond: music notation from plain text — publication-grade PDF, plus PNG, SVG and MIDI | Media | | GPL-3.0-or-later |
 | `music` | Music production toolchain: MIDI to audio (fluidsynth), SuperCollider synthesis, sox mastering, aubio analysis | Media | Bundles a GM soundfont (31 MB) | LGPL-2.1-or-later AND GPL-3.0-or-later AND GPL-2.0-only AND LicenseRef-GeneralUser-GS-2.0 |
 | `libreoffice` | Headless LibreOffice: convert documents, export PDF | Office | | MPL-2.0 AND LGPL-3.0 |
+| `pandoc` | Pandoc: convert between Markdown, Word, HTML, EPUB and PDF; PDF via the bundled typst | Office | | GPL-2.0-or-later |
+| `pdf-tools` | PDF toolbox: merge, split, rotate, encrypt/decrypt, shrink, extract text, render to images (qpdf, poppler, mutool) | Office | | Apache-2.0 AND GPL-2.0-or-later AND AGPL-3.0-or-later |
+| `ocr` | OCR: text from images and scanned PDFs in Simplified Chinese, Traditional Chinese and English, plus searchable PDFs | Office | Language models are downloaded at install | Apache-2.0 AND GPL-2.0-or-later |
+| `latex` | LaTeX (Tectonic): .tex to PDF with ctex / xeCJK Chinese and beamer | Office | First compile downloads and caches TeX resources | MIT |
 | `llama-cpp` | llama.cpp: local LLM inference | AI | Bring your own model (.gguf) | MIT |
 | `openscad` | OpenSCAD: script-based 3D modelling, STL and other exports, with the MCAD library | 3D & CAD | | GPL-2.0-only |
+| `octave` | GNU Octave: MATLAB-compatible numerical computing with headless plots (bundles gnuplot) | Science | | GPL-3.0-or-later AND gnuplot |
+| `sci-python` | Scientific Python: numpy, scipy, matplotlib, Pillow, pyarrow, all prebuilt | Science | | BSD-3-Clause AND PSF-2.0 AND MIT-CMU AND Apache-2.0 |
 | `ngspice` | ngspice: circuit simulation | EDA | | BSD-3-Clause AND LGPL-2.1-only |
 | `gnucap` | gnucap: circuit simulation | EDA | | GPL-3.0-or-later |
 | `iverilog` | Icarus Verilog: Verilog simulation, waveforms rendered to images | EDA | | GPL-2.0-or-later |
 | `yosys` | Yosys: Verilog synthesis | EDA | | ISC |
 | `gpu-driver` | Gives command-line programs access to the Adreno GPU: Turnip (Vulkan) + zink (OpenGL / GLES) | GPU | Snapdragon only | MIT |
 | `gpu-driver-glibc` | The same for glibc (Linux arm64) programs, with the `lgpu-run` launcher | GPU | Snapdragon only | MIT |
+| `gpu-driver-mali` | Gives command-line programs the Mali GPU: the vendor Vulkan / GLES driver via the system loader, no root | GPU | Mali only (Dimensity etc.); Termux programs only, no OpenCL | Apache-2.0 |
 | `clvk-glibc` | OpenCL (clvk, on top of Vulkan) for glibc programs | GPU | Snapdragon only; needs `gpu-driver-glibc` | Apache-2.0 |
 | `gpu-bench` | GPU info and benchmarks (clinfo / vkmark / clpeak) | GPU | Snapdragon only; needs `gpu-driver` | CC0-1.0 AND GPL-3.0-or-later AND GPL-2.0-or-later |
 | `cloudflare` | Cloudflare CLI (wrangler): deploy Workers and Pages, manage R2 / KV / D1, run `wrangler dev` locally | Net | Log in with `cf-login` by pasting a token | (MIT OR Apache-2.0) AND Apache-2.0 |
+| `rclone` | rclone: sync and back up local folders, WebDAV, S3, Google Drive and more | Net | | MIT |
 
-Every component in the table has been verified on a real device with the current toolchain (devkit-2026.10.15.1). Some were tested directly; others inherited a verification from an earlier toolchain (see "Device verification" below). The records are in [`verified.json`](verified.json).
+Every component in the table has been verified on a real device with the current toolchain (devkit-2026.10.18). Some were tested directly; others inherited a verification from an earlier toolchain (see "Device verification" below). The records are in [`verified.json`](verified.json).
 
 The app won't offer "Snapdragon only" components on devices with other chips. For components with dependencies, the app asks you to install those first and won't let you remove them while something still depends on them.
 
