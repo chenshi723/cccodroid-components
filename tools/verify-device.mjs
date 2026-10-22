@@ -53,7 +53,9 @@ if (OUT) fs.writeFileSync(OUT, "");
 const log = (s = "") => { console.log(s); if (OUT) fs.appendFileSync(OUT, s + "\n"); };
 // 连网关失败时重试，最多 90 秒，并记下错误码：
 //   ECONNREFUSED = 网关不在（重启、被系统杀了又拉起），去翻 gateway.log；
-//   UND_ERR_SOCKET / ECONNRESET 多半是复用的空闲连接正被网关关掉（keep-alive 竞态，10-22 那两次 fetch failed 网关日志里没有请求，疑似这个）
+//     （在 cccodroid 终端里跑时这种情况不会出现：终端本身靠网关转发，网关断了脚本也跟着断）
+//   UND_ERR_SOCKET / ECONNRESET 多半是复用的空闲连接正被网关关掉（keep-alive 竞态）：10-22 那两次 fetch failed
+//     是在终端里跑的，网关一直在，网关日志里也没有这两个请求 —— 问题在客户端连接这一侧
 const api = async (p, body) => {
   let code = "";
   for (let i = 0; ; i++) {
