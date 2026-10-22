@@ -27,13 +27,16 @@ const flag = (k) => { const i = argv.indexOf(k); return i >= 0 ? (argv.splice(i,
 const APP = opt("--app"), BY = opt("--by") || "", OUT = opt("--out"), KEEP = flag("--keep"), PENDING0 = flag("--pending"), PR = flag("--pr");
 // --ids a,b,c：按给的顺序在同一个进程里连着验（和 --pending 一样的流程，复现跨组件的问题用，比如复用空闲连接）
 const IDS = (opt("--ids") || "").split(",").map((x) => x.trim()).filter((x) => /^[a-z0-9][a-z0-9-]{0,39}$/.test(x));
-const PENDING = PENDING0 || IDS.length > 0;
+// --all：索引里所有适配当前工具包、本机能用的组件（社区在前、预置在后）——验证清单从索引取，不靠人手列
+const ALL = flag("--all");
+const PENDING = PENDING0 || IDS.length > 0 || ALL;
 // selftest 的时限（分钟）。blender 这类第一次运行要先下载、解包运行环境（几百 MB），5 分钟不够
 const SELFTEST_MIN = Number(opt("--selftest-timeout") || 5);
 const ID0 = argv[0];
 if (PENDING ? ID0 : !ID0 || !/^[a-z0-9][a-z0-9-]{0,39}$/.test(ID0)) {
   console.log("用法：node verify-device.mjs <组件 id> --app \"cccodroid <版本>\" [--by <GitHub 用户名>] [--keep] [--selftest-timeout 分钟] [--out 结果.txt]");
   console.log("　　　node verify-device.mjs --pending --app \"cccodroid <版本>\" --by <GitHub 用户名> [--out 结果.txt]");
+  console.log("　　　node verify-device.mjs --all --app \"cccodroid <版本>\" --by <GitHub 用户名> [--out 结果.txt]   全部本机能用的组件");
   console.log("　　　node verify-device.mjs --ids a,b,c --app \"cccodroid <版本>\" --by <GitHub 用户名> [--out 结果.txt]   指定几个、同一进程连着验");
   process.exit(2);
 }
@@ -255,7 +258,10 @@ if (!PENDING) {
   records = r.record;
 } else {
   const ix = await list(true);
-  const todo = IDS.length ? IDS.filter((id) => ix.items.some((c) => c.id === id)) : ix.items.filter((c) => c.available && !c.verified && c.source !== "preset").map((c) => c.id);
+  const todo = IDS.length ? IDS.filter((id) => ix.items.some((c) => c.id === id))
+    : ALL ? ix.items.filter((c) => c.available && !c.unsupported).sort((a, b) => (a.source === "preset") - (b.source === "preset") || a.id.localeCompare(b.id)).map((c) => c.id)
+    : ix.items.filter((c) => c.available && !c.verified && c.source !== "preset").map((c) => c.id);
+  if (ALL) for (const c of ix.items.filter((c) => !c.available || c.unsupported)) log(`· 跳过 ${c.id}：${c.unsupported ? `要 ${c.unsupported} GPU，本机没有` : "没有适配当前工具包的构建"}`);
   if (IDS.length && todo.length < IDS.length) log(`⚠ 索引里没有：${IDS.filter((id) => !todo.includes(id)).join("、")}`);
   // 依赖排在前面：被依赖的先验，后面装依赖时用的就是刚验过的
   const byId = new Map(ix.items.map((c) => [c.id, c])), order = [], seen = new Set();
