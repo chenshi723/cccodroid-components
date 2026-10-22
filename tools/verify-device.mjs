@@ -24,13 +24,17 @@ import { execFileSync, spawnSync } from "node:child_process";
 const argv = process.argv.slice(2);
 const opt = (k) => { const i = argv.indexOf(k); return i >= 0 ? argv.splice(i, 2)[1] : undefined; };
 const flag = (k) => { const i = argv.indexOf(k); return i >= 0 ? (argv.splice(i, 1), true) : false; };
-const APP = opt("--app"), BY = opt("--by") || "", OUT = opt("--out"), KEEP = flag("--keep"), PENDING = flag("--pending"), PR = flag("--pr");
+const APP = opt("--app"), BY = opt("--by") || "", OUT = opt("--out"), KEEP = flag("--keep"), PENDING0 = flag("--pending"), PR = flag("--pr");
+// --ids a,b,c：按给的顺序在同一个进程里连着验（和 --pending 一样的流程，复现跨组件的问题用，比如复用空闲连接）
+const IDS = (opt("--ids") || "").split(",").map((x) => x.trim()).filter((x) => /^[a-z0-9][a-z0-9-]{0,39}$/.test(x));
+const PENDING = PENDING0 || IDS.length > 0;
 // selftest 的时限（分钟）。blender 这类第一次运行要先下载、解包运行环境（几百 MB），5 分钟不够
 const SELFTEST_MIN = Number(opt("--selftest-timeout") || 5);
 const ID0 = argv[0];
 if (PENDING ? ID0 : !ID0 || !/^[a-z0-9][a-z0-9-]{0,39}$/.test(ID0)) {
   console.log("用法：node verify-device.mjs <组件 id> --app \"cccodroid <版本>\" [--by <GitHub 用户名>] [--keep] [--selftest-timeout 分钟] [--out 结果.txt]");
   console.log("　　　node verify-device.mjs --pending --app \"cccodroid <版本>\" --by <GitHub 用户名> [--out 结果.txt]");
+  console.log("　　　node verify-device.mjs --ids a,b,c --app \"cccodroid <版本>\" --by <GitHub 用户名> [--out 结果.txt]   指定几个、同一进程连着验");
   process.exit(2);
 }
 
@@ -251,7 +255,8 @@ if (!PENDING) {
   records = r.record;
 } else {
   const ix = await list(true);
-  const todo = ix.items.filter((c) => c.available && !c.verified && c.source !== "preset").map((c) => c.id);
+  const todo = IDS.length ? IDS.filter((id) => ix.items.some((c) => c.id === id)) : ix.items.filter((c) => c.available && !c.verified && c.source !== "preset").map((c) => c.id);
+  if (IDS.length && todo.length < IDS.length) log(`⚠ 索引里没有：${IDS.filter((id) => !todo.includes(id)).join("、")}`);
   // 依赖排在前面：被依赖的先验，后面装依赖时用的就是刚验过的
   const byId = new Map(ix.items.map((c) => [c.id, c])), order = [], seen = new Set();
   const visit = (id) => { if (seen.has(id)) return; seen.add(id); for (const d of byId.get(id)?.requires || []) if (todo.includes(d.id)) visit(d.id); order.push(id); };
