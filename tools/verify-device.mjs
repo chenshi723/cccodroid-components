@@ -51,18 +51,22 @@ if (PR) {
 
 if (OUT) fs.writeFileSync(OUT, "");
 const log = (s = "") => { console.log(s); if (OUT) fs.appendFileSync(OUT, s + "\n"); };
-// 网关连不上（重启、被系统杀了又拉起）时等它回来，最多 90 秒；断过就记一笔，结果里能看出来、好去翻 gateway.log
+// 连网关失败时重试，最多 90 秒，并记下错误码：
+//   ECONNREFUSED = 网关不在（重启、被系统杀了又拉起），去翻 gateway.log；
+//   UND_ERR_SOCKET / ECONNRESET 多半是复用的空闲连接正被网关关掉（keep-alive 竞态，10-22 那两次 fetch failed 网关日志里没有请求，疑似这个）
 const api = async (p, body) => {
+  let code = "";
   for (let i = 0; ; i++) {
     try {
       const r = await fetch(`http://127.0.0.1:${PORT}${p}`, { method: body ? "POST" : "GET",
         headers: { "X-CC-Token": TOKEN, "Content-Type": "application/json" }, body: body && JSON.stringify(body) });
-      if (i) log(`   ⚠ 网关断了约 ${i * 3} 秒又连上（${new Date().toTimeString().slice(0, 8)}），见 gateway.log`);
+      if (i) log(`   ⚠ 连网关失败 ${i} 次后连上（${code}，${new Date().toTimeString().slice(0, 8)}）${code === "ECONNREFUSED" ? "：网关当时不在，见 gateway.log" : ""}`);
       return r.json();
     } catch (e) {
+      code = e.cause?.code || e.cause?.name || e.message;
       // POST 只在连接被拒（请求根本没送到）时重试：送到一半断的，重试可能重复装 / 卸
-      if (body && e.cause?.code !== "ECONNREFUSED") throw e;
-      if (i >= 30) throw new Error(`连不上网关 90 秒（${e.cause?.code || e.message}）`);
+      if (body && code !== "ECONNREFUSED") throw new Error(`${e.message}（${code}）`);
+      if (i >= 30) throw new Error(`连不上网关 90 秒（${code}）`);
       await new Promise((r) => setTimeout(r, 3000));
     }
   }
