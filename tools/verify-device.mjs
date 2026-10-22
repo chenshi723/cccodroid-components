@@ -51,10 +51,21 @@ if (PR) {
 
 if (OUT) fs.writeFileSync(OUT, "");
 const log = (s = "") => { console.log(s); if (OUT) fs.appendFileSync(OUT, s + "\n"); };
+// 网关连不上（重启、被系统杀了又拉起）时等它回来，最多 90 秒；断过就记一笔，结果里能看出来、好去翻 gateway.log
 const api = async (p, body) => {
-  const r = await fetch(`http://127.0.0.1:${PORT}${p}`, { method: body ? "POST" : "GET",
-    headers: { "X-CC-Token": TOKEN, "Content-Type": "application/json" }, body: body && JSON.stringify(body) });
-  return r.json();
+  for (let i = 0; ; i++) {
+    try {
+      const r = await fetch(`http://127.0.0.1:${PORT}${p}`, { method: body ? "POST" : "GET",
+        headers: { "X-CC-Token": TOKEN, "Content-Type": "application/json" }, body: body && JSON.stringify(body) });
+      if (i) log(`   ⚠ 网关断了约 ${i * 3} 秒又连上（${new Date().toTimeString().slice(0, 8)}），见 gateway.log`);
+      return r.json();
+    } catch (e) {
+      // POST 只在连接被拒（请求根本没送到）时重试：送到一半断的，重试可能重复装 / 卸
+      if (body && e.cause?.code !== "ECONNREFUSED") throw e;
+      if (i >= 30) throw new Error(`连不上网关 90 秒（${e.cause?.code || e.message}）`);
+      await new Promise((r) => setTimeout(r, 3000));
+    }
+  }
 };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const rec = (id) => { try { return JSON.parse(fs.readFileSync(path.join(COMP, id + ".json"), "utf8")); } catch { return null; } };

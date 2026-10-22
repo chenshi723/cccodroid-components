@@ -43,6 +43,15 @@
         "checks": "installed from signed index; placed 239, shared 0; skill github-cli installed; selftest exit 0: https://github.com/cli/cli/releases/tag/v2.102.1; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "2.103.0-r2": {
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 246, shared 0; skill github-cli installed; selftest exit 0: https://github.com/cli/cli/releases/tag/v2.103.0; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "gpu-driver-glibc": {
@@ -238,6 +247,13 @@
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 4283, shared 6; skill godot installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 4289, shared 0; skill godot installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -265,6 +281,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.2.14",
         "checks": "installed from signed index; placed 166, shared 0; skill gpu-bench installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 166, shared 0; skill gpu-bench installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged; deps installed for the test: gpu-driver",
         "by": "greyoak111"
       }
     }
@@ -417,6 +440,13 @@
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 349, shared 0; skill openscad installed; selftest exit 0: ===== 总结 ===== 导出=OK MCAD=OK 版本=2026.07.19; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 349, shared 0; skill openscad installed; selftest exit 0: ===== 总结 ===== 导出=OK MCAD=OK 版本=2026.07.19; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -487,6 +517,13 @@
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 363, shared 0; skill lilypond installed; selftest exit 0: ===== 总结 ===== 排版=OK 输出=PDF+MIDI 版本=2.26.0; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 363, shared 0; skill lilypond installed; selftest exit 0: ===== 总结 ===== 排版=OK 输出=PDF+MIDI 版本=2.26.0; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -521,6 +558,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 2184, shared 2; skill music installed; selftest exit 0: ===== 总结 ===== 渲染=OK 合成=OK 后期=OK 分析=OK 超时=OK fluidsynth=2.6.1 scsynth=3.14.1; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 2157, shared 29; skill music installed; selftest exit 0: ===== 总结 ===== 渲染=OK 合成=OK 后期=OK 分析=OK 超时=OK fluidsynth=2.6.1 scsynth=3.14.1; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -594,6 +638,13 @@
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 1649, shared 0; skill cloudflare installed; selftest exit 0: ===== 总结 ===== wrangler=4.151.1 workerd=2026-10-12 dev=OK 请求=40/40; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 1649, shared 0; skill cloudflare installed; selftest exit 0: ===== 总结 ===== wrangler=4.151.1 workerd=2026-10-12 dev=OK 请求=40/40; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -641,6 +692,13 @@
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 1294, shared 69; skill pdf-tools installed; selftest exit 0: ===== 总结 ===== qpdf=OK text=OK png=OK mutool=OK shrink=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 1363, shared 0; skill pdf-tools installed; selftest exit 0: ===== 总结 ===== qpdf=OK text=OK png=OK mutool=OK shrink=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -658,6 +716,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 753, shared 4211; skill sci-python installed; selftest exit 0: ===== 总结 ===== numpy=OK scipy=OK matplotlib=OK pillow=OK pyarrow=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 763, shared 4201; skill sci-python installed; selftest exit 0: ===== 总结 ===== numpy=OK scipy=OK matplotlib=OK pillow=OK pyarrow=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -677,6 +742,13 @@
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 117, shared 1; skill diagrams installed; selftest exit 0: ===== 总结 ===== graphviz=OK plantuml=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 118, shared 0; skill diagrams installed; selftest exit 0: ===== 总结 ===== graphviz=OK plantuml=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -687,6 +759,15 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.3",
         "checks": "installed from signed index; placed 4, shared 49; skill hugo installed; selftest exit 0: ===== 总结 ===== hugo=OK build=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    },
+    "0.168.0-1-r1": {
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 53, shared 0; skill hugo installed; selftest exit 0: ===== 总结 ===== hugo=OK build=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -706,6 +787,13 @@
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 6, shared 1; skill latex installed; selftest exit 0: ===== 总结 ===== tectonic=OK offline=skip fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 7, shared 0; skill latex installed; selftest exit 0: ===== 总结 ===== tectonic=OK offline=skip fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -723,6 +811,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 3791, shared 40; skill octave installed; selftest exit 0: ===== 总结 ===== octave=OK matrix=OK plot=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 3831, shared 0; skill octave installed; selftest exit 0: ===== 总结 ===== octave=OK matrix=OK plot=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -752,6 +847,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.9",
         "checks": "installed from signed index; placed 684, shared 19; skill re-tools installed; selftest exit 0: ===== 总结 ===== rizin=OK binwalk=OK scan=OK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "b38cc23606e6": {
+        "date": "2026-10-22",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 703, shared 0; skill re-tools installed; selftest exit 0: ===== 总结 ===== rizin=OK binwalk=OK scan=OK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
