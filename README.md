@@ -64,6 +64,8 @@ Read the [authoring rules](.claude/skills/component-authoring/SKILL.md), then [C
 
 If an AI assistant writes the component for you, [AGENTS.md](AGENTS.md) at the repository root is written for it.
 
+The market doesn't accept components for reverse proxies, shared or resold accounts, jailbreaking or mass-controlled accounts, and removes any it finds (see "Not accepted" in [CONTRIBUTING.md](CONTRIBUTING.md)). These practices end up hurting ordinary users; cccodroid's position is in [What this project stands against](https://github.com/greyoak111/cccodroid#what-this-project-stands-against).
+
 ## Thanks
 
 Thank you, in order of contribution:

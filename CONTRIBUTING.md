@@ -24,6 +24,11 @@
 - 官方仓库没有、又不是这个组件自己运行所必需的上游构件（`fetch` 只留给这种情形）。
 - 许可证不允许再分发的软件。
 - 收集、转发账号凭据的工具或 skill。
+- 反代、共享或转售账户的工具（把订阅账户拆给多人用，或把订阅额度包装成 API 转卖）。
+- 破甲：绕过模型安全限制、套取有害内容的提示词、skill 或工具。
+- 批量操控账号：成批注册、养号、刷评论、冒充真人发言的自动化。
+
+最后三类不看写得好不好，一律不收；已经上架的一经发现就下架，相关问题也不帮排查。理由见 cccodroid 的 [本项目反对的做法](https://github.com/greyoak111/cccodroid/blob/main/README.zh-CN.md#本项目反对的做法)。
 
 ---
 
@@ -35,4 +40,6 @@ Read the [authoring rules](.claude/skills/component-authoring/SKILL.md) first.
 4. Open a pull request. CI validates the recipe and resolves its dependencies; after merge it builds and publishes a signed index.
 5. On a device, run `node tools/verify-device.mjs <id> --app "cccodroid <version>" --by <github-user>` in the cccodroid terminal; when it passes, add the record it prints to `verified.json` in a follow-up PR. After a new base, maintainers run `verify-device.mjs --pending`, which covers only the builds that could not inherit an earlier verification. `--pr` needs `gh`: install the `gh` component in cccodroid and sign in. Without it, the script prints the records so you can add them to `verified.json` by hand.
 
-Not accepted: anything needing root or system-setting changes; binaries committed to the repo or pulled from the market's own releases; upstream artifacts the component does not itself need at runtime (the only thing `fetch` is for); software whose license forbids redistribution; and tools or skills that collect or relay account credentials.
+Not accepted: anything needing root or system-setting changes; binaries committed to the repo or pulled from the market's own releases; upstream artifacts the component does not itself need at runtime (the only thing `fetch` is for); software whose license forbids redistribution; tools or skills that collect or relay account credentials; reverse proxies and tools for sharing or reselling accounts (splitting a subscription among many people, or repackaging subscription usage as an API for sale); jailbreaks, meaning prompts, skills or tools that get around a model's safety limits to extract harmful content; and automation for mass-controlled accounts (bulk registration, account farming, comment flooding, posing as real people).
+
+The last three are refused however well they're built. Any that slip through are removed once found, and we won't help troubleshoot them. See [What this project stands against](https://github.com/greyoak111/cccodroid#what-this-project-stands-against) in the cccodroid README for why.

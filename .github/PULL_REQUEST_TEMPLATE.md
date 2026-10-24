@@ -15,6 +15,7 @@
 - [ ] SKILL.md 不会让 Claude 读取或打印令牌、密码 / never reads or prints secrets
 - [ ] 对外发布、删除类操作写明先问用户 / asks before public or destructive actions
 - [ ] `needs` 如实填写 / filled honestly
+- [ ] 不涉及反代、共享或转售账户、破甲、批量操控账号（见 CONTRIBUTING「不收」）/ not for reverse proxies, shared or resold accounts, jailbreaking or mass-controlled accounts (see CONTRIBUTING)
 
 ## 真机测试（可选，合并后也可以补）/ Device test (optional)
 

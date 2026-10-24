@@ -64,6 +64,8 @@ cccodroid 从 0.1.10 起读这个仓库。浏览器（Chromium）这类预置组
 
 用 AI 助手写组件的话，仓库根目录的 [AGENTS.md](AGENTS.md) 就是写给它看的。
 
+反代、共享或转售账户、破甲、批量操控账号这几类组件，市场一律不收，已上架的发现即下架（见 [CONTRIBUTING.md](CONTRIBUTING.md) 的「不收」）。这些做法最后坑的是普通用户，cccodroid 的立场写在 [本项目反对的做法](https://github.com/greyoak111/cccodroid/blob/main/README.zh-CN.md#本项目反对的做法)。
+
 ## 致谢
 
 谢谢这些朋友（按时间先后）：
