@@ -45,6 +45,10 @@ Every component in the table has been verified on a real device with the current
 
 The app won't offer "Snapdragon only" components on devices with other chips. For components with dependencies, the app asks you to install those first and won't let you remove them while something still depends on them.
 
+## Component proposals pending review
+
+- `openai-bridge`: a preview adapter from a user's own Chat Completions API to a loopback Anthropic Messages endpoint. [Source repository](https://github.com/chenshi723/cccodroid-openai-bridge). Pinned CCR 1.0.73 has known dependency advisories; market scope and remediation require maintainer review. **Not published or verified as a signed market package.** This proposal does not add an in-app graphical configuration card.
+
 ## How it works
 
 - **This repo holds recipes only, no binaries.** A recipe lists Termux package names. CI downloads the official Termux `.deb` files, checks every SHA-256, rewrites the prefix from `com.termux` to `cc.codroid` (same length, byte for byte), and packs the result. A recipe may also declare an upstream artifact with `fetch` (URL plus SHA-256). This is only for artifacts the component needs at runtime that the official repository doesn't have; CI downloads and checks them.
