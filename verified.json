@@ -1052,6 +1052,15 @@
         "checks": "installed from signed index; placed 53, shared 0; skill hugo installed; selftest exit 0: ===== 总结 ===== hugo=OK build=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "0.169.0-r2": {
+      "3768afcf79a7": {
+        "date": "2026-10-28",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.4.16",
+        "checks": "installed from signed index; placed 53, shared 0; skill hugo installed; selftest exit 0: ===== 总结 ===== hugo=OK build=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "latex": {
