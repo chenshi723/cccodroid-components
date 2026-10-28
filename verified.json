@@ -59,6 +59,15 @@
         "checks": "installed from signed index; placed 246, shared 0; skill github-cli installed; selftest exit 0: https://github.com/cli/cli/releases/tag/v2.103.0; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "2.103.3-r2": {
+      "3768afcf79a7": {
+        "date": "2026-10-28",
+        "device": "LENOVO TB320FC / Android 15",
+        "app": "cccodroid 0.4.16",
+        "checks": "installed from signed index; placed 246, shared 0; skill github-cli installed; selftest exit 0: https://github.com/cli/cli/releases/tag/v2.103.3; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "gpu-driver-glibc": {

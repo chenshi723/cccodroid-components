@@ -9,8 +9,9 @@ fail() { echo "hugo-selftest: $*" >&2; exit 1; }
 [ -x "$HUGO" ] || fail "找不到 hugo（$HUGO）"
 
 VER=$("$HUGO" version 2>/dev/null | head -1)
+# 只认「是 hugo、带版本号」，不卡小版本：Termux 跟上游升版本（0.168 → 0.169）时自检不该跟着坏
 case "$VER" in
-  "hugo v0.168."*) ;;
+  "hugo v0."[0-9]*) ;;
   *) fail "hugo version 输出不对：$VER" ;;
 esac
 echo "hugo OK $VER"

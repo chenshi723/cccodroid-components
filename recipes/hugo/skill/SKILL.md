@@ -5,7 +5,7 @@ description: 用 Hugo 从 Markdown 生成静态网站：新建站点、套主题
 
 # Hugo 静态网站
 
-本机装的是 **Hugo 0.168.0 extended（android/arm64）**（`hugo version` 的输出就是版本依据）。
+本机装的是 **Hugo extended（android/arm64）**，跟 Termux 仓库走，具体版本以 `hugo version` 的输出为准。
 组件本身**不带主题**；主题按 Hugo 的惯例用 git 克隆到站点的 `themes/` 下。
 
 ## 运行链路
