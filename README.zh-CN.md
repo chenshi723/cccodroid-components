@@ -45,6 +45,10 @@ cccodroid 从 0.1.10 起读这个仓库。浏览器（Chromium）这类预置组
 
 「仅骁龙」的组件，App 在别家芯片的设备上不给装。有依赖的组件，App 会先让你装好依赖，依赖也不能在它之前卸载。
 
+## 待评审的组件提案
+
+- `openai-bridge`：用户自有 Chat Completions API 到本机 Anthropic Messages 的协议适配预览。[源仓库](https://github.com/chenshi723/cccodroid-openai-bridge)。固定 CCR 1.0.73 有已知依赖漏洞；待维护者确认市场收录范围及安全方案，**不是已发布或已完成签名包真机验证的组件**。本提案没有新增 App 图形配置卡片。
+
 ## 怎么运作
 
 - **仓库里只有配方，没有二进制。** 配方写的是 Termux 包名。CI 从 Termux 官方仓库下载 `.deb`，逐个核对 SHA-256，把前缀从 `com.termux` 等长改写成 `cc.codroid`，再打包。官方仓库里确实没有、而组件运行又必需的上游构件，可以用 `fetch` 声明 URL 和 SHA-256，由 CI 下载核对。

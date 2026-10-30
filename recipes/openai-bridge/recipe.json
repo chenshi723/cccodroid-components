@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "openai-bridge",
+  "kind": "termux",
+  "revision": 4,
+  "version": "1.0.4",
+  "name": { "zh": "OpenAI API 本地协议桥（预览）", "en": "Local OpenAI API bridge (preview)" },
+  "desc": {
+    "zh": "将用户自有的 OpenAI Chat Completions API 转为本机 Anthropic Messages 接口，请求会转发到用户配置的远端。带 CCR 1.0.73 兼容及依赖安全补丁、受范围限制的 SessionStart 看护；不提供模型或额度。预览组件，包体约 107 MiB，待签名安装及 App 聊通验证。",
+    "en": "Adapt a user's own OpenAI Chat Completions API to a local Anthropic Messages endpoint; requests go to the user's configured remote service. Includes CCR 1.0.73 compatibility and dependency-security patches with a scoped SessionStart watchdog. No model or quota is provided. Preview component, about 107 MiB installed tar payload, pending signed-install and in-app chat verification."
+  },
+  "roots": ["nodejs", "bash", "util-linux", "coreutils"],
+  "bin": ["openai-bridge"],
+  "selftest": "openai-bridge --selftest",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "ai",
+  "license": "MIT",
+  "homepage": "https://github.com/chenshi723/cccodroid-openai-bridge",
+  "maintainers": ["chenshi723"],
+  "npm": {
+    "dir": "usr/lib/openai-bridge",
+    "why": "CCR 只在 npm 发布，Termux 官方仓库无 claude-code-router 包；固定为 1.0.73，CI 按锁文件校验完整性并禁用安装脚本。"
+  },
+  "files": {
+    "usr/bin/openai-bridge": { "src": "openai-bridge", "mode": "755" },
+    "usr/lib/openai-bridge/component.cjs": { "src": "component.cjs" },
+    "usr/lib/openai-bridge/installer.cjs": { "src": "installer.cjs" },
+    "usr/lib/openai-bridge/package.json": { "src": "package.json" },
+    "usr/lib/openai-bridge/package-lock.json": { "src": "package-lock.json" },
+    "usr/lib/openai-bridge/LICENSE": { "src": "LICENSE" },
+    "usr/lib/openai-bridge/NOTICE": { "src": "NOTICE" },
+    "usr/lib/openai-bridge/LICENSE-CCR.txt": { "src": "LICENSE-CCR.txt" },
+    "usr/lib/openai-bridge/SECURITY.md": { "src": "SECURITY.md" },
+    "usr/lib/openai-bridge/runtime/patch-ccr.js": { "src": "runtime/patch-ccr.js" },
+    "usr/lib/openai-bridge/runtime/bridge-common.sh": { "src": "runtime/bridge-common.sh", "mode": "755" },
+    "usr/lib/openai-bridge/runtime/start-bridge.sh": { "src": "runtime/start-bridge.sh", "mode": "755" },
+    "usr/lib/openai-bridge/runtime/watchdog.sh": { "src": "runtime/watchdog.sh", "mode": "755" },
+    "usr/lib/openai-bridge/runtime/selftest.cjs": { "src": "runtime/selftest.cjs" },
+    "usr/lib/openai-bridge/runtime/health.cjs": { "src": "runtime/health.cjs" }
+  },
+  "notes": "源文件在 chenshi723/cccodroid-openai-bridge 修改后由 recipe/sync.sh 同步。仅修补专用私有运行副本，不改 Claude Code、底座或组件所有文件、不读订阅凭据。Hook 严格匹配端点后投递看护；包入口删除后不再自启/重启，不强杀现有请求。上游已确认合并后 CI 打包签名，再补 App 实聊、完整卸载及 verified.json；不提供预发布签名索引。安全依赖仍按锁文件和原子指纹补丁验证。"
+}
