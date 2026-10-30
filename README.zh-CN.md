@@ -41,13 +41,15 @@ cccodroid 从 0.1.10 起读这个仓库。浏览器（Chromium）这类预置组
 | `cloudflare` | Cloudflare 官方命令行（wrangler）：部署 Workers / Pages，管 R2 / KV / D1，本地跑 `wrangler dev` | 网络 | 用 `cf-login` 粘贴令牌登录 | (MIT OR Apache-2.0) AND Apache-2.0 |
 | `rclone` | rclone：本地目录、WebDAV、S3、Google Drive 等云存储的同步与备份 | 网络 | | MIT |
 
-表里的组件都在当前工具包（devkit-2026.10.22.3）上真机验证过：有的直接验，有的从旧工具包上的验证记录自动继承（见下面「真机验证」）。具体记录在 [`verified.json`](verified.json)。
+表里的组件都在当前工具包（devkit-2026.10.28）上真机验证过：有的直接验，有的从旧工具包上的验证记录自动继承（见下面「真机验证」）。具体记录在 [`verified.json`](verified.json)。
 
 「仅骁龙」的组件，App 在别家芯片的设备上不给装。有依赖的组件，App 会先让你装好依赖，依赖也不能在它之前卸载。
 
-## 待评审的组件提案
+## 已上架、还没真机验证的组件
 
-- `openai-bridge`：用户自有 Chat Completions API 到本机 Anthropic Messages 的协议适配预览。[源仓库](https://github.com/chenshi723/cccodroid-openai-bridge)。固定 CCR 1.0.73 有已知依赖漏洞；待维护者确认市场收录范围及安全方案，**不是已发布或已完成签名包真机验证的组件**。本提案没有新增 App 图形配置卡片。
+App 里会标「未经真机验证」，装之前先看说明。
+
+- `openai-bridge`（预览）：把你自己有权使用的 OpenAI Chat Completions API 转成本机的 Anthropic Messages 接口，再到「设置 → 接口与型号 → 自定义接口」里填本机地址。请求会发到你配置的远端，可能收费；服务只监听本机回环地址。装好后在终端运行 `openai-bridge configure` 配置；从 App 卸载前先运行 `openai-bridge uninstall --yes`。包体约 107 MiB。源仓库：[chenshi723/cccodroid-openai-bridge](https://github.com/chenshi723/cccodroid-openai-bridge)。
 
 ## 怎么运作
 

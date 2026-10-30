@@ -41,13 +41,15 @@ cccodroid reads this repository since 0.1.10. Preset components such as the brow
 | `cloudflare` | Cloudflare CLI (wrangler): deploy Workers and Pages, manage R2 / KV / D1, run `wrangler dev` locally | Net | Log in with `cf-login` by pasting a token | (MIT OR Apache-2.0) AND Apache-2.0 |
 | `rclone` | rclone: sync and back up local folders, WebDAV, S3, Google Drive and more | Net | | MIT |
 
-Every component in the table has been verified on a real device with the current toolchain (devkit-2026.10.22.3). Some were tested directly; others inherited a verification from an earlier toolchain (see "Device verification" below). The records are in [`verified.json`](verified.json).
+Every component in the table has been verified on a real device with the current toolchain (devkit-2026.10.28). Some were tested directly; others inherited a verification from an earlier toolchain (see "Device verification" below). The records are in [`verified.json`](verified.json).
 
 The app won't offer "Snapdragon only" components on devices with other chips. For components with dependencies, the app asks you to install those first and won't let you remove them while something still depends on them.
 
-## Component proposals pending review
+## Published but not yet verified on a device
 
-- `openai-bridge`: a preview adapter from a user's own Chat Completions API to a loopback Anthropic Messages endpoint. [Source repository](https://github.com/chenshi723/cccodroid-openai-bridge). Pinned CCR 1.0.73 has known dependency advisories; market scope and remediation require maintainer review. **Not published or verified as a signed market package.** This proposal does not add an in-app graphical configuration card.
+The app labels these "not verified on a device". Read the description before installing.
+
+- `openai-bridge` (preview): turns an OpenAI Chat Completions API you're allowed to use into a local Anthropic Messages endpoint, which you then enter under Settings → Provider & model → Custom endpoints. Requests go to the remote service you configure and may cost money; the bridge only listens on the loopback address. After installing, run `openai-bridge configure` in the terminal; before removing it in the app, run `openai-bridge uninstall --yes`. About 107 MiB. Source: [chenshi723/cccodroid-openai-bridge](https://github.com/chenshi723/cccodroid-openai-bridge).
 
 ## How it works
 
