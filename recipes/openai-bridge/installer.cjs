@@ -559,7 +559,9 @@ async function guiLocalReady(target,port){
   });
 }
 async function guiStatus(){
-  const paths=guiPaths(),current=checkGuiRuntime(paths,null,false,true);
+  const paths=guiPaths();
+  if(guiRetired(paths))return {schema:1,id:'openai-bridge',configured:false,endpoint:'',model:'',hasKey:false,localReady:false};
+  const current=checkGuiRuntime(paths,null,false,true);
   if(!current)return {schema:1,id:'openai-bridge',configured:false,endpoint:'',model:'',hasKey:false,localReady:false};
   // 旧版运行文件不去 source 它的 bridge-common.sh；下次会话或保存配置时升级并启动
   const localReady=!current.stale&&await guiLocalReady(paths.target,current.instance.port);
@@ -576,7 +578,8 @@ function guiLock(paths,fn){
   return withInstanceLock({home:paths.home},fn);
 }
 async function guiConfigure(input){
-  const paths=guiPaths(),current=checkGuiRuntime(paths);
+  // 卸载留下的旧目录按全新安装处理：要重新填 Key，旧目录改名备份
+  const paths=guiPaths(),retired=guiRetired(paths),current=retired?null:checkGuiRuntime(paths);
   let key=input.apiKey;
   if(!key){
     if(!current)throw guiError('KEY_REQUIRED');
@@ -586,6 +589,7 @@ async function guiConfigure(input){
   let config;try{config=validateConfig({...input,apiKey:key},current?.instance.port||3459);}catch{throw guiError('INVALID_INPUT');}
   return await guiLock(paths,async checkLock=>{
     const recheck=previous=>{checkLock();guiPaths();return checkGuiRuntime(paths,previous);};
+    if(retired)guiSetAside(paths,checkLock);
     const checked=recheck(current);
     if(!!checked!==!!current)throw guiError('RUNTIME_CONFLICT');
     if(!current){
@@ -640,7 +644,7 @@ async function guiModels(input){
   // 读取清单不保存配置、不探测/启动本地桥。只有未输入新 Key 时才读取已验证的 GUI 私有配置。
   try{
     return await require('./gui-models.cjs').listModels(input,{resolveSavedKey(endpoint){
-      const paths=guiPaths(),current=checkGuiRuntime(paths,null,false,true);
+      const paths=guiPaths(),current=guiRetired(paths)?null:checkGuiRuntime(paths,null,false,true);
       if(!current)throw guiError('KEY_REQUIRED');
       if(new URL(endpoint).origin!==new URL(current.endpoint).origin)throw guiError('KEY_HOST_CHANGED');
       checkGuiRuntime(paths,current,false,true);
@@ -648,10 +652,37 @@ async function guiModels(input){
     }});
   }finally{input.apiKey='';}
 }
+const RETIRED='uninstalled\n';
+function guiRetired(paths){
+  // App 里卸载组件只停桥、摘钩子、注销服务，私有目录连同密钥留着（uninstalled 标记）。重装后严格核对见标记就报冲突，
+  // 等于卸完再也配不上。这里只认本组件图形配置建的、已完整卸载（标记在且注册已撤）的那份，其余照旧交给核对。
+  // 不核对运行文件内容：认出来后只会改名让位，改名后的目录永不读取、不执行（以后要从旧目录复用端口 / 密钥 / 配置，必须先补齐 checkInstance 那套核对）。
+  const {home,target,settings}=paths;
+  if(!exists(target)||!exists(path.join(target,MARKER))||!exists(path.join(target,'disabled')))return false;
+  instanceDirectory(target);
+  let m;try{m=loadManifest(target);}catch{return false;}
+  if(m.guiManaged!==true||m.settings!==settings||m.componentEntry!==path.join(SOURCE,'component.cjs'))return false;
+  if(instanceFile(path.join(target,'disabled'),32).data.toString('utf8')!==RETIRED)return false;
+  return registration.read(home)===null;
+}
+function guiSetAside(paths,checkLock){
+  // 改名留作备份（不删：里面有用户的上游密钥），给新安装让出固定目录
+  checkLock();
+  if(!guiRetired(paths))throw guiError('RUNTIME_CONFLICT');
+  const parent=openInstanceDirectory(path.dirname(paths.target));
+  try{
+    const name=path.basename(paths.target)+'.uninstalled-'+new Date().toISOString().replace(/[-:]/g,'').replace(/\..*/,'')+'-'+crypto.randomBytes(3).toString('hex');
+    checkLock();parent.check();
+    if(exists(parent.at(name)))throw guiError('RUNTIME_CONFLICT');
+    fs.renameSync(parent.at(path.basename(paths.target)),parent.at(name));
+    // 依赖是组件自带、随时能重建的 CCR 副本（上百 MB），备份只留用户数据；rmSync 不跟随链接
+    checkLock();parent.check();fs.rmSync(path.join(parent.at(name),'node_modules'),{recursive:true,force:true});
+  }finally{fs.closeSync(parent.fd);}
+}
 function guiUpgrade(){
   // 保存配置前：图形配置接管的实例跟着组件升级换运行文件（随后 configure 会启动桥）；不是本组件图形配置建的就不碰，交给后面的核对报冲突。
-  const {target}=guiPaths();
-  if(!exists(path.join(target,MARKER)))return;
+  const paths=guiPaths(),{target}=paths;
+  if(!exists(path.join(target,MARKER))||guiRetired(paths))return;
   const m=loadManifest(target);
   if(m.guiManaged!==true)return;
   const options={endpoint:'http://127.0.0.1:'+instancePort(target),instance:m.service?.instanceId};
