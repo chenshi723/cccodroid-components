@@ -274,9 +274,12 @@ function stopMetadata(target) {
   if(exists(path.join(target,'disabled')))instanceFile(path.join(target,'disabled'),32);
   return {state,stats};
 }
-function checkInstance(target,options,previous=null,registered=true) {
+function checkInstance(target,options,previous=null,registered=true,stale=null) {
   // 私有 manifest 不是信任根：组件源、私有文件的实际 hash、manifest 三方必须相符。
   // 固定文件白名单也避免恶意清单引导读取 connection/config 或任意用户文件。
+  // stale 传数组时为「旧版宽松」模式：只给不执行私有代码的卸载与就地升级用。每个私有文件
+  // 要么仍是 manifest 记下的那份（未被改动），要么已是当前组件那份（上次升级中断）；
+  // 与当前组件不一致的文件名记进 stale，不再当冲突。
   const targetStat=instanceDirectory(target),m=JSON.parse(instanceFile(path.join(target,MARKER),65536).data),home=path.resolve(os.homedir());
   const service=m?.service;
   if(m?.id!=='ccr-bridge-kit'||m.version!==VERSION||m.target!==target||!object(service)||service.schema!==1||service.home!==home||fs.realpathSync(home)!==home||service.instanceId!==options.instance)throw new Error('本地桥实例注册不匹配。');
@@ -295,13 +298,13 @@ function checkInstance(target,options,previous=null,registered=true) {
   for(const name of Object.keys(m.files).sort()){
     const hash=m.files[name];
     if(!allowed.has(name)||typeof hash!=='string'||!/^[0-9a-f]{64}$/.test(hash))throw new Error('实例运行文件清单不合法。');
-    const actual=instanceFile(path.join(target,name));
-    if(sha(actual.data)!==hash)throw new Error('实例运行文件被修改，拒绝操作。');
-    if(RUNTIME_FILES.includes(name)){
-      const source=instanceFile(path.join(SOURCE,'runtime',name));
-      if(sha(source.data)!==hash)throw new Error('实例运行文件与固定组件不匹配；未执行私有代码。');
-      sources[name]={hash,dev:source.stat.dev,ino:source.stat.ino,privateDev:actual.stat.dev,privateIno:actual.stat.ino};
-    }
+    const actual=instanceFile(path.join(target,name)),actualHash=sha(actual.data);
+    const source=RUNTIME_FILES.includes(name)?instanceFile(path.join(SOURCE,'runtime',name)):name==='manage.cjs'&&stale?instanceFile(__filename):null;
+    const fresh=source&&sha(source.data);
+    if(actualHash!==hash&&!(stale&&fresh&&actualHash===fresh))throw new Error('实例运行文件被修改，拒绝操作。');
+    if(stale){if(fresh&&(hash!==fresh||actualHash!==fresh))stale.push(name);}
+    else if(RUNTIME_FILES.includes(name)&&fresh!==hash)throw new Error('实例运行文件与固定组件不匹配；未执行私有代码。');
+    if(RUNTIME_FILES.includes(name))sources[name]={hash:actualHash,dev:source.stat.dev,ino:source.stat.ino,privateDev:actual.stat.dev,privateIno:actual.stat.ino};
   }
   const runtime=stopMetadata(target);
   if(previous&&(!sameFile(previous.targetStat,targetStat)||!same(previous.manifest,m)||previous.port!==port||!same(previous.sources,sources)||runtime.stats.some((st,i)=>!sameFile(st,previous.runtime.stats[i]))))throw new Error('操作期间实例元数据已变更。');
@@ -501,7 +504,8 @@ async function guiInput(command){
     return {endpoint,apiKey,model};
   }catch(error){if(error.guiCode)throw error;throw guiError('INVALID_INPUT');}
 }
-function checkGuiRuntime(paths,previous=null,allowConfiguring=false){
+function checkGuiRuntime(paths,previous=null,allowConfiguring=false,readOnly=false){
+  // readOnly：status/models 只读配置，不执行私有代码；旧版运行文件未被改动就照常读，升级留给 configure/ensure（会把桥拉起来）
   const {home,target,settings}=paths;
   if(!exists(target)){
     if(registration.read(home))throw guiError('RUNTIME_CONFLICT');
@@ -513,14 +517,14 @@ function checkGuiRuntime(paths,previous=null,allowConfiguring=false){
   const m=loadManifest(target),portText=fs.readFileSync(path.join(target,'port'),'utf8');
   const options={endpoint:'http://127.0.0.1:'+Number(portText),instance:m.service?.instanceId};
   instanceOptions('ensure',options);
-  const instance=checkInstance(target,options,previous?.instance);
+  const stale=readOnly?[]:null,instance=checkInstance(target,options,previous?.instance,true,stale);
   const disabled=path.join(target,'disabled');
   if(m.guiManaged!==true||m.settings!==settings||m.componentEntry!==path.join(SOURCE,'component.cjs'))throw guiError('RUNTIME_CONFLICT');
   if(exists(disabled)){
     regularFile(disabled);
     if(!allowConfiguring||fs.readFileSync(disabled,'utf8')!=='configuring\n')throw guiError('RUNTIME_CONFLICT');
   }
-  for(const name of RUNTIME_FILES){
+  if(!readOnly)for(const name of RUNTIME_FILES){
     regularFile(path.join(SOURCE,'runtime',name));
     if(m.files[name]!==sha(fs.readFileSync(path.join(SOURCE,'runtime',name))))throw guiError('RUNTIME_CONFLICT');
   }
@@ -540,7 +544,7 @@ function checkGuiRuntime(paths,previous=null,allowConfiguring=false){
   const validated=validateConfig({endpoint,apiKey:provider.api_key,model},instance.port);
   if(endpoint!==provider.api_base_url||connection.baseUrl!==options.endpoint||typeof connection.apiKey!=='string'||!/^[0-9a-f]{48}$/.test(connection.apiKey)||!same(config,routerConfig(validated,instance.port,connection.apiKey)))throw guiError('RUNTIME_CONFLICT');
   if(previous&&(previous.configText!==configText||previous.connectionText!==connectionText))throw guiError('RUNTIME_CONFLICT');
-  return {instance,options,configPath,connectionPath,configText,connectionText,endpoint,model,apiKey:validated.apiKey,localKey:connection.apiKey};
+  return {instance,options,configPath,connectionPath,configText,connectionText,endpoint,model,apiKey:validated.apiKey,localKey:connection.apiKey,stale:!!stale?.some(name=>RUNTIME_FILES.includes(name))};   // 只差 manage.cjs 时桥照常跑、探测脚本已核对，不算过期
 }
 async function guiLocalReady(target,port){
   // 不再读取可变 connection.baseUrl；只探测已验证端口的字面量回环 /health。
@@ -555,10 +559,11 @@ async function guiLocalReady(target,port){
   });
 }
 async function guiStatus(){
-  const paths=guiPaths(),current=checkGuiRuntime(paths);
+  const paths=guiPaths(),current=checkGuiRuntime(paths,null,false,true);
   if(!current)return {schema:1,id:'openai-bridge',configured:false,endpoint:'',model:'',hasKey:false,localReady:false};
-  const localReady=await guiLocalReady(paths.target,current.instance.port);
-  checkGuiRuntime(paths,current);
+  // 旧版运行文件不去 source 它的 bridge-common.sh；下次会话或保存配置时升级并启动
+  const localReady=!current.stale&&await guiLocalReady(paths.target,current.instance.port);
+  checkGuiRuntime(paths,current,false,true);
   return {schema:1,id:'openai-bridge',configured:true,endpoint:current.endpoint,model:current.model,hasKey:true,localReady};
 }
 function guiLock(paths,fn){
@@ -635,19 +640,30 @@ async function guiModels(input){
   // 读取清单不保存配置、不探测/启动本地桥。只有未输入新 Key 时才读取已验证的 GUI 私有配置。
   try{
     return await require('./gui-models.cjs').listModels(input,{resolveSavedKey(endpoint){
-      const paths=guiPaths(),current=checkGuiRuntime(paths);
+      const paths=guiPaths(),current=checkGuiRuntime(paths,null,false,true);
       if(!current)throw guiError('KEY_REQUIRED');
       if(new URL(endpoint).origin!==new URL(current.endpoint).origin)throw guiError('KEY_HOST_CHANGED');
-      checkGuiRuntime(paths,current);
+      checkGuiRuntime(paths,current,false,true);
       return current.apiKey;
     }});
   }finally{input.apiKey='';}
+}
+function guiUpgrade(){
+  // 保存配置前：图形配置接管的实例跟着组件升级换运行文件（随后 configure 会启动桥）；不是本组件图形配置建的就不碰，交给后面的核对报冲突。
+  const {target}=guiPaths();
+  if(!exists(path.join(target,MARKER)))return;
+  const m=loadManifest(target);
+  if(m.guiManaged!==true)return;
+  const options={endpoint:'http://127.0.0.1:'+instancePort(target),instance:m.service?.instanceId};
+  instanceOptions('ensure',options);
+  upgradeInstance(target,options);
 }
 async function gui(command,args){
   process.umask(0o077);
   scrubGuiEnv();
   try{
     if(args.length)throw guiError('INVALID_INPUT');
+    if(command==='gui-configure')guiUpgrade();
     const result=command==='gui-models'?await guiModels(await guiInput(command)):command==='gui-configure'?await guiConfigure(await guiInput(command)):await guiStatus();
     console.log(JSON.stringify(result));
   }catch(error){
@@ -819,12 +835,12 @@ function instanceSettings(file) {
   if(!object(value)||value.hooks!==undefined&&!object(value.hooks)||value.hooks?.SessionStart!==undefined&&!Array.isArray(value.hooks.SessionStart))throw new Error('Claude 设置结构不合法，未修改。');
   return {value,read};
 }
-function instanceAtomic(file,content,recheck) {
+function instanceAtomic(file,content,recheck,mode=0o600) {
   const dir=openInstanceDirectory(path.dirname(file)),temp=dir.at('.kit-'+crypto.randomUUID()+'.tmp');
   let created=false;
   try{
     recheck();dir.check();
-    fs.writeFileSync(temp,content,{flag:'wx',mode:0o600});created=true;
+    fs.writeFileSync(temp,content,{flag:'wx',mode});created=true;
     recheck();dir.check();
     fs.renameSync(temp,dir.at(path.basename(file)));created=false;
   }finally{if(created)fs.unlinkSync(temp);fs.closeSync(dir.fd);}
@@ -832,7 +848,7 @@ function instanceAtomic(file,content,recheck) {
 function uninstallInstance(target,options,instance) {
   return withInstanceLock(instance,checkLock=>{
     let registered=true;
-    const recheck=()=>{checkLock();return checkInstance(target,options,instance,registered);};
+    const recheck=()=>{checkLock();return checkInstance(target,options,instance,registered,[]);};
     // 交互确认和锁等待后重新核对，后续每个副作用也不能沿用初次读到的注册。
     recheck();const settings=instance.manifest.settings,before=instanceSettings(settings);
     const settingsUnchanged=()=>{
@@ -866,11 +882,56 @@ function uninstallInstance(target,options,instance) {
     }else console.log('安装目录和密钥保留：'+target+'；如需永久删除，确认备份后使用 uninstall --yes --purge。');
   });
 }
+const UPGRADING='upgrading\n';
+function upgradeInstance(target,options) {
+  // 组件升级换了运行文件后，旧实例在严格核对下既起不来也配不了（r9→r10 卡死的教训）。
+  // 只把本组件自己发过、未被改动的文件换成当前组件那份：先用内联协议停桥（不执行私有代码），
+  // 逐个原子替换，最后才改 manifest；中途断掉时每个文件仍是新旧之一，下次接着做。
+  const m=loadManifest(target);
+  if(m.componentEntry!==path.join(SOURCE,'component.cjs')||!exists(path.join(SOURCE,'runtime')))return false;
+  const marker=path.join(target,'disabled');
+  const leftover=()=>exists(marker)&&instanceFile(marker,32).data.toString('utf8')===UPGRADING;
+  const probe=[];checkInstance(target,options,null,true,probe);
+  if(!probe.length&&!leftover())return false;
+  return guiLock({home:path.resolve(os.homedir())},checkLock=>{
+    const stale=[],current=checkInstance(target,options,null,true,stale);
+    const recheck=()=>{
+      checkLock();
+      const now=checkInstance(target,options,null,true,[]);
+      if(!sameFile(now.targetStat,current.targetStat)||!same(now.manifest,current.manifest)||now.port!==current.port||now.runtime.stats.some((st,i)=>!sameFile(st,current.runtime.stats[i])))throw new Error('升级期间实例已变更。');
+    };
+    const fault=path.join(current.runtime.state,'recovery.failed'),hadFault=exists(fault);
+    // 只换 manage.cjs 时桥照跑，不写标记（看护见标记会退出）。已有别的停用标记（配置中断、卸载中）时照升，但不替它摘。
+    const runtimeStale=stale.some(name=>RUNTIME_FILES.includes(name)),hadMarker=leftover();
+    const mine=hadMarker||runtimeStale&&!exists(marker);
+    // 标记挡住钩子和看护在替换期间重启旧脚本
+    if(mine&&!hadMarker)instanceAtomic(marker,UPGRADING,recheck);
+    if(runtimeStale)stopManaged(target,{recheck});
+    const files={...current.manifest.files};
+    for(const name of stale){
+      const data=fs.readFileSync(name==='manage.cjs'?__filename:path.join(SOURCE,'runtime',name));
+      instanceAtomic(path.join(target,name),data,recheck,name.endsWith('.sh')?0o700:0o600);
+      files[name]=sha(data);
+    }
+    instanceAtomic(path.join(target,MARKER),JSON.stringify({...current.manifest,files},null,2)+'\n',recheck);
+    checkLock();checkInstance(target,options);
+    // 看护见到标记会记一笔故障；只清本次产生的那条，不动既有恢复预算。
+    if(!hadFault&&exists(fault)&&regularFile(fault)&&fs.readFileSync(fault,'utf8')==='component removed or disabled\n')fs.rmSync(fault);
+    if(mine){
+      const dir=openInstanceDirectory(target);
+      try{checkLock();dir.check();if(leftover())fs.unlinkSync(dir.at('disabled'));}
+      finally{fs.closeSync(dir.fd);}
+    }
+    return true;
+  });
+}
 async function manage(command,options) {
   const scoped=instanceOptions(command,options);
   const target=path.resolve(options.dir||SOURCE);
   const m=loadManifest(target);
-  const instance=scoped?checkInstance(target,options):null;
+  if(scoped&&command==='ensure')upgradeInstance(target,options);
+  // 卸载不执行私有代码，旧版运行文件只要未被改动就放行，免得组件升级后卸不掉
+  const instance=scoped?checkInstance(target,options,null,true,command==='uninstall'?[]:null):null;
   if(options.purge){
     if(command!=='uninstall')throw new Error('--purge 只适用于 uninstall。');
     purgeTarget(target);
