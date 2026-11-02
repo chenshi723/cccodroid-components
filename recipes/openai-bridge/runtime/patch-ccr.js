@@ -392,6 +392,18 @@ const REASON_NEW = `, (() => {
   })();
 }`;
 
+// 12) CCR 1.0.73 仅识别 provider,model，普通 ID 会被 think/longContext/default 覆盖。
+//     本组件明确登记的 relay ID 优先；未知 ID 和旧 Claude 别名仍走原路由。
+const MODEL_ROUTE_OLD = `  const Router = projectSpecificRouter || config.Router;
+  if (req.body.model.includes(",")) {`;
+const MODEL_ROUTE_NEW = `  const Router = projectSpecificRouter || config.Router;
+  // ccr-relay-model-route-v1: preserve an explicitly configured model ID
+  const bridgeProvider = config.Providers?.find((p) => p.name === "relay");
+  if (typeof req.body.model === "string" && bridgeProvider?.models?.includes(req.body.model)) {
+    return "relay," + req.body.model;
+  }
+  if (req.body.model.includes(",")) {`;
+
 let src = fs.readFileSync(file, "utf8");
 let changed = false, missing = [];
 
@@ -417,8 +429,9 @@ patch("explicit stream", 'stream: e.stream === true, tools:', STREAM_OLD, STREAM
 patch("JSON/SSE response", SSE_MARK, src.includes(SSE_FALLBACK) ? SSE_FALLBACK : SSE_OLD, SSE_NEW);
 patch("tool result images", "// ccr-tool-images-v1:", TOOL_IMAGES_OLD, TOOL_IMAGES_NEW);
 patch("image token estimate", "// ccr-image-token-estimate-v1", IMAGE_TOKENS_OLD, IMAGE_TOKENS_NEW);
+patch("configured model route", "// ccr-relay-model-route-v1:", MODEL_ROUTE_OLD, MODEL_ROUTE_NEW);
 
-// 11) npm override 不能修复 CCR 内嵌的 @fastify/static 8.2.0。
+// 13) npm override 不能修复 CCR 内嵌的 @fastify/static 8.2.0。
 //     校验原代码指纹后整段移除旧实现，改为加载锁文件中的已修复版本；未知 bundle 拒绝写入。
 const staticStart = "// node_modules/.pnpm/@fastify+static@8.2.0/node_modules/@fastify/static/lib/dirList.js";
 const staticEnd = "// node_modules/.pnpm/tiktoken@1.0.22/node_modules/tiktoken/tiktoken_bg.cjs";
@@ -521,7 +534,7 @@ if (changed) {
     if (fs.existsSync(temp)) fs.unlinkSync(temp);
   }
   if (process.exitCode) process.exit(process.exitCode);
-  console.log("[patch-ccr] patched: " + ["effort", "uncaughtException", "unhandledRejection", "stream reader", "upstream cancel", "error handler", "request body log", "fresh connection", "reasoning fallback", "explicit stream", "JSON/SSE response", "tool result images", "image token estimate", "bundled static security"].join(", "));
+  console.log("[patch-ccr] patched: " + ["effort", "uncaughtException", "unhandledRejection", "stream reader", "upstream cancel", "error handler", "request body log", "fresh connection", "reasoning fallback", "explicit stream", "JSON/SSE response", "tool result images", "image token estimate", "configured model route", "bundled static security"].join(", "));
   process.exit(2);   // 刚打上：正在跑的实例还是旧代码，调用方应重启
 }
 console.log("[patch-ccr] already patched");
