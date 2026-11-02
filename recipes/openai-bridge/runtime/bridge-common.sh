@@ -22,10 +22,43 @@ bridge_log() {
   printf '[%s] %s %s\n' "$1" "$(date '+%F %T')" "$2" >> "$STATE/bridge.out"
 }
 
-# 只读本安装的元数据，不读取连接文件、上游配置或任何密钥。
-bridge_component_present() {
-  [[ ! -e "$BR/disabled" ]] || return 1
-  node -e 'try { const fs=require("node:fs"), path=require("node:path"); const root=process.argv[1], m=JSON.parse(fs.readFileSync(path.join(root,".ccr-bridge-kit.json"),"utf8")); if(m.id!=="ccr-bridge-kit"||m.target!==root||typeof m.componentEntry!=="string"||!path.isAbsolute(m.componentEntry)||!fs.statSync(m.componentEntry).isFile()) process.exit(1); } catch { process.exit(1); }' "$BR" 2>/dev/null
+# 只读非秘密元数据。0=完整，2=明确 disabled，3=仅固定入口暂缺，1=标记/路径无效。
+# 只对 ENOENT 启动有限确认；链接、坏文件、路径/实例变化绝不按“更新中”放行。
+bridge_component_state() {
+  [[ ! -e "$BR/disabled" && ! -L "$BR/disabled" ]] || return 2
+  node -e '
+    const fs=require("node:fs"),path=require("node:path"),crypto=require("node:crypto");
+    try {
+      const root=process.argv[1],file=path.join(root,".ccr-bridge-kit.json"),st=fs.lstatSync(file);
+      if(!st.isFile()||st.nlink!==1||st.size>65536||fs.realpathSync(root)!==root)process.exit(1);
+      const text=fs.readFileSync(file),m=JSON.parse(text);
+      if(m.id!=="ccr-bridge-kit"||m.target!==root||typeof m.componentEntry!=="string"||!path.isAbsolute(m.componentEntry)||path.resolve(m.componentEntry)!==m.componentEntry)process.exit(1);
+      const stamp=crypto.createHash("sha256").update(text).update(String(st.dev)+":"+st.ino).digest("hex");
+      if(process.argv[2]&&process.argv[2]!==stamp)process.exit(1);
+      console.log(stamp);
+      let entry;try{entry=fs.lstatSync(m.componentEntry);}catch(error){if(error.code==="ENOENT")process.exit(3);throw error;}
+      if(!entry.isFile()||entry.nlink!==1||fs.realpathSync(m.componentEntry)!==m.componentEntry)process.exit(1);
+    } catch { process.exit(1); }
+  ' "$BR" "${1:-}" 2>/dev/null
+}
+bridge_component_present() { bridge_component_state >/dev/null; }
+
+# 市场更新先移除固定入口再铺文件；只有“入口 ENOENT + 原元数据身份未变”可等一次。
+# 等待期间不修补、不停止/启动 CCR、不消费恢复预算；退出后绝不循环复活。
+bridge_component_confirm() {
+  local stamp rc deadline
+  stamp=$(bridge_component_state "${1:-}"); rc=$?
+  (( rc == 3 )) || return "$rc"
+  bridge_log watchdog "固定组件入口暂缺，最多确认 10 秒；期间不重启"
+  deadline=$((SECONDS + 10))
+  while (( SECONDS < deadline )); do
+    [[ ! -e "$STATE/recovery.failed" && ! -L "$STATE/recovery.failed" ]] || return 1
+    sleep 0.2
+    bridge_component_state "$stamp" >/dev/null; rc=$?
+    [[ ! -e "$STATE/recovery.failed" && ! -L "$STATE/recovery.failed" ]] || return 1
+    (( rc == 3 )) || return "$rc"
+  done
+  return 3
 }
 
 # 安卓经加载器执行时（termux-exec 的 linker 模式），/proc/PID/exe 是系统 linker，
@@ -62,9 +95,49 @@ bridge_pid() {
   printf '%s\n' "$pid"
 }
 
+# 只作跨解锁窗口的实例比较；PID + 内核启动时刻避免 PID 复用被当成原来的桥。
+bridge_instance() {
+  local pid rest
+  local -a fields=()
+  pid=$(bridge_pid) || return 1
+  IFS= read -r rest < "/proc/$pid/stat" || return 1
+  rest=${rest##*) }
+  read -r -a fields <<< "$rest"
+  [[ ${fields[19]:-} =~ ^[0-9]+$ ]] || return 1
+  printf '%s:%s\n' "$pid" "${fields[19]}"
+}
+
 bridge_healthy() {
-  bridge_pid >/dev/null || return 1
-  node "$BR/health.cjs" "$PORT" 2>/dev/null
+  if ! bridge_pid >/dev/null; then
+    BRIDGE_HEALTH_LOG_HEALTHY_SINCE=-1
+    return 1
+  fi
+  # 日志失效每轮只报一次固定诊断；须连续成功探活 300 秒才允许下一轮报告。
+  # 任何失败（含 PID 消失）中断计时，不能靠故障持续时间或短暂成功反复刷屏。
+  local diagnostic rc code
+  if (( ${BRIDGE_HEALTH_LOG_FAILED:-0} )); then
+    node "$BR/health.cjs" "$PORT" --log "$STATE/health.log" 2>/dev/null; rc=$?
+  else
+    diagnostic=$(node "$BR/health.cjs" "$PORT" --log "$STATE/health.log" 2>&1); rc=$?
+    if [[ -n "$diagnostic" ]]; then
+      BRIDGE_HEALTH_LOG_FAILED=1
+      while IFS= read -r code; do
+        if [[ $code =~ ^\[[0-9TZ:.+-]+\]\ health\ ([A-Z][A-Z0-9_]*)$ ]]; then
+          printf '%s\n' "$code" >&2
+        fi
+      done <<< "$diagnostic"
+    fi
+  fi
+  if (( rc != 0 )); then
+    BRIDGE_HEALTH_LOG_HEALTHY_SINCE=-1
+  elif (( ${BRIDGE_HEALTH_LOG_FAILED:-0} )); then
+    (( ${BRIDGE_HEALTH_LOG_HEALTHY_SINCE:--1} >= 0 )) || BRIDGE_HEALTH_LOG_HEALTHY_SINCE=$SECONDS
+    if (( SECONDS - BRIDGE_HEALTH_LOG_HEALTHY_SINCE >= 300 )); then
+      BRIDGE_HEALTH_LOG_FAILED=0
+      BRIDGE_HEALTH_LOG_HEALTHY_SINCE=-1
+    fi
+  fi
+  return "$rc"
 }
 
 watchdog_running() {
