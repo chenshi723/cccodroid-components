@@ -18,7 +18,9 @@ function value(target,port,instanceId){
   if(!path.isAbsolute(target)||path.resolve(target)!==target||!Number.isInteger(port)||port<1024||port>65535||!/^[0-9a-f]{32}$/.test(instanceId))throw new Error('服务注册参数不合法。');
   return {schema:1,id:ID,endpoint:'http://127.0.0.1:'+port,runtimeDir:target,instanceId};
 }
-function same(a,b){return !!a&&Object.keys(a).length===5&&Object.keys(b).every(k=>a[k]===b[k]);}
+function sameDir(a,b){try{const sa=fs.lstatSync(a),sb=fs.lstatSync(b);return sa.dev===sb.dev&&sa.ino===sb.ino;}catch{return false;}}
+// runtimeDir 按目录身份（dev:ino）比：注册记的是配置时的路径写法，卸载换一种别名写法（/data/data 与 /data/user/0）不该算「另一项注册」
+function same(a,b){return !!a&&Object.keys(a).length===5&&!!b&&['schema','id','endpoint','instanceId'].every(k=>a[k]===b[k])&&sameDir(a.runtimeDir,b.runtimeDir);}
 function check(home,target,port,instanceId){return same(read(home),value(target,port,instanceId));}
 function lock(home,fn){
   const dir=path.dirname(fileOf(home));
@@ -47,7 +49,7 @@ function registerLocked(home,target,port,instanceId){
 }
 function unregister(home,target,instanceId){return lock(home,()=>{
   const current=read(home);
-  if(!current||current.id!==ID||current.schema!==1||current.runtimeDir!==target||current.instanceId!==instanceId)return false;
+  if(!current||current.id!==ID||current.schema!==1||!sameDir(current.runtimeDir,target)||current.instanceId!==instanceId)return false;
   fs.unlinkSync(fileOf(home));
   return true;
 });}

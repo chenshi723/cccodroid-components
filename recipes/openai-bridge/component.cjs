@@ -42,7 +42,7 @@ try{
       const marker=path.join(target,'.ccr-bridge-kit.json');
       if(!fs.existsSync(marker))throw new Error('尚未配置此安装。请用户在终端运行 openai-bridge configure。');
       const manifest=JSON.parse(fs.readFileSync(marker,'utf8'));
-      if(manifest.id!=='ccr-bridge-kit'||path.resolve(manifest.target)!==target)throw new Error('不是受管理的桥安装。');
+      if(manifest.id!=='ccr-bridge-kit'||!api.sameDir(path.resolve(manifest.target),target))throw new Error('不是受管理的桥安装。');
       // 手动清理不要求新实例协议；保留旧运行副本自带管理器，不擅自覆盖它。
       const forwarded=options.dir===undefined?[...args,'--dir',target]:args;
       run(path.join(target,'manage.cjs'),[command,...forwarded]);

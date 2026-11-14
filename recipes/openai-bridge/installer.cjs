@@ -60,8 +60,8 @@ function checkTools(bundled) {
 function safeTarget(input,settings) {
   const target=path.resolve(input);
   const home=trustedHome();
-  if(target==='/'||target===home||path.basename(target)==='.claude')throw new Error('安装目录必须是专用子目录，不能是根目录、HOME 或 .claude。');
-  if(settings===target || settings.startsWith(target+path.sep))throw new Error('Claude 设置不能放进安装目录，避免卸载误删。');
+  if(target==='/'||sameDir(target,home)||path.basename(target)==='.claude')throw new Error('安装目录必须是专用子目录，不能是根目录、HOME 或 .claude。');
+  if(insideOrSame(settings,target))throw new Error('Claude 设置不能放进安装目录，避免卸载误删。');
   let p=target;
   while(!exists(p))p=path.dirname(p);
   const resolved=path.join(fs.realpathSync(p),path.relative(p,target));
@@ -414,7 +414,7 @@ function loadManifest(target) {
   const p=path.join(target,MARKER);
   if(!exists(p))throw new Error('该目录不是由本安装器管理的安装：'+target);
   const m=JSON.parse(instanceFile(p,65536).data);
-  if(!object(m)||m.id!=='ccr-bridge-kit'||m.version!==VERSION||typeof m.target!=='string'||path.resolve(m.target)!==target)throw new Error('安装标记不匹配，拒绝操作。');
+  if(!object(m)||m.id!=='ccr-bridge-kit'||m.version!==VERSION||typeof m.target!=='string'||!sameDir(path.resolve(m.target),target))throw new Error('安装标记不匹配，拒绝操作。');
   return m;
 }
 function managedIntact(target,m) {
@@ -437,6 +437,23 @@ function regularFile(file) {
   return st;
 }
 function sameFile(a,b) { return a.dev===b.dev&&a.ino===b.ino; }
+// 两个路径是不是同一个目录（按 dev:ino，不按字符串）：安卓上 /data/data/<包名> 与 /data/user/0/<包名> 是
+// 同一目录的两种写法（绑定挂载，realpath 不归并）。配置时记一种写法、卸载时敲另一种，字符串比较就对不上（06-路径别名卸载走不通）
+function sameDir(a,b) {
+  try { return sameFile(fs.lstatSync(a),fs.lstatSync(b)); } catch { return false; }
+}
+/** p 就是 root、或位于 root 之下（逐级向上按 dev:ino 比，别名写法也认） */
+function insideOrSame(p,root) {
+  let q=p;
+  for(;;){
+    if(sameDir(q,root))return true;
+    const d=path.dirname(q);
+    if(d===q)return false;
+    q=d;
+  }
+}
+/** p 严格位于 root 之下（p 自己就是 root 不算） */
+function underDir(p,root) { return !sameDir(p,root) && insideOrSame(p,root); }
 function instanceDirectory(dir) {
   const st=fs.lstatSync(dir);
   if(!st.isDirectory()||fs.realpathSync(dir)!==dir)throw new Error('实例目录或父路径不规范，拒绝操作。');
@@ -497,7 +514,7 @@ function checkInstance(target,options,previous=null,registered=true,stale=null) 
   // 与当前组件不一致的文件名记进 stale，不再当冲突。
   const targetStat=instanceDirectory(target),m=JSON.parse(instanceFile(path.join(target,MARKER),65536).data),home=trustedHome();
   const service=m?.service;
-  if(m?.id!=='ccr-bridge-kit'||m.version!==VERSION||m.target!==target||!object(service)||service.schema!==1||service.home!==home||fs.realpathSync(home)!==home||service.instanceId!==options.instance)throw new Error('本地桥实例注册不匹配。');
+  if(m?.id!=='ccr-bridge-kit'||m.version!==VERSION||!sameDir(m.target,target)||!object(service)||service.schema!==1||!sameDir(service.home,home)||fs.realpathSync(home)!==home||service.instanceId!==options.instance)throw new Error('本地桥实例注册不匹配。');
   const port=instancePort(target);
   if(options.endpoint!=='http://127.0.0.1:'+port)throw new Error('本地桥 endpoint 与实例端口不匹配。');
   if(typeof m.settings!=='string'||!path.isAbsolute(m.settings)||path.resolve(m.settings)!==m.settings)throw new Error('实例设置路径不规范。');
@@ -506,7 +523,9 @@ function checkInstance(target,options,previous=null,registered=true,stale=null) 
   instanceDirectory(registryDir);
   const current=exists(registryFile)?JSON.parse(instanceFile(registryFile,4096).data):null;
   const expected=registration.value(target,port,service.instanceId);
-  if(registered?(!object(current)||Object.keys(current).length!==5||!Object.keys(expected).every(k=>current[k]===expected[k])):current!==null)throw new Error('本地桥服务注册已变更，拒绝操作。');
+  // runtimeDir 按目录身份（dev:ino）比：注册记的是配置时的路径写法，卸载换一种别名写法（/data/data 与 /data/user/0）不该算「已变更」
+  const regSame=(a,b)=>!!a&&object(a)&&Object.keys(a).length===5&&['schema','id','endpoint','instanceId'].every(k=>a[k]===b[k])&&sameDir(a.runtimeDir,b.runtimeDir);
+  if(registered?!regSame(current,expected):current!==null)throw new Error('本地桥服务注册已变更，拒绝操作。');
   const allowed=new Set([...RUNTIME_FILES,'manage.cjs','stop.sh','uninstall.sh','status.sh','package.json','package-lock.json','port']);
   if(!object(m.files)||[...RUNTIME_FILES,'port'].some(name=>!Object.hasOwn(m.files,name)))throw new Error('实例缺少受管理的运行文件。');
   const sources={};
@@ -1073,7 +1092,8 @@ async function gui(command,args){
 }
 function purgeTarget(target) {
   if(fs.lstatSync(target).isSymbolicLink() || fs.realpathSync(target)!==target)throw new Error('清理目标或父路径有符号链接，拒绝删除。');
-  if(!target.startsWith(trustedHome()+path.sep) && !target.startsWith(path.resolve(os.tmpdir())+path.sep))throw new Error('清理目标必须位于私有 HOME 或临时目录的专用子目录。');
+  // 按 dev:ino 逐级向上比，不按字符串前缀：路径别名（/data/data 与 /data/user/0 是同一目录的两种写法）前缀对不上
+  if(!underDir(target,trustedHome()) && !underDir(target,path.resolve(os.tmpdir())))throw new Error('清理目标必须位于私有 HOME 或临时目录的专用子目录。');
   const manifest=loadManifest(target);
   safeTarget(target,path.resolve(manifest.settings));
   return target;
@@ -1087,7 +1107,7 @@ async function confirmStop(target,options) {
 function stopManaged(target,context=null) {
   // 固定组件内联的停止协议。无论 manifest 如何自报 hash，绝不 source/exec 私有代码。
   const baseline=stopMetadata(target),manifest=JSON.parse(instanceFile(path.join(target,MARKER),65536).data),port=instancePort(target);
-  if(manifest?.id!=='ccr-bridge-kit'||manifest.version!==VERSION||manifest.target!==target)throw new Error('停止目标不是规范的受管理实例。');
+  if(manifest?.id!=='ccr-bridge-kit'||manifest.version!==VERSION||!sameDir(manifest.target,target))throw new Error('停止目标不是规范的受管理实例。');
   const registryFile=registration.fileOf(trustedHome());
   const registry=exists(registryFile)?instanceFile(registryFile,4096).data:null;
   let startLock,serviceLock;
@@ -1468,4 +1488,4 @@ async function main() {
   if(cmd==='install')await install(options);else await manage(cmd,options);
 }
 if(require.main===module)main().catch(e=>{console.error('错误：'+e.message);process.exitCode=1;});
-module.exports={atomic,mergeHook,removeHook,validateConfig,routerConfig,connectionConfig,readSettings,safeTarget,hookEntry,legacyHookEntry,parse,quote,copyBundledRuntime,purgeTarget,instanceOptions,trustedHome};
+module.exports={atomic,mergeHook,removeHook,validateConfig,routerConfig,connectionConfig,readSettings,safeTarget,hookEntry,legacyHookEntry,parse,quote,copyBundledRuntime,purgeTarget,instanceOptions,trustedHome,sameDir,underDir,insideOrSame,VERSION,loadManifest};
