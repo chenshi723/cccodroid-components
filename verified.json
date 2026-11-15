@@ -68,6 +68,15 @@
         "checks": "installed from signed index; placed 246, shared 0; skill github-cli installed; selftest exit 0: https://github.com/cli/cli/releases/tag/v2.103.3; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "2.104.0-r2": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 246, shared 0; skill github-cli installed; selftest exit 0: https://github.com/cli/cli/releases/tag/v2.104.0; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "gpu-driver-glibc": {
@@ -244,6 +253,15 @@
         "checks": "installed from signed index; placed 14, shared 0; skill gpu-driver installed; selftest exit 0: ===== 总结 ===== Turnip=OK zink=OK render=PASS opencl=PASS; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "26.2.7-r3": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 13, shared 0; skill gpu-driver installed; selftest exit 0: ===== 总结 ===== Turnip=OK zink=OK render=PASS opencl=-; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "gpu-driver-mali": {
@@ -289,6 +307,13 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.10-preview",
         "checks": "installed from signed index; placed 73, shared 0; skill gnucap installed; selftest exit 0: ===== 总结 ===== 瞬态=OK 末值=4.9663V; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 72, shared 0; skill gnucap installed; selftest exit 0: ===== 总结 ===== 瞬态=OK 末值=4.9663V; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -425,6 +450,13 @@
         "app": "cccodroid 0.3.10-preview",
         "checks": "installed from signed index; placed 55, shared 0; skill iverilog installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 54, shared 0; skill iverilog installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -522,6 +554,15 @@
         "checks": "installed from signed index; placed 87, shared 0; skill llama-cpp installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "1.0.0-r3": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 87, shared 0; skill llama-cpp installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "ngspice": {
@@ -547,6 +588,13 @@
         "date": "2026-10-22",
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 36, shared 0; skill ngspice installed; selftest exit 0: ===== 总结 ===== 瞬态=OK 末值=4.96644607e+00 数据点=80; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
         "checks": "installed from signed index; placed 36, shared 0; skill ngspice installed; selftest exit 0: ===== 总结 ===== 瞬态=OK 末值=4.96644607e+00 数据点=80; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
@@ -707,12 +755,11 @@
         "by": "greyoak111"
       },
       "3768afcf79a7": {
-        "date": "2026-10-28",
-        "device": "LENOVO TB320FC / Android 15",
-        "app": "cccodroid 0.3.10-preview",
-        "checks": "维护者决定沿用：devkit-2026.10.28 只加了 Go / Node.js 两个可选模块（整包不放）、升了 16 个底座包，没动可选组件，沿用 devkit-2026.10.22.3 上的真机验证。原记录：installed from signed index; placed 363, shared 0; skill lilypond installed; selftest exit 0: ===== 总结 ===== 排版=OK 输出=PDF+MIDI 版本=2.26.0; removed cleanly; devkit base unchanged",
-        "by": "greyoak111",
-        "carriedFromBase": "ae9d10a14013"
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 363, shared 0; skill lilypond installed; selftest exit 0: ===== 总结 ===== 排版=OK 输出=PDF+MIDI 版本=2.26.0; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -770,6 +817,15 @@
         "checks": "维护者决定沿用：devkit-2026.10.28 只加了 Go / Node.js 两个可选模块（整包不放）、升了 16 个底座包，没动可选组件，沿用 devkit-2026.10.22.3 上的真机验证。原记录：installed from signed index; placed 2186, shared 0; skill music installed; selftest exit 0: ===== 总结 ===== 渲染=OK 合成=OK 后期=OK 分析=OK 超时=OK fluidsynth=2.6.1 scsynth=3.14.1; removed cleanly; devkit base unchanged",
         "by": "greyoak111",
         "carriedFromBase": "ae9d10a14013"
+      }
+    },
+    "2.6.2-r3": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 1791, shared 412; skill music installed; selftest exit 0: ===== 总结 ===== 渲染=OK 合成=OK 后期=OK 分析=OK 超时=OK fluidsynth=2.6.2 scsynth=3.14.1; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -905,6 +961,15 @@
         "by": "greyoak111",
         "carriedFromBase": "ae9d10a14013"
       }
+    },
+    "5.5.4-r2": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 11, shared 1091; skill ocr installed; selftest exit 0: ===== 总结 ===== langs=OK image=OK pdf=OK searchable=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "pandoc": {
@@ -921,6 +986,15 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.10-preview",
         "checks": "installed from signed index; placed 45, shared 0; skill pandoc installed; selftest exit 0: ===== 总结 ===== docx=OK html=OK pdf=OK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    },
+    "3.13-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 14, shared 30; skill pandoc installed; selftest exit 0: ===== 总结 ===== docx=OK html=OK pdf=OK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -956,12 +1030,11 @@
         "by": "greyoak111"
       },
       "3768afcf79a7": {
-        "date": "2026-10-28",
-        "device": "LENOVO TB320FC / Android 15",
-        "app": "cccodroid 0.3.10-preview",
-        "checks": "维护者决定沿用：devkit-2026.10.28 只加了 Go / Node.js 两个可选模块（整包不放）、升了 16 个底座包，没动可选组件，沿用 devkit-2026.10.22.3 上的真机验证。原记录：installed from signed index; placed 1363, shared 0; skill pdf-tools installed; selftest exit 0: ===== 总结 ===== qpdf=OK text=OK png=OK mutool=OK shrink=OK fonts=CJK; removed cleanly; devkit base unchanged",
-        "by": "greyoak111",
-        "carriedFromBase": "ae9d10a14013"
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 249, shared 1091; skill pdf-tools installed; selftest exit 0: ===== 总结 ===== qpdf=OK text=OK png=OK mutool=OK shrink=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -996,12 +1069,11 @@
         "by": "greyoak111"
       },
       "3768afcf79a7": {
-        "date": "2026-10-28",
-        "device": "LENOVO TB320FC / Android 15",
-        "app": "cccodroid 0.3.10-preview",
-        "checks": "维护者决定沿用：devkit-2026.10.28 只加了 Go / Node.js 两个可选模块（整包不放）、升了 16 个底座包，没动可选组件，沿用 devkit-2026.10.22.3 上的真机验证。原记录：installed from signed index; placed 763, shared 4201; skill sci-python installed; selftest exit 0: ===== 总结 ===== numpy=OK scipy=OK matplotlib=OK pillow=OK pyarrow=OK fonts=CJK; removed cleanly; devkit base unchanged",
-        "by": "greyoak111",
-        "carriedFromBase": "ae9d10a14013"
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 4937, shared 24; skill sci-python installed; selftest exit 0: ===== 总结 ===== numpy=OK scipy=OK matplotlib=OK pillow=OK pyarrow=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -1046,10 +1118,10 @@
     },
     "1.2026.9-r3": {
       "3768afcf79a7": {
-        "date": "2026-11-04",
-        "device": "LENOVO TB320FC / Android 15",
-        "app": "cccodroid 0.6.5",
-        "checks": "installed from signed index; placed 118, shared 0; skill diagrams installed; selftest exit 0: ===== 总结 ===== graphviz=OK plantuml=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 15, shared 102; skill diagrams installed; selftest exit 0: ===== 总结 ===== graphviz=OK plantuml=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -1088,6 +1160,15 @@
         "checks": "installed from signed index; placed 53, shared 0; skill hugo installed; selftest exit 0: ===== 总结 ===== hugo=OK build=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "0.170.0-r2": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 52, shared 0; skill hugo installed; selftest exit 0: ===== 总结 ===== hugo=OK build=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "latex": {
@@ -1121,12 +1202,11 @@
         "by": "greyoak111"
       },
       "3768afcf79a7": {
-        "date": "2026-10-28",
-        "device": "LENOVO TB320FC / Android 15",
-        "app": "cccodroid 0.3.10-preview",
-        "checks": "维护者决定沿用：devkit-2026.10.28 只加了 Go / Node.js 两个可选模块（整包不放）、升了 16 个底座包，没动可选组件，沿用 devkit-2026.10.22.3 上的真机验证。原记录：installed from signed index; placed 7, shared 0; skill latex installed; selftest exit 0: ===== 总结 ===== tectonic=OK offline=skip fonts=CJK; removed cleanly; devkit base unchanged",
-        "by": "greyoak111",
-        "carriedFromBase": "ae9d10a14013"
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 7, shared 0; skill latex installed; selftest exit 0: ===== 总结 ===== tectonic=OK offline=skip fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -1161,12 +1241,11 @@
         "by": "greyoak111"
       },
       "3768afcf79a7": {
-        "date": "2026-10-28",
-        "device": "LENOVO TB320FC / Android 15",
-        "app": "cccodroid 0.3.10-preview",
-        "checks": "维护者决定沿用：devkit-2026.10.28 只加了 Go / Node.js 两个可选模块（整包不放）、升了 16 个底座包，没动可选组件，沿用 devkit-2026.10.22.3 上的真机验证。原记录：installed from signed index; placed 3831, shared 0; skill octave installed; selftest exit 0: ===== 总结 ===== octave=OK matrix=OK plot=OK fonts=CJK; removed cleanly; devkit base unchanged",
-        "by": "greyoak111",
-        "carriedFromBase": "ae9d10a14013"
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 3522, shared 305; skill octave installed; selftest exit 0: ===== 总结 ===== octave=OK matrix=OK plot=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -1187,12 +1266,11 @@
         "by": "greyoak111"
       },
       "3768afcf79a7": {
-        "date": "2026-10-28",
-        "device": "LENOVO TB320FC / Android 15",
-        "app": "cccodroid 0.3.10-preview",
-        "checks": "维护者决定沿用：devkit-2026.10.28 只加了 Go / Node.js 两个可选模块（整包不放）、升了 16 个底座包，没动可选组件，沿用 devkit-2026.10.22.3 上的真机验证。原记录：installed from signed index; placed 8, shared 0; skill rclone installed; selftest exit 0: ===== 总结 ===== rclone=OK copy=OK check=OK dryrun=OK webdav=present; removed cleanly; devkit base unchanged",
-        "by": "greyoak111",
-        "carriedFromBase": "ae9d10a14013"
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 8, shared 0; skill rclone installed; selftest exit 0: ===== 总结 ===== rclone=OK copy=OK check=OK dryrun=OK webdav=present; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -1224,6 +1302,233 @@
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.10-preview",
         "checks": "installed from signed index; placed 703, shared 0; skill re-tools installed; selftest exit 0: ===== 总结 ===== rizin=OK binwalk=OK scan=OK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 682, shared 18; skill re-tools installed; selftest exit 0: ===== 总结 ===== rizin=OK binwalk=OK scan=OK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "apk-tools": {
+    "3.0.3-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 70, shared 2; skill apk-tools installed; selftest exit 0: ===== 总结 ===== apktool=OK dex2jar=OK dex-to-jar=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "backup": {
+    "0.19.1-1-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 4, shared 101; skill backup installed; selftest exit 0: ===== 总结 ===== restic=OK age=OK rsync=OK repo=PASS restore=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "bili-groups": {
+    "1.0-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 29, shared 0; skill bili-groups installed; selftest exit 0: 登录二维码默认写到 /sdcard/cccodroid/bili-login-qr.png；数据在 ~/.bili-groups/data，登录凭据在 ~/.bili_cookies.json（0600）; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "bilibili-mcp": {
+    "1.14.6-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 3922, shared 0; skill bilibili-mcp installed; selftest exit 0: 1.14.6; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "code-quality": {
+    "0.11.0-3-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 4, shared 12; skill code-quality installed; selftest exit 0: ===== 总结 ===== shellcheck=OK shfmt=OK ruff=OK check=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "data-tools": {
+    "6.22.0-1-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 22, shared 134; skill data-tools installed; selftest exit 0: ===== 总结 ===== miller=OK xmlstarlet=OK xmllint=OK csv=PASS xpath=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "databases": {
+    "9.1.3-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 4, shared 30; skill databases installed; selftest exit 0: ===== 总结 ===== valkey=9.1.3 start=PASS set=PASS get=PASS stop=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "inkscape": {
+    "1.4.4-4-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 10, shared 10785; skill inkscape installed; selftest exit 0: ===== 总结 ===== inkscape=OK png=OK pdf=OK 版本=Inkscape 1.4.4 (dcaf3e7d9e, 2026-05-05); removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "lmms": {
+    "1.2.2-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 4, shared 2; skill lmms installed; selftest exit 0: ===== 总结 ===== lmms=OK wav=OK 版本=LMMS 1.2.2; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "math-min": {
+    "5.13.1-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 169, shared 0; skill math-min installed; selftest exit 0: ===== 总结 ===== qalc=OK pari=OK units=OK gnuplot=OK png=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "minecraft-server": {
+    "1.21.11-132-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 9, shared 2; skill minecraft-server installed; selftest exit 0: ===== 总结 ===== java=OK paper=OK paperclip=OK properties=OK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "ml-tflite": {
+    "2.21.0-1-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 963, shared 0; skill ml-tflite installed; selftest exit 0: ===== 总结 ===== tflite=2.21.0 numpy=2.5.4 model=PASS inference=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "openai-bridge": {
+    "1.0.5-r21": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 7133, shared 0; skill openai-bridge installed; selftest exit 0: ===== 总结 ===== CCR=1.0.73 static=10.1.2 JSON/SSE=6/4 effort=OK upstream=loopback-only; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "pandas": {
+    "3.1.1-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 3032, shared 0; skill pandas installed; selftest exit 0: ===== 总结 ===== pandas=3.1.1 numpy=2.5.4 groupby=PASS csv=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "photo-min": {
+    "2:0.28.9-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 29, shared 87; skill photo-min installed; selftest exit 0: ===== 总结 ===== exiv2=OK gmic=OK potrace=OK zbar=OK exif=PASS svg=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "qq-bot": {
+    "3.2.34-r2": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 12, shared 737; skill qq-bot installed; selftest exit 0: ===== 总结 ===== qq-bot=OK Xvfb=OK bridge=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "raw-photo": {
+    "5.6.2-3-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 10, shared 7602; skill raw-photo installed; selftest exit 0: ===== 总结 ===== darktable=OK rawtherapee=OK jpeg=OK darktable版本=darktable 5.6.2 rt版本=5.13; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "skia-video": {
+    "3.119.4-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 7, shared 5; skill skia-video installed; selftest exit 0: ===== 总结 ===== Skia=119.0 render=PASS png=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "snowluma": {
+    "2.4.2-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 91, shared 782; skill snowluma installed; selftest exit 0: ===== 总结 ===== snowluma=OK Xvfb=OK scrot=OK bridge=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "chromium": {
+    "156.0.8078.47": {
+      "3768afcf79a7": {
+        "date": "2026-11-15",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 1835, shared 4951; skill chromium-browser installed; selftest exit 0: <html><head></head><body><p id=\"ok\">ok</p></body></html>; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
