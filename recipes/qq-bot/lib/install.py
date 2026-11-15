@@ -63,13 +63,22 @@ QQ = {
 }
 NAPCAT = {
     "version": "4.18.42",
-    "url": "https://github.com/NapNeko/NapCatQQ/releases/download/v4.18.42/NapCat.Shell.zip",
+    # 官方仓库 2026-11-12 删库跑路（Release 已清空）：官方 URL 保留为主源，404 时按序回退到公共档案镜像。
+    # 三个源下的东西都用同一个 SHA256 校验，任何源内容不符都会被拒掉。
+    "urls": [
+        "https://github.com/NapNeko/NapCatQQ/releases/download/v4.18.42/NapCat.Shell.zip",
+        "https://github.com/XingYunStar/NapCatQQ/releases/download/v4.18.42/NapCat.Shell.zip",
+        "https://github.com/19901115/NapCatQQ/releases/download/v4.18.42/NapCat.Shell.zip",
+    ],
     "sha256": "02e5ff0f79916c1e04c81c1b4590056406fb4293f1f1300c955e71fd08b2829d",
     "bytes": 35967555,
     "installed": 120 * 1024 * 1024,
 }
 NAPCAT_LICENSE = {
-    "url": "https://raw.githubusercontent.com/NapNeko/NapCatQQ/v4.18.42/LICENSE",
+    "urls": [
+        "https://raw.githubusercontent.com/NapNeko/NapCatQQ/v4.18.42/LICENSE",
+        "https://raw.githubusercontent.com/XingYunStar/NapCatQQ/v4.18.42/LICENSE",
+    ],
     "sha256": "2bbc0dba0c62fcde4adfe38ebadad0b7d4e23b06b88d9551904bbe07769dc46f",
 }
 
@@ -94,55 +103,66 @@ def sha256_file(path):
     return h.hexdigest()
 
 
-def http_bytes(url, timeout=180, tries=4):
-    req = urllib.request.Request(url, headers={"User-Agent": "cccodroid-qq-bot/1"})
-    for i in range(tries):
-        try:
-            with urllib.request.urlopen(req, timeout=timeout) as r:
-                return r.read()
-        except Exception as e:  # noqa: BLE001
-            if "CERTIFICATE" in str(e) or i == tries - 1:
-                raise
-            wait = 2 ** i
-            say(f"    网络中断，{wait}s 后重试（{i + 1}/{tries - 1}）：{os.path.basename(url)} · {e}")
-            time.sleep(wait)
+def http_bytes(urls, timeout=180, tries=4):
+    if isinstance(urls, str):
+        urls = [urls]
+    last = None
+    for url in urls:
+        req = urllib.request.Request(url, headers={"User-Agent": "cccodroid-qq-bot/1"})
+        for i in range(tries):
+            try:
+                with urllib.request.urlopen(req, timeout=timeout) as r:
+                    return r.read()
+            except Exception as e:  # noqa: BLE001
+                last = e
+                if "CERTIFICATE" in str(e) or i == tries - 1:
+                    break
+                wait = 2 ** i
+                say(f"    网络中断，{wait}s 后重试（{i + 1}/{tries - 1}）：{os.path.basename(url)} · {e}")
+                time.sleep(wait)
+    raise RuntimeError(f"下载失败（全部源都不可用）: {last}")
 
 
-def download(url, dest, want_sha, want_size=None, timeout=600):
-    """下载到 dest，边下边算 SHA256；对不上就删掉并报错。已存在且正确则跳过。"""
+def download(urls, dest, want_sha, want_size=None, timeout=600):
+    """下载到 dest，边下边算 SHA256；对不上就删掉并报错。已存在且正确则跳过。
+    urls 可以是字符串或列表：列表按顺序回退（主源失效换镜像），每个源重试 4 次。"""
+    if isinstance(urls, str):
+        urls = [urls]
     if os.path.exists(dest) and sha256_file(dest) == want_sha:
         return dest
     os.makedirs(os.path.dirname(dest), exist_ok=True)
-    req = urllib.request.Request(url, headers={"User-Agent": "cccodroid-qq-bot/1"})
     last = None
-    for i in range(4):
-        try:
-            h = hashlib.sha256()
-            got = 0
-            tmp = dest + ".part"
-            with urllib.request.urlopen(req, timeout=timeout) as r, open(tmp, "wb") as f:
-                while True:
-                    b = r.read(1 << 20)
-                    if not b:
-                        break
-                    h.update(b)
-                    f.write(b)
-                    got += len(b)
-            if want_size and got != want_size:
-                raise ValueError(f"大小不符（应为 {want_size}，实得 {got}）")
-            if h.hexdigest() != want_sha:
-                os.remove(tmp)
-                raise ValueError(f"SHA256 不符（应为 {want_sha[:16]}…，实得 {h.hexdigest()[:16]}…）")
-            os.replace(tmp, dest)
-            return dest
-        except Exception as e:  # noqa: BLE001
-            last = e
-            if "CERTIFICATE" in str(e) or i == 3:
-                break
-            wait = 2 ** i
-            say(f"    下载中断，{wait}s 后重试（{i + 1}/3）：{e}")
-            time.sleep(wait)
-    raise RuntimeError(f"下载失败 {url}: {last}")
+    for url in urls:
+        req = urllib.request.Request(url, headers={"User-Agent": "cccodroid-qq-bot/1"})
+        for i in range(4):
+            try:
+                h = hashlib.sha256()
+                got = 0
+                tmp = dest + ".part"
+                with urllib.request.urlopen(req, timeout=timeout) as r, open(tmp, "wb") as f:
+                    while True:
+                        b = r.read(1 << 20)
+                        if not b:
+                            break
+                        h.update(b)
+                        f.write(b)
+                        got += len(b)
+                if want_size and got != want_size:
+                    raise ValueError(f"大小不符（应为 {want_size}，实得 {got}）")
+                if h.hexdigest() != want_sha:
+                    os.remove(tmp)
+                    raise ValueError(f"SHA256 不符（应为 {want_sha[:16]}…，实得 {h.hexdigest()[:16]}…）")
+                os.replace(tmp, dest)
+                return dest
+            except Exception as e:  # noqa: BLE001
+                last = e
+                if "CERTIFICATE" in str(e) or i == 3:
+                    break
+                wait = 2 ** i
+                say(f"    下载中断，{wait}s 后重试（{i + 1}/3）：{e}")
+                time.sleep(wait)
+        say(f"    该源不可用，换下一个源：{os.path.basename(url)}")
+    raise RuntimeError(f"下载失败（全部源都不可用）: {last}")
 
 
 # ── Debian 索引 ────────────────────────────────────────────────────────
@@ -598,7 +618,7 @@ def install_napcat(app_dir, root, cache):
     cfg_dir = os.path.join(napcat, "config")
     zip_path = os.path.join(cache, "NapCat.Shell.zip")
     say(f"  ▸ 下载 NapCat {NAPCAT['version']}（{mb(NAPCAT['bytes'])}，GitHub Release）…")
-    download(NAPCAT["url"], zip_path, NAPCAT["sha256"], NAPCAT["bytes"])
+    download(NAPCAT["urls"], zip_path, NAPCAT["sha256"], NAPCAT["bytes"])
     if not os.path.exists(os.path.join(napcat, "napcat.mjs")):
         say("  ▸ 解包 NapCat …")
         os.makedirs(napcat, exist_ok=True)
@@ -662,7 +682,7 @@ def install_napcat(app_dir, root, cache):
     lic = os.path.join(napcat, "LICENSE.NapCat")
     if not os.path.exists(lic):
         try:
-            blob = http_bytes(NAPCAT_LICENSE["url"])
+            blob = http_bytes(NAPCAT_LICENSE["urls"])
             got = hashlib.sha256(blob).hexdigest()
             if got != NAPCAT_LICENSE["sha256"]:
                 raise ValueError(f"SHA256 不符（{got[:16]}…）")
