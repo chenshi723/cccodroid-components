@@ -229,7 +229,12 @@ if (!KEEP && ir.ok) {
   log(`\n③ 卸 ${ID}`);
   const r = await remove(ID);
   ok(r.ok, "卸载" + (r.ok ? "" : "：" + r.message));
-  const left = (r1.files || []).filter((f) => { try { fs.lstatSync(path.join(PREFIX, f.replace(/^usr\//, ""))); return true; } catch { return false; } });
+  // 文档软链不算残留：app 卸载时按底座归属有意保留（底座仍认领 share/doc 下的文件），
+  // 也有的组件记录里带着指向 LICENSES 的软链（2026-11-16 真机验证时 gimp 因此误报 37 个残留）
+  const left = (r1.files || []).filter((f) => {
+    if (/^(?:glibc\/)?share\/doc\//.test(f)) return false;
+    try { fs.lstatSync(path.join(PREFIX, f.replace(/^usr\//, ""))); return true; } catch { return false; }
+  });
   ok(left.length === 0, left.length ? `卸载后还剩 ${left.length} 个它的文件（${left.slice(0, 3).join("；")}）` : "它放进去的文件都清掉了");
   if (r1.skill) ok(!fs.existsSync(path.join(HOME, ".claude", "skills", r1.skill)), `skill ${r1.skill} 删掉了`);
   // 组件自己攒的运行数据（~/.cccodroid/<id>/：下载缓存、解开的运行环境）卸载不删，是有意的。不算失败，但报出来，
