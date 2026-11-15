@@ -18,17 +18,17 @@ musescore-run --selftest
 
 ```
 musescore-run（$PREFIX/bin 下的包装脚本）
-  → 首次运行：从 Termux 官方仓库取 libicu 79.1（约 10 MB，SHA256 核对）
-      解到 $HOME/.cccodroid/musescore/libicu，只放 libicu*.so.79*
-  → LD_LIBRARY_PATH 优先指向该目录（底座已有 79 时跳过）
+  → 组件安装时已带好 ICU 79：$PREFIX/lib/cccodroid/icu79
+      （从 Termux 官方 libicu 79.1 包提取；来源与 SHA256 见 NOTICE）
+  → LD_LIBRARY_PATH 优先指向该目录（底座已有 79 时改用底座的）
   → 在 $TMPDIR 里找空闲显示号，起 $PREFIX/bin/Xvfb :N（1280×800）
   → $PREFIX/bin/musescore（x11 仓库的 bionic 4.7.x，Qt6）
       → xcb 平台插件连 :N → 排版 → 导出文件
   → 关掉 Xvfb；单页 PNG/SVG 的 -1 后缀改回原名
 ```
 
-- MuseScore / Qt / Xvfb 由**本组件**提供（x11 仓库）；ICU 79 是首次运行下载到
-  私有目录的一份；底座以后自带 79 时跳过。
+- MuseScore / Qt / Xvfb 由**本组件**提供（x11 仓库）；ICU 79 也随组件安装，
+  运行时不联网；底座以后自带 79 时改用底座的。
 - 缺 ICU 79：明确报 `libicuuc.so.79 not found`。缺 Xvfb：`✗ 找不到 …/Xvfb`。
 - **不要**自己设 `QT_QPA_PLATFORM=offscreen` —— 实测被 MuseScore 的平台选择忽略，
   它仍然去加载 xcb；包装脚本的 Xvfb 才是能用的路。
@@ -91,5 +91,4 @@ MuseScore 的 `-o` 靠扩展名决定格式：`.pdf` / `.png` / `.svg` / `.mid` 
 
 ## 首次运行
 
-第一次执行 `musescore-run` 会从 Termux 官方仓库下载约 10 MB 的 libicu 79.1。
-**先告诉用户**下载多大、从哪下、装到哪，得到同意再跑；之后不再联网。
+组件安装时已把 ICU 79 一起装好，第一次执行 `musescore-run` 不联网。
