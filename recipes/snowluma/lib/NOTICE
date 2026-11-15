@@ -1,0 +1,67 @@
+snowluma 组件说明 / NOTICE
+
+免责声明 / Disclaimer
+
+本组件是社区作品，与腾讯、QQ、SnowLuma（SnowLumaDevs）均无关联，未获任何官方授权或认可。它通过非官方
+框架（SnowLuma）接入 Linux 版 QQ 客户端，可能违反腾讯的服务协议；所登录的 QQ 号可能被限制、冻结或
+封禁，风险与损失由使用者自行承担。机器人回复由 AI 生成，使用者对其发出的全部内容负责，须遵守法律
+法规、平台规则和群规；不得用于批量注册、养号、刷屏、营销群发、冒充真人或收集他人信息。本组件按
+「现状」提供，不作任何担保，cccodroid 与组件作者不对使用后果承担责任。
+
+This is a community component, not affiliated with or endorsed by Tencent, QQ or SnowLuma (SnowLumaDevs).
+It drives the Linux QQ client through an unofficial framework (SnowLuma), which may breach Tencent's
+terms; the QQ account used may be restricted, frozen or banned, at the user's own risk. Replies are
+AI-generated and the user is responsible for everything the bot sends. Do not use it for mass
+registration, spam, marketing blasts, impersonating people or collecting others' data. Provided
+"as is", without warranty of any kind.
+
+本组件自身的脚本按 Apache-2.0 提供（与 cccodroid-components 仓库一致）。
+
+运行时会下载、但不随本组件再分发的东西：
+
+1. Linux QQ 3.2.34-53644 arm64
+   来源：腾讯官方 CDN
+   https://qqdl.gtimg.cn/qqfile/QQNT/9.9.36/beta/9ee04bef/linuxqq_3.2.34-53644_arm64.deb
+   SHA256 181b895cb573548e396e54bb0548cca92ffdc1b1a4b018fa4551bb062385fdca
+   QQ 是腾讯的闭源免费客户端，deb 的 License 字段是 unknown；本组件不打包、不再分发它，
+   只在用户确认后从腾讯官方地址下载到应用私有目录。使用 QQ 受腾讯的服务条款约束。
+
+2. SnowLuma 2.4.2（linux-arm64 full 版官方发行包）
+   官方仓库 SnowLuma/SnowLuma 因律师函于 2026-11 停止公开（404），官方 Release 全部消失。
+   本组件从公共档案镜像下载官方原包（按序回退，同一 SHA256 校验所有源）：
+   - https://github.com/XingYunStar/snowluma/releases/tag/v2.4.2（公共档案）
+   - https://github.com/venti1112/snowluma/releases/tag/v2.4.2（公共档案）
+   - https://github.com/TomyJan/SnowLuma/releases/tag/v2.4.2（公共档案）
+   SHA256 c4bcff22828fb465d6fbd8caa375e82432fd3af684b297c43f2c428a2de2200c
+   许可证：
+   - 源码部分：SnowLuma Source-Available Non-Commercial License 1.0（不是 OSI 开源许可；
+     仅限查看、学习、个人或其他非商业使用；任何商业使用、公开发布修改版或衍生版须事先取得
+     著作权人书面授权；再分发须附许可全文——安装器会从上述档案镜像拉取 LICENSE 并按
+     sha256 af26ab85… 校验后放在 SnowLuma 目录下）。
+   - 二进制发行包：另受其 EULA 约束（随包自带 EULA.md）。官方包内的原生附加组件
+     （snowluma-*.node / *.so / sqlite / websocket / ffmpeg）是专有组件，不随源码许可授权；
+     EULA 第 5.4 条规定「并入第三方安装包或 Docker 镜像、通过自动化脚本部署」须事先取得
+     书面授权。本组件未取得 SnowLumaDevs 的书面授权：组件包只带脚本、不含 SnowLuma 任何
+     文件，仅在用户明确确认后下载官方原包并解压运行。是否构成 EULA 所指的「通过自动化脚本
+     部署」请使用者自行评估；需要严格合规的使用者应自行联系 SnowLumaDevs
+     （motricseven@foxmail.com）取得书面授权，或不要使用本组件。使用范围限个人/非商业。
+   - 本组件不修改 SnowLuma 本体（含原生附加组件），只写入它的配置文件
+     （config/onebot.json、config/runtime.json）并设置 SNOWLUMA_* 环境变量。
+
+3. Debian trixie arm64 运行库（GTK3、NSS、ALSA、GBM、AT-SPI 等）
+   来源：https://deb.debian.org/debian/
+   安装器先核对 InRelease 里的 Packages.gz SHA256，再逐个核对 .deb 的 SHA256。
+   这些包各自的许可证见 /usr/share/doc/<包名>/copyright（解包后位于组件数据目录）。
+
+其他说明：
+
+- SnowLuma 以独立进程运行，通过它自带的原生附加组件把钩子库（snowluma-linux-arm64.so）
+  手动映射进同 uid 的 QQ 进程；本组件不读取、不修改 QQ 的登录数据，只通过 SnowLuma 的
+  OneBot v11 接口（127.0.0.1:3000/3001）收发消息。登录二维码由本组件对虚拟显示截图提供
+  （scrot），扫码登录在腾讯客户端里由用户完成。
+- 不收集、不转发 QQ 账号密码或登录凭据。
+- 模型 API 密钥只从用户自己创建的本地文件读取（默认 ~/.cccodroid/snowluma/model-key.txt），
+  不会打印、不会写进日志、不会发给配置的模型接口以外的任何地方。
+- OneBot HTTP/WS、SnowLuma WebUI（127.0.0.1:5099）与扫码页面只监听 127.0.0.1。
+- 使用非官方 QQ 客户端/SnowLuma 可能导致账号被限制；请只用在自己知情、同意的会话里，
+  不要做批量注册、养号、刷屏、冒充真人或未经邀请的主动发言。
