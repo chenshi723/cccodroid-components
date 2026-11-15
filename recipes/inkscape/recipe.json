@@ -5,8 +5,8 @@
   "revision": 1,
   "name": { "zh": "Inkscape 1.4（SVG 精修 / 导出）", "en": "Inkscape 1.4 (SVG editing & export)" },
   "desc": {
-    "zh": "把 SVG 精修成成品：无头导出 PNG / PDF / SVG，支持按尺寸、按 DPI、只导出选中对象；和 diagrams 组件互补 —— graphviz / PlantUML 出结构，Inkscape 调细节、加渐变和文字。没有窗口，命令行驱动。组件带 inkscape-run 包装命令：工具包的 ICU 是 78，x11 仓库这版 Inkscape 按 ICU 79 构建，包装命令会在首次运行时从 Termux 官方仓库取一份 libicu 79.1（约 10 MB，核对 SHA256）到组件私有目录，底座升级后自动跳过。",
-    "en": "Turns SVGs into finished artwork: headless export to PNG / PDF / SVG, by size, by DPI, or selection only. Complements the diagrams component — graphviz / PlantUML for structure, Inkscape for gradients, text and detail. No window, command-line driven. Ships an inkscape-run wrapper: the toolkit's ICU is 78 while this x11 build of Inkscape is linked against ICU 79, so the wrapper fetches libicu 79.1 from the official Termux repository on first use (about 10 MB, SHA256 verified) into the component's private directory and skips it once the toolkit catches up."
+    "zh": "把 SVG 精修成成品：无头导出 PNG / PDF / SVG，支持按尺寸、按 DPI、只导出选中对象；和 diagrams 组件互补 —— graphviz / PlantUML 出结构，Inkscape 调细节、加渐变和文字。没有窗口，命令行驱动。组件带 inkscape-run 包装命令；x11 这版 Inkscape 按 ICU 79 构建而工具包是 78，所以组件自带一份从 Termux 官方 libicu 79.1 包提取的 ICU 库（来源与 SHA256 见 NOTICE），工具包升级到 79 后自动改用底座的。",
+    "en": "Turns SVGs into finished artwork: headless export to PNG / PDF / SVG, by size, by DPI, or selection only. Complements the diagrams component — graphviz / PlantUML for structure, Inkscape for gradients, text and detail. No window, command-line driven. Ships an inkscape-run wrapper; this x11 build of Inkscape is linked against ICU 79 while the toolkit ships ICU 78, so the component bundles ICU 79.1 extracted from the official Termux package (source and SHA256 in NOTICE) and switches back to the toolkit's copy once it catches up."
   },
   "roots": ["inkscape"],
   "repos": ["x11"],
@@ -18,8 +18,15 @@
   "homepage": "https://inkscape.org",
   "maintainers": ["greyoak111"],
   "files": {
-    "usr/bin/inkscape-run": { "src": "bin/inkscape-run", "mode": "755" },
-    "usr/share/cccodroid/components/inkscape/fetch-icu.py": { "src": "lib/fetch-icu.py", "mode": "644" }
+    "usr/bin/inkscape-run": { "src": "bin/inkscape-run", "mode": "755" }
   },
-  "notes": "Termux x11 仓库的 inkscape 1.4.4-4（比 Debian trixie 的 1.4 新），闭包 135 个包、下载约 107 MB、解开约 612 MB；底座已有的包不再重复打。关键坑：这批 x11 二进制按 ICU 79.1 构建，而底座 devkit-2026.10.28 的 libicu 是 78.3；devkit 按「底座已有的包」整包跳过，所以组件里不会带新 ICU，直接跑 inkscape 会报 libicuuc.so.79 not found（实测 gspell、GTK 都中）。包装脚本 inkscape-run 在底座没有 79 时从 Termux 官方仓库取 libicu_79.1_aarch64.deb（10.3 MB，sha256 83c980…d606c）到 ~/.cccodroid/inkscape/libicu，只解 libicu*.so.79*，运行时 LD_LIBRARY_PATH 优先；底座升到 79 后自动跳过。不写 $PREFIX、不改底座文件。selftest 真导出一张 200×120 SVG 的 PNG 和 PDF，检查 PNG 魔数和 %PDF-，不联网（首次取 ICU 除外）、只写 $TMPDIR。"
+  "fetch": {
+    "usr/lib/cccodroid/icu79/": {
+      "url": "https://github.com/greyoak111/termux-icu79/releases/download/v79.1/icu79-79.1-aarch64.tar.xz",
+      "sha256": "854f0dec5acbb93cdfa1b3f04cf9a6e3edf8da0311e2b1140bb39fa7f385eb75",
+      "why": "x11 的 Inkscape/Qt/GTK 按 ICU 79.1 构建，底座 devkit-2026.10.28 是 78.3；devkit 按包名跳过底座已有的 libicu，所以把 Termux 官方 libicu_79.1_aarch64.deb 里的 .so 单独带进组件（来源与 SHA256 见 NOTICE，RUNPATH 已等长改写）",
+      "extract": { "format": "tar.xz" }
+    }
+  },
+  "notes": "Termux x11 仓库的 inkscape 1.4.4-4（比 Debian trixie 的 1.4 新），闭包 135 个包、下载约 107 MB、解开约 612 MB；底座已有的包不再重复打。关键坑：这批 x11 二进制按 ICU 79.1 构建，而底座 devkit-2026.10.28 的 libicu 是 78.3；devkit 按「底座已有的包」整包跳过，所以组件不能靠 roots 带新 ICU（直接跑 inkscape 会报 libicuuc.so.79 not found，gspell、GTK 都中）。做法：fetch 一个从 Termux 官方 libicu_79.1_aarch64.deb（10.3 MB，sha256 83c980…d606c）提取并重打包的 ICU 79.1（libicuuc/libicui18n/libicudata/libicuio/libicutu + .so.79 软链 + Unicode License v3），解到 usr/lib/cccodroid/icu79（资产 sha256 854f0dec…eb75，来源与转换步骤记在 NOTICE 和该 Release 说明里）；二进制只把 RUNPATH 的 /data/data/com.termux/ 等长改成 /data/data/cc.codroid/，代码未动。inkscape-run 运行时优先加载它，底座升到 79 后自动用底座的；全程不联网。selftest 真导出一张 200×120 SVG 的 PNG 和 PDF，检查 PNG 魔数和 %PDF-，只写 $TMPDIR。"
 }

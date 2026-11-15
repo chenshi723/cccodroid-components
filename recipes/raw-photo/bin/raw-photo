@@ -9,9 +9,9 @@
 # RawTherapee 的 rawtherapee-cli 做批量转换。
 #
 # 为什么不直接调 darktable-cli：工具包的 ICU 是 78，x11 仓库的 darktable 按 ICU 79
-# 构建，直接跑会报 libicui18n.so.79 not found。本脚本在底座还没有 79 时，从 Termux
-# 官方仓库取一份 libicu 79.1 到组件私有目录（约 10 MB，核对 SHA256），运行时优先加载；
-# 底座以后升级到 79 就自动跳过。rawtherapee-cli 不依赖 ICU 79，不需要这一步。
+# 构建，直接跑会报 libicui18n.so.79 not found。组件自带一份从 Termux 官方 libicu 79.1
+# 包提取的库（$PREFIX/lib/cccodroid/icu79，随组件安装，来源与 SHA256 见 NOTICE），
+# 运行时优先加载；底座以后升级到 79 就自动跳过。rawtherapee-cli 不依赖 ICU 79。
 set -u
 
 PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
@@ -30,14 +30,14 @@ export TMPDIR="$TMP" HOME="$ROOT/home"
 export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
 mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
 
+ICU="$PREFIX/lib/cccodroid/icu79"
 icu_ready() {
   if [ -e "$PREFIX/lib/libicuuc.so.79" ]; then
-    return 0
+    return 0   # 底座已经升到 79，用底座的
   fi
-  if [ ! -e "$ROOT/libicu/libicuuc.so.79" ]; then
-    python3 "$LIBDIR/fetch-icu.py" "$ROOT/libicu" || return 1
-  fi
-  export LD_LIBRARY_PATH="$ROOT/libicu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+  [ -e "$ICU/libicuuc.so.79" ] || {
+    echo "✗ 组件缺 ICU 79（$ICU）—— 组件没装完整，重装 raw-photo" >&2; return 1; }
+  export LD_LIBRARY_PATH="$ICU${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 }
 
 selftest() {
@@ -92,7 +92,7 @@ case "${1:-}" in
   -h|--help) usage; exit 0 ;;
   darktable)
     shift
-    icu_ready || { echo "✗ ICU 79 没准备好（首次需要约 10 MB 下载）" >&2; exit 1; }
+    icu_ready || exit 1
     exec "$DT" "$@" ;;
   rawtherapee)
     shift

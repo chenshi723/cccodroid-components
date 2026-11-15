@@ -5,8 +5,8 @@
   "revision": 1,
   "name": { "zh": "RAW 照片处理（darktable + RawTherapee）", "en": "RAW photo pipeline (darktable + RawTherapee)" },
   "desc": {
-    "zh": "两个无头 RAW 引擎，配 photo-min（元数据/滤镜/描线/条码）用：darktable-cli 把 RAW（或 TIFF/JPEG）按默认或指定 XMP 参数导出 JPEG/TIFF/PNG，RawTherapee 的 rawtherapee-cli 做批量转换、改尺寸、调白平衡/曝光/锐化。适合整理相机照片、批量出片、把一组 RAW 统一转成可分享的 JPEG。组件带 raw-photo 包装命令：工具包的 ICU 是 78，x11 仓库这版 darktable 按 ICU 79 构建，包装命令会在首次运行时从 Termux 官方仓库取一份 libicu 79.1（约 10 MB，核对 SHA256）到组件私有目录，底座升级后自动跳过。",
-    "en": "Two headless RAW engines, alongside photo-min (metadata / filters / tracing / barcodes): darktable-cli exports RAW (or TIFF/JPEG) to JPEG/TIFF/PNG with default or supplied XMP settings, and RawTherapee's rawtherapee-cli does batch conversion, resizing, white balance, exposure and sharpening. Useful for organising camera photos, bulk exports and turning a folder of RAW files into shareable JPEGs. Ships a raw-photo wrapper: the toolkit's ICU is 78 while this x11 build of darktable is linked against ICU 79, so the wrapper fetches libicu 79.1 from the official Termux repository on first use (about 10 MB, SHA256 verified) into the component's private directory and skips it once the toolkit catches up."
+    "zh": "两个无头 RAW 引擎，配 photo-min（元数据/滤镜/描线/条码）用：darktable-cli 把 RAW（或 TIFF/JPEG）按默认或指定 XMP 参数导出 JPEG/TIFF/PNG，RawTherapee 的 rawtherapee-cli 做批量转换、改尺寸、调白平衡/曝光/锐化。适合整理相机照片、批量出片、把一组 RAW 统一转成可分享的 JPEG。组件带 raw-photo 包装命令；x11 这版 darktable 按 ICU 79 构建而工具包是 78，所以组件自带一份从 Termux 官方 libicu 79.1 包提取的 ICU 库（来源与 SHA256 见 NOTICE），工具包升级到 79 后自动改用底座的。",
+    "en": "Two headless RAW engines, alongside photo-min (metadata / filters / tracing / barcodes): darktable-cli exports RAW (or TIFF/JPEG) to JPEG/TIFF/PNG with default or supplied XMP settings, and RawTherapee's rawtherapee-cli does batch conversion, resizing, white balance, exposure and sharpening. Useful for organising camera photos, bulk exports and turning a folder of RAW files into shareable JPEGs. Ships a raw-photo wrapper; this x11 build of darktable is linked against ICU 79 while the toolkit ships ICU 78, so the component bundles ICU 79.1 extracted from the official Termux package (source and SHA256 in NOTICE) and switches back to the toolkit's copy once it catches up."
   },
   "roots": ["darktable", "rawtherapee"],
   "repos": ["x11"],
@@ -18,8 +18,15 @@
   "homepage": "https://www.darktable.org",
   "maintainers": ["greyoak111"],
   "files": {
-    "usr/bin/raw-photo": { "src": "bin/raw-photo", "mode": "755" },
-    "usr/share/cccodroid/components/raw-photo/fetch-icu.py": { "src": "lib/fetch-icu.py", "mode": "644" }
+    "usr/bin/raw-photo": { "src": "bin/raw-photo", "mode": "755" }
   },
-  "notes": "Termux x11 仓库的 darktable 5.6.2-2 + rawtherapee 5.13-1（都比 Debian trixie 的 5.0.1 / 5.11 新），两个闭包合起来约 150 个包、下载约 150 MB、解开约 900 MB（具体数字以 CI dry build 的闭包统计为准）。共用很多包，所以合成一个组件而不是两个；只想要一个引擎的用户会多装另一个 —— 计划允许「一个组件或两个」，这里按一个做。关键坑同 inkscape：x11 的二进制造于 ICU 79.1，底座 devkit-2026.10.28 只有 78.3，devkit 按包名跳过底座已有的包，所以组件不带新 ICU；raw-photo 的 darktable 子命令首次运行从 Termux 官方仓库取 libicu_79.1_aarch64.deb（10.3 MB，sha256 83c980…d606c）到 ~/.cccodroid/raw-photo/libicu，只解 libicu*.so.79*，运行时 LD_LIBRARY_PATH 优先。rawtherapee-cli 不依赖 ICU 79，直连也能跑，但统一走 raw-photo 更省心。selftest 用底座 ImageMagick 造一张 96×64 渐变 TIFF（darktable 和 RawTherapee 都接受非 RAW 输入），分别导出 JPEG 并检查 FFD8FF 魔数，不联网（首次取 ICU 除外）、只写 $TMPDIR。"
+  "fetch": {
+    "usr/lib/cccodroid/icu79/": {
+      "url": "https://github.com/greyoak111/termux-icu79/releases/download/v79.1/icu79-79.1-aarch64.tar.xz",
+      "sha256": "854f0dec5acbb93cdfa1b3f04cf9a6e3edf8da0311e2b1140bb39fa7f385eb75",
+      "why": "x11 的 darktable/Qt 按 ICU 79.1 构建，底座 devkit-2026.10.28 是 78.3；devkit 按包名跳过底座已有的 libicu，所以把 Termux 官方 libicu_79.1_aarch64.deb 里的 .so 单独带进组件（来源与 SHA256 见 NOTICE，RUNPATH 已等长改写）",
+      "extract": { "format": "tar.xz" }
+    }
+  },
+  "notes": "Termux x11 仓库的 darktable 5.6.2-2 + rawtherapee 5.13-1（都比 Debian trixie 的 5.0.1 / 5.11 新），两个闭包合起来约 150 个包、下载约 150 MB、解开约 900 MB（具体数字以 CI dry build 的闭包统计为准）。共用很多包，所以合成一个组件而不是两个；只想要一个引擎的用户会多装另一个 —— 计划允许「一个组件或两个」，这里按一个做。关键坑同 inkscape：x11 的二进制造于 ICU 79.1，底座 devkit-2026.10.28 只有 78.3，devkit 按包名跳过底座已有的包，所以组件不能靠 roots 带新 ICU。做法：fetch 一个从 Termux 官方 libicu_79.1_aarch64.deb（10.3 MB，sha256 83c980…d606c）提取并重打包的 ICU 79.1（libicuuc/libicui18n/libicudata/libicuio/libicutu + .so.79 软链 + Unicode License v3），解到 usr/lib/cccodroid/icu79（资产 sha256 854f0dec…eb75，来源与转换步骤记在 NOTICE 和该 Release 说明里）；二进制只把 RUNPATH 的 /data/data/com.termux/ 等长改成 /data/data/cc.codroid/，代码未动。raw-photo 运行时优先加载它，底座升到 79 后自动用底座的；不联网。rawtherapee-cli 不依赖 ICU 79，但统一走 raw-photo 更省心。selftest 用底座 ImageMagick 造一张 96×64 渐变 TIFF（darktable 和 RawTherapee 都接受非 RAW 输入），分别导出 JPEG 并检查 FFD8FF 魔数，只写 $TMPDIR。"
 }

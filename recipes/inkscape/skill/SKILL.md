@@ -17,15 +17,15 @@ inkscape-run --selftest
 
 ```
 inkscape-run（$PREFIX/bin 下的包装脚本）
-  → 首次运行：从 Termux 官方仓库取 libicu 79.1（约 10 MB，SHA256 核对）
-      解到 $HOME/.cccodroid/inkscape/libicu，只放 libicu*.so.79*
-  → LD_LIBRARY_PATH 优先指向该目录（底座已有 79 时跳过）
+  → 组件安装时已带好 ICU 79：$PREFIX/lib/cccodroid/icu79
+      （从 Termux 官方 libicu 79.1 包提取；来源与 SHA256 见 NOTICE）
+  → LD_LIBRARY_PATH 优先指向该目录（底座已有 79 时改用底座的）
   → $PREFIX/bin/inkscape（x11 仓库的 bionic 1.4.4）
   → GTK / gspell / Pango / Cairo（x11 仓库，随组件安装）
 ```
 
-- Inkscape 与 GTK 那一串由**本组件**提供（x11 仓库）。ICU 79 不是组件包，而是首次运行
-  下载到私有目录的一份；底座以后自带 79 时包装脚本直接跳过。
+- Inkscape 与 GTK 那一串由**本组件**提供（x11 仓库）；ICU 79 也随组件安装，
+  **运行时不联网**。
 - 缺 ICU 79 时 **明确报错**：`libicuuc.so.79 not found`，不会出空白图。
   带 `LD_LIBRARY_PATH` 的提示时不要自己拼，直接用 `inkscape-run`。
 - 没有显示服务器也能导出：Inkscape 的 `--export-*` 路径不建窗口。**不要**设 `DISPLAY`
@@ -68,5 +68,4 @@ for f in *.svg; do inkscape-run --export-type=png --export-filename="${f%.svg}.p
 
 ## 首次运行
 
-第一次执行 `inkscape-run` 会从 Termux 官方仓库下载约 10 MB 的 libicu 79.1。**先告诉用户**
-下载多大、从哪下、装到哪，得到同意再跑；之后不再联网。
+组件安装时已把 ICU 79 一起装好，第一次执行 `inkscape-run` 不联网。

@@ -10,10 +10,16 @@ RawTherapee 5.13
   许可：GPL-3.0-or-later
   来源：Termux x11 仓库，随组件打包
 
-libicu 79.1（首次运行 raw-photo darktable 时下载到组件私有目录）
+libicu 79.1（随组件分发，装在 $PREFIX/lib/cccodroid/icu79）
   上游：https://icu.unicode.org
-  许可：Unicode License v3
-  来源：Termux 官方 main 仓库的 libicu_79.1_aarch64.deb；只解 libicu*.so.79*
-        到 $HOME/.cccodroid/raw-photo/libicu。
+  许可：Unicode License v3（LICENSE 随库放在 usr/lib/cccodroid/icu79/LICENSE）
+  来源：Termux 官方 main 仓库
+        packages.termux.dev/apt/termux-main/pool/main/libi/libicu/libicu_79.1_aarch64.deb
+        （sha256 83c980a010e957738e3567127801d66a1b9bd7e404a4fda98788048ee57d606c）
+  提取：data.tar 里的 libicuuc / libicui18n / libicudata / libicuio / libicutu
+        的 79.1 实体文件与 .so.79 软链；只把二进制 RUNPATH 里的
+        /data/data/com.termux/ 等长替换成 /data/data/cc.codroid/，代码未改。
+  打包资产：cccodroid-components 的 libicu79 Release（见配方 fetch 的 sha256）。
+  不覆盖工具包里的 ICU 78；底座升到 79 后包装脚本自动改用底座的。
 
 两个引擎闭包里的其它包各自保留上游许可与版权声明，随组件安装。

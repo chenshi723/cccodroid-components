@@ -18,16 +18,16 @@ raw-photo --selftest
 ```
 raw-photo（$PREFIX/bin 下的包装脚本）
   → raw-photo darktable：
-      首次运行从 Termux 官方仓库取 libicu 79.1（约 10 MB，SHA256 核对）
-        → 解到 $HOME/.cccodroid/raw-photo/libicu
-        → LD_LIBRARY_PATH 优先指向它（底座已有 79 时跳过）
+      组件安装时已带好 ICU 79：$PREFIX/lib/cccodroid/icu79
+        （从 Termux 官方 libicu 79.1 包提取；来源与 SHA256 见 NOTICE）
+        → LD_LIBRARY_PATH 优先指向它（底座已有 79 时改用底座的）
       → $PREFIX/bin/darktable-cli（x11 仓库 5.6.2，bionic）
   → raw-photo rawtherapee：
       → $PREFIX/bin/rawtherapee-cli（x11 仓库 5.13，bionic；不需要 ICU 79）
 ```
 
-- 两个引擎由**本组件**提供（x11 仓库）；darktable 要的 ICU 79 是首次运行下载到私有目录
-  的一份，不写 `$PREFIX`、不改底座。
+- 两个引擎由**本组件**提供（x11 仓库）；darktable 要的 ICU 79 也随组件安装，
+  不写 `$PREFIX/lib` 顶层的底座文件、运行时不联网。
 - 直接调 `darktable-cli` 会报 `libicui18n.so.79 not found`；**用 `raw-photo darktable`**。
   `rawtherapee-cli` 直接调能用，但建议统一走 `raw-photo rawtherapee`。
 - 两个引擎都**不需要显示服务器**，`-i` / `-cli` 路径不建窗口。
@@ -75,9 +75,6 @@ raw-photo rawtherapee -p /data/…/style.pp3 -o /data/…/out -c /data/…/raw
 - 两个引擎的默认色彩/锐化不同，同一张 RAW 出来的 JPEG 不会完全一样；批量前先用一张对比。
 - RAW 的相机型号支持取决于 libraw 版本；很新的相机可能要等上游更新。
 - 检查成品：JPEG 头 `FF D8 FF`，TIFF 头 `49 49 2A 00` / `4D 4D 00 2A`。
-- 首次用 `darktable` 子命令要下载约 10 MB，**先问用户**；之后不再联网。
-
 ## 首次运行
 
-第一次执行 `raw-photo darktable`（或 `--selftest`）会从 Termux 官方仓库下载约 10 MB 的
-libicu 79.1。**先告诉用户**下载多大、从哪下、装到哪，得到同意再跑。
+组件安装时已把 ICU 79 一起装好，第一次执行 `raw-photo darktable` 不联网。
