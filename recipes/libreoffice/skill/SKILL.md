@@ -20,6 +20,10 @@ office-convert --selftest
 ```
 office-convert（bash 包装，$PREFIX/bin/office-convert）
   ├─ 在 $TMPDIR 下建一个临时用户配置目录（每次调用一个，用完删）
+  ├─ ICU 79：x11 这版 LibreOffice 按 ICU 79.1 构建而底座是 78.3；组件自带一份
+  │   （$PREFIX/lib/cccodroid/icu79，来源与 SHA256 见 NOTICE），运行时 LD_LIBRARY_PATH
+  │   优先指向它，底座升到 79 后自动用底座的；不设的话 soffice.bin 报
+  │   libicuuc.so.79 not found（CANNOT LINK EXECUTABLE）
   └─ $PREFIX/lib/libreoffice/program/soffice --headless --convert-to <格式> --outdir <目录> <文件>
        ├─ 读写文档、选导出过滤器 → LibreOffice 本体（bionic 原生，Termux 官方包）
        └─ 中文字体 → fontconfig → 系统的 /system/fonts（NotoSansCJK）

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "libreoffice",
   "kind": "termux",
-  "revision": 2,
+  "revision": 3,
   "name": { "zh": "LibreOffice（无头）", "en": "LibreOffice (headless)" },
   "desc": {
     "zh": "LibreOffice 无头模式：把 Office 文档（docx / xlsx / pptx / odt / ods / fodt…）转成 PDF 或别的格式。没有图形界面，只能命令行转换。",
@@ -38,5 +38,13 @@
   "files": {
     "usr/bin/office-convert": { "src": "bin/office-convert", "mode": "755" }
   },
-  "notes": "exclude 的 16 个包见 skill 里的说明：MySQL/PostgreSQL 连接器、Impress 里的视频播放（gstreamer）、Perl 小工具、doxygen、glm、bison/m4、xdg-utils 这些无头转换用不到的东西，闭包里没有别的 ELF 依赖它们（用 readelf -d 逐个核对过，见 PR）。体积从 98 包 / 199 MB / 867 MB 降到 79 包 / 146 MB / 472 MB。"
+  "fetch": {
+    "usr/lib/cccodroid/icu79/": {
+      "url": "https://github.com/greyoak111/termux-icu79/releases/download/v79.1/icu79-79.1-aarch64.tar.xz",
+      "sha256": "854f0dec5acbb93cdfa1b3f04cf9a6e3edf8da0311e2b1140bb39fa7f385eb75",
+      "why": "x11 仓库的 LibreOffice 26.8 按 ICU 79.1 构建，底座 devkit-2026.10.28 是 78.3，soffice.bin 直接跑报 libicuuc.so.79 not found；devkit 按包名跳过底座已有的 libicu，所以把 Termux 官方 libicu_79.1_aarch64.deb 里的 .so 单独带进组件（来源与 SHA256 见 NOTICE，RUNPATH 已等长改写），office-convert 运行时优先加载，底座升到 79 后自动改用底座的",
+      "extract": { "format": "tar.xz" }
+    }
+  },
+  "notes": "exclude 的 16 个包见 skill 里的说明：MySQL/PostgreSQL 连接器、Impress 里的视频播放（gstreamer）、Perl 小工具、doxygen、glm、bison/m4、xdg-utils 这些无头转换用不到的东西，闭包里没有别的 ELF 依赖它们（用 readelf -d 逐个核对过，见 PR）。体积从 98 包 / 199 MB / 867 MB 降到 79 包 / 146 MB / 472 MB。r3：x11 的 LibreOffice 26.8 按 ICU 79.1 构建而底座是 78.3，soffice.bin 直接跑报 libicuuc.so.79 not found（2026-11-16 真机验证发现，此前 selftest 全挂）；fetch 一份从 Termux 官方 libicu 79.1 包提取的 ICU（同 musescore/inkscape/melt/raw-photo 的资产，sha256 854f0dec…eb75），office-convert 在 LD_LIBRARY_PATH 里优先指过去，底座升到 79 后自动弃用。真机验证：LD_LIBRARY_PATH 指向 icu79 后 txt→PDF 转换成功（10.3 KB）。"
 }

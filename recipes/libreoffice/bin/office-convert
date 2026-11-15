@@ -20,6 +20,14 @@ PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
 
 SOFFICE="$PREFIX/lib/libreoffice/program/soffice"
 
+# x11 这版 LibreOffice 按 ICU 79 构建，底座是 78：优先加载组件自带的 ICU 79（来源与 SHA256 见 NOTICE），
+# 底座升到 79 后自动用底座的。不设的话 soffice.bin 报 libicuuc.so.79 not found
+ICU="$PREFIX/lib/cccodroid/icu79"
+if [ ! -e "$PREFIX/lib/libicuuc.so.79" ]; then
+  [ -e "$ICU/libicuuc.so.79" ] || { echo "✗ 组件缺 ICU 79（$ICU）—— 组件没装完整，重装 libreoffice" >&2; exit 1; }
+  export LD_LIBRARY_PATH="$ICU${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+fi
+
 # ── 自检：证明「装了就能转」，不联网、不碰用户文件 ────────────────────
 selftest() {
   local t rc=0 cjk="?" note=""
