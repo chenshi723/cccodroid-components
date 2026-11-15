@@ -1,0 +1,11 @@
+FontForge 组件 — 第三方软件与许可
+
+FontForge 20230101（fontforge-nox，无 GTK 的无头构建）
+  上游：https://fontforge.org
+  许可：GPL-3.0-or-later，部分代码 BSD-3-Clause
+        （见 Debian 包内 /usr/share/doc/fontforge-nox/copyright）
+  来源：Debian trixie arm64 官方仓库（deb.debian.org），首次运行时下载
+  组件里不含 FontForge 二进制，只带包清单（lib/debs.json）与安装脚本。
+
+Debian 运行根里的依赖包各自保留上游许可与版权声明，解包后位于
+$HOME/.cccodroid/fontforge/debroot/usr/share/doc/。

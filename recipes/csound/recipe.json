@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "csound",
+  "kind": "glibc",
+  "revision": 1,
+  "version": "6.18.1",
+  "name": { "zh": "Csound 6.18（算法作曲 / 声音合成）", "en": "Csound 6.18 (algorithmic composition & synthesis)" },
+  "desc": {
+    "zh": "用文本写声音：一份 .csd 乐谱（乐器定义 + 事件列表）渲染成 WAV。正弦、FM、采样、粒子、物理模型、混响、滤波器都有；可以逐样本算、按时间算，也可以读 MIDI/OSC。没有图形界面，也不需要 —— 声音就是文本，改一行重渲染一次。首次运行从 Debian 官方仓库取 Csound 及其依赖（34 个包，下载约 15 MB，解开约 35 MB，逐个核对 SHA256），装在应用私有目录，不碰系统分区。",
+    "en": "Sound from plain text: a .csd score (instrument definitions plus an event list) is rendered to WAV. Sine, FM, sampling, granular, physical models, reverb and filters are all there; work per sample, per control period, or from MIDI/OSC. No GUI, and none is needed — the sound is text, so you edit a line and re-render. On first use it fetches Csound and its dependencies from the official Debian archive (34 packages, about 15 MB download / 35 MB unpacked, each verified against its SHA256) into the app's private storage — nothing is written to system partitions."
+  },
+  "roots": ["glibc"],
+  "bin": ["csound"],
+  "selftest": "csound --selftest",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "media",
+  "license": "LGPL-2.1-or-later",
+  "homepage": "https://csound.com",
+  "maintainers": ["greyoak111"],
+  "files": {
+    "usr/bin/csound": { "src": "bin/csound", "mode": "755" },
+    "usr/share/cccodroid/components/csound/debroot.py": { "src": "lib/debroot.py", "mode": "644" },
+    "usr/share/cccodroid/components/csound/debs.json": { "src": "lib/debs.json", "mode": "644" }
+  },
+  "notes": "Debian trixie 的 csound 6.18.1（Termux 官方仓库没有）。glibc 用工具包的 $PREFIX/glibc；Debian 的 libc6 在 debs.json 里本来就不收。34 个包、下载 15.1 MB、解开 35 MB，清单和 SHA256 全部来自 deb.debian.org 的 dists/trixie/main/binary-arm64/Packages（2026-11-16 取），安装时不解析索引、只按清单下载，镜像按 deb.debian.org → ftp.debian.org → 清华 → 中科大 回退。三个 Debian 侧细节写进了包装脚本：①OPCODE6DIR64 必须指向 debroot 里的 plugins64-6.0，否则 opcode 插件一个都加载不到（--version 能过，但稍微复杂一点的 .csd 就报 unknown opcode）；②RAWWAVE_PATH/CSOUND_HOME 指向 debroot 的 usr/share/csound；③LD_PRELOAD 里的 termux-exec 是 bionic 库，glibc 加载器看到会报 version 'LIBC' not found，exec 前必须清掉。selftest 真渲染 1 秒 440 Hz 正弦并检查 RIFF 头，不联网（首次安装除外）、只写 $TMPDIR。"
+}

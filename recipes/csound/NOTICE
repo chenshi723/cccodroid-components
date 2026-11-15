@@ -1,0 +1,11 @@
+Csound 组件 — 第三方软件与许可
+
+Csound 6.18.1
+  上游：https://github.com/csound/csound
+  许可：LGPL-2.1-or-later（见 Debian 包内 /usr/share/doc/csound/copyright）
+  来源：Debian trixie arm64 官方仓库（deb.debian.org），首次运行时下载
+  组件里不含 Csound 二进制，只带包清单（lib/debs.json）与安装脚本。
+
+Debian 运行根里的依赖包各自保留上游许可与版权声明；每个 .deb 解出来的
+/usr/share/doc/<包>/copyright 就是该包的许可原文，随安装一起落到
+$HOME/.cccodroid/csound/debroot/usr/share/doc/ 下。

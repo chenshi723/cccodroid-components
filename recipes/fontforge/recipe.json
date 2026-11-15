@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "fontforge",
+  "kind": "glibc",
+  "revision": 1,
+  "version": "20230101",
+  "name": { "zh": "FontForge（造字 / 改字 / 字体转换）", "en": "FontForge (type design & font conversion)" },
+  "desc": {
+    "zh": "用脚本造字和改字：从零画字形生成 TTF/OTF/WOFF，改字体名、字重、度量，批量把 SFD 转成 TTF，或把现成字体拆开看轮廓。FontForge 自己的脚本语言和 Python（`-lang=py`）都能无头跑。这是 Debian 的 fontforge-nox（不带 GTK 的无头版），首次运行从 Debian 官方仓库取 48 个包（下载约 20 MB，解开约 72 MB，逐个核对 SHA256），装在应用私有目录，不碰系统分区。",
+    "en": "Scripted type design and editing: draw glyphs from scratch and generate TTF/OTF/WOFF, rename or reweight a font, change metrics, batch-convert SFD to TTF, or open an existing font and inspect its outlines. Both FontForge's own script language and Python (`-lang=py`) run headless. This is Debian's fontforge-nox (the GTK-free headless build); on first use it fetches 48 packages from the official Debian archive (about 20 MB download / 72 MB unpacked, each verified against its SHA256) into the app's private storage — nothing is written to system partitions."
+  },
+  "roots": ["glibc"],
+  "bin": ["fontforge"],
+  "selftest": "fontforge --selftest",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "media",
+  "license": "GPL-3.0-or-later AND BSD-3-Clause",
+  "homepage": "https://fontforge.org",
+  "maintainers": ["greyoak111"],
+  "files": {
+    "usr/bin/fontforge": { "src": "bin/fontforge", "mode": "755" },
+    "usr/share/cccodroid/components/fontforge/debroot.py": { "src": "lib/debroot.py", "mode": "644" },
+    "usr/share/cccodroid/components/fontforge/debs.json": { "src": "lib/debs.json", "mode": "644" }
+  },
+  "notes": "Debian trixie 的 fontforge-nox 20230101（Termux 官方仓库没有 fontforge）。选 nox 而不是 fontforge 主包：主包拉 GTK3/X11 一整条，无头脚本一个都用不上；nox 闭包只有 48 个包（下载 20 MB / 解开 72 MB），命令行参数和主包一样。glibc 用工具包的 $PREFIX/glibc，debs.json 里不收 libc6。关键坑：FontForge 的 embedded Python 是 Debian 自带的 3.13，不设 PYTHONHOME=$B/usr 会报 Fatal Python error: Failed to import encodings module；PYTHONHOME 也让它自己的 Python 脚本能 import fontforge。selftest 用 Python 真正生成一个含 A 的 TTF，检查 0x00010000 魔数，再用 FontForge 脚本语言重开、用 CharCnt() 读回字形数；不联网（首次安装除外）、只写 $TMPDIR。"
+}
