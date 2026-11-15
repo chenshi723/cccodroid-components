@@ -1,0 +1,2711 @@
+{
+ "suite": "trixie",
+ "arch": "arm64",
+ "source": "https://deb.debian.org/debian/dists/trixie/main/binary-arm64/Packages.gz",
+ "packages": [
+  {
+   "name": "freecad",
+   "version": "1.0.0+dfsg-8+deb13u3",
+   "filename": "pool/main/f/freecad/freecad_1.0.0+dfsg-8+deb13u3_all.deb",
+   "sha256": "b3e025aff151944437968655b0170c853a1d2b776851ad64c9c85b75b3b2c115",
+   "size": 28692,
+   "installed": 112640
+  },
+  {
+   "name": "freecad-python3",
+   "version": "1.0.0+dfsg-8+deb13u3",
+   "filename": "pool/main/f/freecad/freecad-python3_1.0.0+dfsg-8+deb13u3_arm64.deb",
+   "sha256": "bc0a973ae8b768502325041f1b9f23cf9edec6ee38e13d6566570e9cc23010cb",
+   "size": 86700,
+   "installed": 381952
+  },
+  {
+   "name": "python3",
+   "version": "3.13.5-1",
+   "filename": "pool/main/p/python3-defaults/python3_3.13.5-1_arm64.deb",
+   "sha256": "8d5be256bf3bb4f07afce1aa86f0595c6939e1a6c2ea939bdcb7b36351cbe021",
+   "size": 28244,
+   "installed": 84992
+  },
+  {
+   "name": "freecad-common",
+   "version": "1.0.0+dfsg-8+deb13u3",
+   "filename": "pool/main/f/freecad/freecad-common_1.0.0+dfsg-8+deb13u3_all.deb",
+   "sha256": "b6cb7be9f96f250ad103ad1714474e13b7adf5245e83d3bd0b55f5982c6a050e",
+   "size": 22798976,
+   "installed": 137845760
+  },
+  {
+   "name": "python3-matplotlib",
+   "version": "3.10.1+dfsg1-4",
+   "filename": "pool/main/m/matplotlib/python3-matplotlib_3.10.1+dfsg1-4_arm64.deb",
+   "sha256": "094dba7e9b2b041897693f746a684a21dcc7423102ed3f6ee4ffb9671bd9cab0",
+   "size": 23671456,
+   "installed": 52423680
+  },
+  {
+   "name": "python3-pivy",
+   "version": "0.6.10-2",
+   "filename": "pool/main/p/pivy/python3-pivy_0.6.10-2_arm64.deb",
+   "sha256": "3ff4ec00a28b2e73e8aa91662ed4aa7a65da737c8842d7257d15f8ef5349ef30",
+   "size": 3580192,
+   "installed": 27549696
+  },
+  {
+   "name": "python3-ply",
+   "version": "3.11-9",
+   "filename": "pool/main/p/ply/python3-ply_3.11-9_all.deb",
+   "sha256": "d85058c4ec2b77641f7cc413d943be1f412b1b44d4cbe0b174810d37615a7a00",
+   "size": 62888,
+   "installed": 273408
+  },
+  {
+   "name": "python3-pyside2.qtcore",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/python3-pyside2.qtcore_5.15.16-3.1_arm64.deb",
+   "sha256": "a0eb43c42d290fb6c63c762fb5819eda668e8c69c6ae7cdb666ef6a8a9936ff2",
+   "size": 955624,
+   "installed": 5533696
+  },
+  {
+   "name": "python3-pyside2.qtgui",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/python3-pyside2.qtgui_5.15.16-3.1_arm64.deb",
+   "sha256": "ba11645ca7fbcc79999257ad0d83cfaae09fe9f6885e017ed0ca8aa532bef358",
+   "size": 1023308,
+   "installed": 5911552
+  },
+  {
+   "name": "python3-pyside2.qtnetwork",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/python3-pyside2.qtnetwork_5.15.16-3.1_arm64.deb",
+   "sha256": "33b0ab03a73260dddfd54ab29ef027506c2f8ce0ce5addf7b005cba824984a72",
+   "size": 274372,
+   "installed": 1590272
+  },
+  {
+   "name": "python3-pyside2.qtsvg",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/python3-pyside2.qtsvg_5.15.16-3.1_arm64.deb",
+   "sha256": "248fba31673c5f6ca9203982573790a3978b4ad29eb91d9ce0e5e06807aa7939",
+   "size": 53524,
+   "installed": 296960
+  },
+  {
+   "name": "python3-pyside2.qtuitools",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/python3-pyside2.qtuitools_5.15.16-3.1_arm64.deb",
+   "sha256": "eda286811d29c1c443cda51b7647a54743c76eda63c355c699715779ea2d8089",
+   "size": 150220,
+   "installed": 622592
+  },
+  {
+   "name": "python3-pyside2.qtwidgets",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/python3-pyside2.qtwidgets_5.15.16-3.1_arm64.deb",
+   "sha256": "cd414dcc9bdfb654658258d1f5f51efe95c62b03b2a81f34b76ecced6fbc6750",
+   "size": 1622408,
+   "installed": 11328512
+  },
+  {
+   "name": "python3-pyside2.qtxml",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/python3-pyside2.qtxml_5.15.16-3.1_arm64.deb",
+   "sha256": "e6e2d18ac7ea86080b5cfba52b4dde0b462defdea32e46a565a937b1f0001688",
+   "size": 114832,
+   "installed": 646144
+  },
+  {
+   "name": "python3-yaml",
+   "version": "6.0.2-1+b2",
+   "filename": "pool/main/p/pyyaml/python3-yaml_6.0.2-1+b2_arm64.deb",
+   "sha256": "b83a9ccdc2d1d1f2e36c7c333d36b0151cc89f1d45568e28bcab1f00c72a3498",
+   "size": 121812,
+   "installed": 565248
+  },
+  {
+   "name": "libfreecad-python3",
+   "version": "1.0.0+dfsg-8+deb13u3",
+   "filename": "pool/main/f/freecad/libfreecad-python3_1.0.0+dfsg-8+deb13u3_arm64.deb",
+   "sha256": "7ca9694d21a32ceeeae4fcbcd5b84cbb8a15939be6abcb9d62a6db2eb7600182",
+   "size": 56687904,
+   "installed": 144375808
+  },
+  {
+   "name": "libfmt10",
+   "version": "10.1.1+ds1-4",
+   "filename": "pool/main/f/fmtlib/libfmt10_10.1.1+ds1-4_arm64.deb",
+   "sha256": "e10e3f745fb3cb517f67c76fe4ed8476e6efb4ab28a8e8640e4e6d634bdb8ae0",
+   "size": 121252,
+   "installed": 289792
+  },
+  {
+   "name": "libgcc-s1",
+   "version": "14.2.0-19",
+   "filename": "pool/main/g/gcc-14/libgcc-s1_14.2.0-19_arm64.deb",
+   "sha256": "1108bc87879833d6d9a145f22a4a15cddb34e065b4b5f4b97bee586adbac2851",
+   "size": 54104,
+   "installed": 151552
+  },
+  {
+   "name": "libpython3.13",
+   "version": "3.13.5-2+deb13u5",
+   "filename": "pool/main/p/python3.13/libpython3.13_3.13.5-2+deb13u5_arm64.deb",
+   "sha256": "d79db845c37478273d6d9097daafc568199e1475742e18678c5d0781a7293074",
+   "size": 1977160,
+   "installed": 7611392
+  },
+  {
+   "name": "libqt5core5t64",
+   "version": "5.15.15+dfsg-6+deb13u1",
+   "filename": "pool/main/q/qtbase-opensource-src/libqt5core5t64_5.15.15+dfsg-6+deb13u1_arm64.deb",
+   "sha256": "a8a8f5f447a7ebe93f604f7d3b1a9b7bdf662e5e7430993b881b94e251bec313",
+   "size": 1738944,
+   "installed": 6496256
+  },
+  {
+   "name": "libqt5gui5t64",
+   "version": "5.15.15+dfsg-6+deb13u1",
+   "filename": "pool/main/q/qtbase-opensource-src/libqt5gui5t64_5.15.15+dfsg-6+deb13u1_arm64.deb",
+   "sha256": "523866c11c5cf10df6f3b5af51bb2a5d5f84f906daa9dd3d443bd74edd693969",
+   "size": 3198636,
+   "installed": 13938688
+  },
+  {
+   "name": "libqt5widgets5t64",
+   "version": "5.15.15+dfsg-6+deb13u1",
+   "filename": "pool/main/q/qtbase-opensource-src/libqt5widgets5t64_5.15.15+dfsg-6+deb13u1_arm64.deb",
+   "sha256": "c777a0fa641fc5d56ad9a0cfb918e40d1525bb752d82de9ee9f7d98438d31c95",
+   "size": 2283968,
+   "installed": 8101888
+  },
+  {
+   "name": "libstdc++6",
+   "version": "14.2.0-19",
+   "filename": "pool/main/g/gcc-14/libstdc++6_14.2.0-19_arm64.deb",
+   "sha256": "6669b0c52a2e7c6af9adfdabce3ff6e286065cdfbc7b85280862b5f799daebee",
+   "size": 637536,
+   "installed": 3094528
+  },
+  {
+   "name": "python3.13",
+   "version": "3.13.5-2+deb13u5",
+   "filename": "pool/main/p/python3.13/python3.13_3.13.5-2+deb13u5_arm64.deb",
+   "sha256": "3d027394c6afd08a2663c3da588824aa9ee0c54e3c2b4382bb9f644584bc99a1",
+   "size": 757492,
+   "installed": 849920
+  },
+  {
+   "name": "libpython3-stdlib",
+   "version": "3.13.5-1",
+   "filename": "pool/main/p/python3-defaults/libpython3-stdlib_3.13.5-1_arm64.deb",
+   "sha256": "0e5b09b3c90f34399a357c32e1be08a3f31b39d3c615464f00354b309f82e732",
+   "size": 10180,
+   "installed": 28672
+  },
+  {
+   "name": "python3-minimal",
+   "version": "3.13.5-1",
+   "filename": "pool/main/p/python3-defaults/python3-minimal_3.13.5-1_arm64.deb",
+   "sha256": "b1dff61d3e68c83c747b03399356ba707d491bcaf6e495b575d46be3143cdec8",
+   "size": 27244,
+   "installed": 114688
+  },
+  {
+   "name": "fonts-osifont",
+   "version": "0.1.20230322+ds-4",
+   "filename": "pool/main/f/fonts-osifont/fonts-osifont_0.1.20230322+ds-4_all.deb",
+   "sha256": "0cdd571657772600b7324279d19757f9d7d8f3ddb9509d09a5d999d94757df7f",
+   "size": 119288,
+   "installed": 261120
+  },
+  {
+   "name": "libjs-jquery",
+   "version": "3.6.1+dfsg+~3.5.14-1",
+   "filename": "pool/main/n/node-jquery/libjs-jquery_3.6.1+dfsg+~3.5.14-1_all.deb",
+   "sha256": "a58c9ff6afe96c769cb6535754c909410760e4efa1e1540236194e489adcfb25",
+   "size": 326128,
+   "installed": 721920
+  },
+  {
+   "name": "libjs-jquery-ui",
+   "version": "1.13.2+dfsg-1",
+   "filename": "pool/main/j/jqueryui/libjs-jquery-ui_1.13.2+dfsg-1_all.deb",
+   "sha256": "10e19573adde01d1276ddb4cf0453fbfb070b9b867162b6f7f10708b0631d369",
+   "size": 250420,
+   "installed": 2455552
+  },
+  {
+   "name": "python-matplotlib-data",
+   "version": "3.10.1+dfsg1-4",
+   "filename": "pool/main/m/matplotlib/python-matplotlib-data_3.10.1+dfsg1-4_all.deb",
+   "sha256": "4fac090948410368e37afb5015ab7b7153452958e270ab9644471230bbe5950c",
+   "size": 2736924,
+   "installed": 9291776
+  },
+  {
+   "name": "python3-dateutil",
+   "version": "2.9.0-4",
+   "filename": "pool/main/p/python-dateutil/python3-dateutil_2.9.0-4_all.deb",
+   "sha256": "c86f3b7e878e8035b0850cd4e0d0ee014a4b5ee4a8fb7386d8998e100452d06c",
+   "size": 79372,
+   "installed": 331776
+  },
+  {
+   "name": "python3-pil.imagetk",
+   "version": "11.1.0-5+deb13u4",
+   "filename": "pool/main/p/pillow/python3-pil.imagetk_11.1.0-5+deb13u4_arm64.deb",
+   "sha256": "d4d403d554a029a5f42e401d38f58cb894052238ee1592fb7033117ea033953e",
+   "size": 81644,
+   "installed": 165888
+  },
+  {
+   "name": "python3-pyparsing",
+   "version": "3.1.2-1",
+   "filename": "pool/main/p/pyparsing/python3-pyparsing_3.1.2-1_all.deb",
+   "sha256": "f784864f3835bc7e62391350418f28958cc004f1d46690a5c03300ec0a9bcc54",
+   "size": 145952,
+   "installed": 483328
+  },
+  {
+   "name": "python3-contourpy",
+   "version": "1.3.1-1+b1",
+   "filename": "pool/main/c/contourpy/python3-contourpy_1.3.1-1+b1_arm64.deb",
+   "sha256": "0b9c2eb6f93ad8a66cb3864bd654f357ec94102121f14d0b60987e8a8d1b3621",
+   "size": 190476,
+   "installed": 828416
+  },
+  {
+   "name": "python3-cycler",
+   "version": "0.12.1-1",
+   "filename": "pool/main/p/python-cycler/python3-cycler_0.12.1-1_all.deb",
+   "sha256": "3deb8f4ec8a7dbd094829ac1d34daa1c95a2078dd2d64830a24b4f3d41178afc",
+   "size": 9496,
+   "installed": 41984
+  },
+  {
+   "name": "python3-fonttools",
+   "version": "4.57.0-1+deb13u1",
+   "filename": "pool/main/f/fonttools/python3-fonttools_4.57.0-1+deb13u1_arm64.deb",
+   "sha256": "dfd3dd62d0f5edfed54a14ce82ad08e1d63e74401adc1c6ce25ead5b82efb8fe",
+   "size": 1366108,
+   "installed": 11106304
+  },
+  {
+   "name": "python3-kiwisolver",
+   "version": "1.4.7-3+b1",
+   "filename": "pool/main/k/kiwisolver/python3-kiwisolver_1.4.7-3+b1_arm64.deb",
+   "sha256": "908e297e1cf6b5de97607d59c066af39c921c97a3d5f6a6f64ef248b3e0c3ff2",
+   "size": 57776,
+   "installed": 248832
+  },
+  {
+   "name": "python3-numpy",
+   "version": "1:2.2.4+ds-1",
+   "filename": "pool/main/n/numpy/python3-numpy_2.2.4+ds-1_arm64.deb",
+   "sha256": "ae5a3db117f5f1b844da4d0bfd6828c16c401f80c12ae6364b0cdfab61755ab7",
+   "size": 3604092,
+   "installed": 20303872
+  },
+  {
+   "name": "python3-packaging",
+   "version": "25.0-1",
+   "filename": "pool/main/p/python-packaging/python3-packaging_25.0-1_all.deb",
+   "sha256": "d70c8469f6e9c6105e1ebcd3ebdc963f11dadbeddd89d2d1a2a3cb1c97d2ecbc",
+   "size": 56568,
+   "installed": 263168
+  },
+  {
+   "name": "python3-pil",
+   "version": "11.1.0-5+deb13u4",
+   "filename": "pool/main/p/pillow/python3-pil_11.1.0-5+deb13u4_arm64.deb",
+   "sha256": "ad294f2932ceb9115eece925337b19a6beae3164be9ebb7a4d80057c472fd788",
+   "size": 495140,
+   "installed": 2120704
+  },
+  {
+   "name": "libfreetype6",
+   "version": "2.13.3+dfsg-1+deb13u1",
+   "filename": "pool/main/f/freetype/libfreetype6_2.13.3+dfsg-1+deb13u1_arm64.deb",
+   "sha256": "0c426e83f1af816b9a4df9056fd2238463d1cd07969ee640965da9fb6ecaf107",
+   "size": 422284,
+   "installed": 995328
+  },
+  {
+   "name": "libqhull-r8.0",
+   "version": "2020.2-6+b2",
+   "filename": "pool/main/q/qhull/libqhull-r8.0_2020.2-6+b2_arm64.deb",
+   "sha256": "a0a474c42fee0ad0c12891c87ef1fe5096582ae1fc6afcea83111e241510f823",
+   "size": 228856,
+   "installed": 548864
+  },
+  {
+   "name": "libcoin80t64",
+   "version": "4.0.3+ds-2",
+   "filename": "pool/main/c/coin3/libcoin80t64_4.0.3+ds-2_arm64.deb",
+   "sha256": "266aee081adc196ec41c47ad03cba05f165e424ba83691c625f5b71da31b7e72",
+   "size": 2127304,
+   "installed": 9740288
+  },
+  {
+   "name": "libsoqt520t64",
+   "version": "1.6.3+ds1-2",
+   "filename": "pool/main/s/soqt/libsoqt520t64_1.6.3+ds1-2_arm64.deb",
+   "sha256": "ca4f0e1c8fdbaa0755a16f98edd5919e1615b1f32bbf01b6fb65456e384ec9c7",
+   "size": 188488,
+   "installed": 889856
+  },
+  {
+   "name": "python3-pyside2.qtopengl",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/python3-pyside2.qtopengl_5.15.16-3.1_arm64.deb",
+   "sha256": "a081afed4f4a8b57ab49d00c2358284be8369905c5e02487fd5f4a3a41a9f3e9",
+   "size": 105204,
+   "installed": 571392
+  },
+  {
+   "name": "shiboken2",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/shiboken2_5.15.16-3.1_arm64.deb",
+   "sha256": "1a2bc131a7f5632ab49077e98cc9f130fa8686e94203a83aa488df0cd13b2ec5",
+   "size": 573028,
+   "installed": 1929216
+  },
+  {
+   "name": "libpyside2-py3-5.15t64",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/libpyside2-py3-5.15t64_5.15.16-3.1_arm64.deb",
+   "sha256": "f0e9c2e572245a4d32d8a9f35c8fdd91a38c7f48c38f8e2a4ec93e54c6fad931",
+   "size": 77368,
+   "installed": 314368
+  },
+  {
+   "name": "libshiboken2-py3-5.15t64",
+   "version": "5.15.16-3.1",
+   "filename": "pool/main/p/pyside2/libshiboken2-py3-5.15t64_5.15.16-3.1_arm64.deb",
+   "sha256": "6f367c46961bc43e49a652583e11419f07f97b902f595c74cba1e28318582c5f",
+   "size": 190420,
+   "installed": 619520
+  },
+  {
+   "name": "libqt5network5t64",
+   "version": "5.15.15+dfsg-6+deb13u1",
+   "filename": "pool/main/q/qtbase-opensource-src/libqt5network5t64_5.15.15+dfsg-6+deb13u1_arm64.deb",
+   "sha256": "de1ef2f59cc274efec4aabbe9e9caa8a81c5f1d1e23f7f21d72877e593d4df48",
+   "size": 652112,
+   "installed": 2834432
+  },
+  {
+   "name": "libqt5svg5",
+   "version": "5.15.15-2",
+   "filename": "pool/main/q/qtsvg-opensource-src/libqt5svg5_5.15.15-2_arm64.deb",
+   "sha256": "1608a3d0dd0435269794eae57fd608a17fdc6dc282330e5248ba60ce64153441",
+   "size": 128460,
+   "installed": 594944
+  },
+  {
+   "name": "libqt5xml5t64",
+   "version": "5.15.15+dfsg-6+deb13u1",
+   "filename": "pool/main/q/qtbase-opensource-src/libqt5xml5t64_5.15.15+dfsg-6+deb13u1_arm64.deb",
+   "sha256": "58b0ebb744fbed6b85533a98d8b1d00b5347d9134a5c52cb9d5e5acd4d86953c",
+   "size": 121732,
+   "installed": 519168
+  },
+  {
+   "name": "libyaml-0-2",
+   "version": "0.2.5-2",
+   "filename": "pool/main/liby/libyaml/libyaml-0-2_0.2.5-2_arm64.deb",
+   "sha256": "c81500b4c93e29ac28cdded7ec5bf9950c75f8c76c386669ccb6fb854c4daf72",
+   "size": 49164,
+   "installed": 154624
+  },
+  {
+   "name": "libboost-filesystem1.83.0",
+   "version": "1.83.0-4.2",
+   "filename": "pool/main/b/boost1.83/libboost-filesystem1.83.0_1.83.0-4.2_arm64.deb",
+   "sha256": "10b958550550b2e7c71f0ae216566bb9eb959da645a6a0db25fb499549c49f15",
+   "size": 273200,
+   "installed": 2395136
+  },
+  {
+   "name": "libboost-program-options1.83.0",
+   "version": "1.83.0-4.2",
+   "filename": "pool/main/b/boost1.83/libboost-program-options1.83.0_1.83.0-4.2_arm64.deb",
+   "sha256": "c612739c96effb8919654638d610d6bfd9e7b46d9b85d3870afb56941020b9cf",
+   "size": 331276,
+   "installed": 2657280
+  },
+  {
+   "name": "libboost-thread1.83.0",
+   "version": "1.83.0-4.2",
+   "filename": "pool/main/b/boost1.83/libboost-thread1.83.0_1.83.0-4.2_arm64.deb",
+   "sha256": "973c3211095ad0547406bb94cd2e30948095e23e9d96b496023a4126dd1955c3",
+   "size": 265640,
+   "installed": 2395136
+  },
+  {
+   "name": "libgl1",
+   "version": "1.7.0-1+b2",
+   "filename": "pool/main/libg/libglvnd/libgl1_1.7.0-1+b2_arm64.deb",
+   "sha256": "7943f99962aa3316515760bf44e66f0c15a3c813ad750b784b43e319fa2e6003",
+   "size": 90876,
+   "installed": 1111040
+  },
+  {
+   "name": "libgomp1",
+   "version": "14.2.0-19",
+   "filename": "pool/main/g/gcc-14/libgomp1_14.2.0-19_arm64.deb",
+   "sha256": "43e84cb7971d8a4d8870cab6204e998ea4f23ee1339bb0ff556dd881bac82d25",
+   "size": 123520,
+   "installed": 360448
+  },
+  {
+   "name": "libmedc11t64",
+   "version": "4.1.0+repack-9+b1",
+   "filename": "pool/main/m/med-fichier/libmedc11t64_4.1.0+repack-9+b1_arm64.deb",
+   "sha256": "ef49ad09b1f8699b970a61f69e48f8b93119685bd3adb82ff7a4f831f9a14162",
+   "size": 333040,
+   "installed": 1282048
+  },
+  {
+   "name": "libocct-data-exchange-7.8",
+   "version": "7.8.1+dfsg1-3",
+   "filename": "pool/main/o/opencascade/libocct-data-exchange-7.8_7.8.1+dfsg1-3_arm64.deb",
+   "sha256": "e246f4490345374afd68d66a4d1dbffe7bc12015d19593025a51bd74c7fd403a",
+   "size": 4294772,
+   "installed": 22629376
+  },
+  {
+   "name": "libocct-foundation-7.8",
+   "version": "7.8.1+dfsg1-3",
+   "filename": "pool/main/o/opencascade/libocct-foundation-7.8_7.8.1+dfsg1-3_arm64.deb",
+   "sha256": "7682705dc375736101eb23fa1f4716f9a856d8e3ba20d2e59ee3aeb44c06bd49",
+   "size": 1346200,
+   "installed": 5217280
+  },
+  {
+   "name": "libocct-modeling-algorithms-7.8",
+   "version": "7.8.1+dfsg1-3",
+   "filename": "pool/main/o/opencascade/libocct-modeling-algorithms-7.8_7.8.1+dfsg1-3_arm64.deb",
+   "sha256": "98046e966cfbef2d8aa33712c356c5540e4ce711179ce089e794f28121217ed4",
+   "size": 7164924,
+   "installed": 28519424
+  },
+  {
+   "name": "libocct-modeling-data-7.8",
+   "version": "7.8.1+dfsg1-3",
+   "filename": "pool/main/o/opencascade/libocct-modeling-data-7.8_7.8.1+dfsg1-3_arm64.deb",
+   "sha256": "da94ae6d2b3e916af969ce3879ded65f6a2b15cc7af440be1a23da3ccae457d8",
+   "size": 2474768,
+   "installed": 8825856
+  },
+  {
+   "name": "libocct-ocaf-7.8",
+   "version": "7.8.1+dfsg1-3",
+   "filename": "pool/main/o/opencascade/libocct-ocaf-7.8_7.8.1+dfsg1-3_arm64.deb",
+   "sha256": "65ad01893877a0edc0674170031ac09a431e12c0427a906228c2d3ebf40bdd7a",
+   "size": 1143184,
+   "installed": 6897664
+  },
+  {
+   "name": "libocct-visualization-7.8",
+   "version": "7.8.1+dfsg1-3",
+   "filename": "pool/main/o/opencascade/libocct-visualization-7.8_7.8.1+dfsg1-3_arm64.deb",
+   "sha256": "e740d9b050a41967111b981ba08a7941cf322f637ec3b896e903b425ed17af5d",
+   "size": 1912112,
+   "installed": 7519232
+  },
+  {
+   "name": "libondselsolver1",
+   "version": "0~2024.11.27-1+b1",
+   "filename": "pool/main/o/ondselsolver/libondselsolver1_0~2024.11.27-1+b1_arm64.deb",
+   "sha256": "fa059114d9c35d4a19e72a1a5d21055f2b15296b34017e04b1aabab6aff91813",
+   "size": 704436,
+   "installed": 4419584
+  },
+  {
+   "name": "libqt5concurrent5t64",
+   "version": "5.15.15+dfsg-6+deb13u1",
+   "filename": "pool/main/q/qtbase-opensource-src/libqt5concurrent5t64_5.15.15+dfsg-6+deb13u1_arm64.deb",
+   "sha256": "e7317d2ef80c32ba38a3847bbdcab0fad317c76349e3cbb2846f9cbaeeeee39b",
+   "size": 45244,
+   "installed": 233472
+  },
+  {
+   "name": "libqt5printsupport5t64",
+   "version": "5.15.15+dfsg-6+deb13u1",
+   "filename": "pool/main/q/qtbase-opensource-src/libqt5printsupport5t64_5.15.15+dfsg-6+deb13u1_arm64.deb",
+   "sha256": "2d1dea478aedc11c0462aca3a33245ee78bf53860adc83ab397e506301d964e6",
+   "size": 198744,
+   "installed": 864256
+  },
+  {
+   "name": "libspnav0",
+   "version": "1.2-1",
+   "filename": "pool/main/libs/libspnav/libspnav0_1.2-1_arm64.deb",
+   "sha256": "0f8b178685f2d4f5d4f3fb6a5b943711d57ad31ea17ea4f8c1513ae97dfe7cca",
+   "size": 14120,
+   "installed": 86016
+  },
+  {
+   "name": "libtbb12",
+   "version": "2022.1.0-1+deb13u1",
+   "filename": "pool/main/o/onetbb/libtbb12_2022.1.0-1+deb13u1_arm64.deb",
+   "sha256": "6c91139b5bb02cb8a9e6857dcf46301e9d7f02885ae8f5d120cefdf870b3d373",
+   "size": 67552,
+   "installed": 223232
+  },
+  {
+   "name": "libvtk9.3",
+   "version": "9.3.0+dfsg1-4+b1",
+   "filename": "pool/main/v/vtk9/libvtk9.3_9.3.0+dfsg1-4+b1_arm64.deb",
+   "sha256": "84ffff4b3c33884783e62efa7b1661a16e163b4095215a93b7ce4902cdf634e5",
+   "size": 20706112,
+   "installed": 149571584
+  },
+  {
+   "name": "libxerces-c3.2t64",
+   "version": "3.2.4+debian-1.3+b2",
+   "filename": "pool/main/x/xerces-c/libxerces-c3.2t64_3.2.4+debian-1.3+b2_arm64.deb",
+   "sha256": "e41737016f2065f42600667a4ecd2b622242c887d29846d39159d27188a7caac",
+   "size": 787432,
+   "installed": 3900416
+  },
+  {
+   "name": "libyaml-cpp0.8",
+   "version": "0.8.0+dfsg-7",
+   "filename": "pool/main/y/yaml-cpp/libyaml-cpp0.8_0.8.0+dfsg-7_arm64.deb",
+   "sha256": "a20127bae21c819ad03ac364740b6354992143702dc4735cf77910b9df847348",
+   "size": 119192,
+   "installed": 459776
+  },
+  {
+   "name": "libzipios++0v5",
+   "version": "0.1.7-2",
+   "filename": "pool/main/z/zipios++/libzipios++0v5_0.1.7-2_arm64.deb",
+   "sha256": "ba1d3233c399094808789c5cfb953741e314861db8b7530b89ede1d9c5f6b5de",
+   "size": 53276,
+   "installed": 279552
+  },
+  {
+   "name": "gcc-14-base",
+   "version": "14.2.0-19",
+   "filename": "pool/main/g/gcc-14/gcc-14-base_14.2.0-19_arm64.deb",
+   "sha256": "34ee90679b018c0e64234747a4c4c0ae6b7f63541115037465a8627c2dfbc594",
+   "size": 49444,
+   "installed": 114688
+  },
+  {
+   "name": "libpython3.13-stdlib",
+   "version": "3.13.5-2+deb13u5",
+   "filename": "pool/main/p/python3.13/libpython3.13-stdlib_3.13.5-2+deb13u5_arm64.deb",
+   "sha256": "d1178d24e4d143cc6c577d9dc0f26dd982efccc2e600d25ce86361f168a22be0",
+   "size": 1894712,
+   "installed": 10763264
+  },
+  {
+   "name": "libexpat1",
+   "version": "2.8.3-1~deb13u1",
+   "filename": "pool/main/e/expat/libexpat1_2.8.3-1~deb13u1_arm64.deb",
+   "sha256": "c3248c4beb721c8290e6e34527ae56b1fc965aa6a14982ca602df4458ef0854e",
+   "size": 109116,
+   "installed": 458752
+  },
+  {
+   "name": "zlib1g",
+   "version": "1:1.3.dfsg+really1.3.1-1+b1",
+   "filename": "pool/main/z/zlib/zlib1g_1.3.dfsg+really1.3.1-1+b1_arm64.deb",
+   "sha256": "209aa5cf671e97b9eb0410844fa6df4cae2e75b0c72e7802ab6c8ece13e6ddef",
+   "size": 85116,
+   "installed": 185344
+  },
+  {
+   "name": "shared-mime-info",
+   "version": "2.4-5+b2",
+   "filename": "pool/main/s/shared-mime-info/shared-mime-info_2.4-5+b2_arm64.deb",
+   "sha256": "a68086d0fdffc32fa05b1768f67b83d06344b026a855e29daa7ff02d64deec59",
+   "size": 756268,
+   "installed": 5319680
+  },
+  {
+   "name": "libdouble-conversion3",
+   "version": "3.3.1-1",
+   "filename": "pool/main/d/double-conversion/libdouble-conversion3_3.3.1-1_arm64.deb",
+   "sha256": "ea827a47ddffeaa8e95dc8d0c3b8aa9c79b33b2be77109450c2b06a2b89644d8",
+   "size": 37316,
+   "installed": 159744
+  },
+  {
+   "name": "libglib2.0-0t64",
+   "version": "2.84.4-3~deb13u5",
+   "filename": "pool/main/g/glib2.0/libglib2.0-0t64_2.84.4-3~deb13u5_arm64.deb",
+   "sha256": "d446f0ea85fb9dc411219ce861e59e5eabe1981c796918771a7d2aa97cc72481",
+   "size": 1428508,
+   "installed": 5106688
+  },
+  {
+   "name": "libicu76",
+   "version": "76.1-4",
+   "filename": "pool/main/i/icu/libicu76_76.1-4_arm64.deb",
+   "sha256": "62eb15577c881b7d02aa861e3eb860902335630cc8174daf525b48c2fa39298f",
+   "size": 9523672,
+   "installed": 38448128
+  },
+  {
+   "name": "libpcre2-16-0",
+   "version": "10.46-1~deb13u2",
+   "filename": "pool/main/p/pcre2/libpcre2-16-0_10.46-1~deb13u2_arm64.deb",
+   "sha256": "5cbc3acabe6d7d6533a9e24764d9566f3aaad208ec6309bb186fe2fa6962c35e",
+   "size": 247100,
+   "installed": 672768
+  },
+  {
+   "name": "libzstd1",
+   "version": "1.5.7+dfsg-1",
+   "filename": "pool/main/libz/libzstd/libzstd1_1.5.7+dfsg-1_arm64.deb",
+   "sha256": "924540bd59fdbfa77a0604360efdaca54411a43daf11c7e002a3c64791b67448",
+   "size": 266052,
+   "installed": 765952
+  },
+  {
+   "name": "fontconfig",
+   "version": "2.15.0-2.3",
+   "filename": "pool/main/f/fontconfig/fontconfig_2.15.0-2.3_arm64.deb",
+   "sha256": "f899e800435bc3bd3ecc6139bfcb2b45b3dbd2ffa59c4b9b3cc246e9661052af",
+   "size": 463008,
+   "installed": 1164288
+  },
+  {
+   "name": "libdrm2",
+   "version": "2.4.124-2",
+   "filename": "pool/main/libd/libdrm/libdrm2_2.4.124-2_arm64.deb",
+   "sha256": "b535506630bb6a9a616bc07caf3b29915f980d8c3437852fb96ea64fb1a8a3f8",
+   "size": 38304,
+   "installed": 172032
+  },
+  {
+   "name": "libegl1",
+   "version": "1.7.0-1+b2",
+   "filename": "pool/main/libg/libglvnd/libegl1_1.7.0-1+b2_arm64.deb",
+   "sha256": "b663ad1777df7ed8e320f897bbf678c2baef67f5458fe4a43195ac9b444c7afb",
+   "size": 33952,
+   "installed": 163840
+  },
+  {
+   "name": "libfontconfig1",
+   "version": "2.15.0-2.3",
+   "filename": "pool/main/f/fontconfig/libfontconfig1_2.15.0-2.3_arm64.deb",
+   "sha256": "872781cf62926b68c34a4302a3caae334ff8d4d83a2b2477f8fb454460aadc99",
+   "size": 387092,
+   "installed": 618496
+  },
+  {
+   "name": "libgbm1",
+   "version": "25.0.7-2+deb13u1",
+   "filename": "pool/main/m/mesa/libgbm1_25.0.7-2+deb13u1_arm64.deb",
+   "sha256": "2beb8d20ca715a01b7b2352c1167c0d7097c9d8a486704a9a966f95d4077cdfc",
+   "size": 44144,
+   "installed": 188416
+  },
+  {
+   "name": "libharfbuzz0b",
+   "version": "10.2.0-1+deb13u1",
+   "filename": "pool/main/h/harfbuzz/libharfbuzz0b_10.2.0-1+deb13u1_arm64.deb",
+   "sha256": "3ff928f981b54b491ee12e4cf68558cc5d61c652bdab276cd4c4c3fbbcee16ca",
+   "size": 441932,
+   "installed": 1382400
+  },
+  {
+   "name": "libice6",
+   "version": "2:1.1.1-1",
+   "filename": "pool/main/libi/libice/libice6_1.1.1-1_arm64.deb",
+   "sha256": "048874f2296660a5e925844635f4d050cb054e7d3459cb15b4c30afb113fbecb",
+   "size": 62148,
+   "installed": 174080
+  },
+  {
+   "name": "libinput10",
+   "version": "1.28.1-1+deb13u1",
+   "filename": "pool/main/libi/libinput/libinput10_1.28.1-1+deb13u1_arm64.deb",
+   "sha256": "a2acd04f3b1e9e91d22a26b63650087a179b6b3dbaddadc92d89edfbb2075ae1",
+   "size": 129616,
+   "installed": 437248
+  },
+  {
+   "name": "libjpeg62-turbo",
+   "version": "1:2.1.5-4",
+   "filename": "pool/main/libj/libjpeg-turbo/libjpeg62-turbo_2.1.5-4_arm64.deb",
+   "sha256": "e4989073bb0bac8a6ec043c7adb80e1dfe601d8552233da48bb24ab45d1a1d4a",
+   "size": 172784,
+   "installed": 489472
+  },
+  {
+   "name": "libmd4c0",
+   "version": "0.5.2-2+b1",
+   "filename": "pool/main/m/md4c/libmd4c0_0.5.2-2+b1_arm64.deb",
+   "sha256": "fbeaf1abceacb4b081355e16deb7c41e23df719754b10525c35320d808050bda",
+   "size": 46052,
+   "installed": 114688
+  },
+  {
+   "name": "libmtdev1t64",
+   "version": "1.1.7-1",
+   "filename": "pool/main/m/mtdev/libmtdev1t64_1.1.7-1_arm64.deb",
+   "sha256": "3433f77a9f96d0dc537e870db734a4dbb50528836782c86709845736e8897b47",
+   "size": 22456,
+   "installed": 102400
+  },
+  {
+   "name": "libpng16-16t64",
+   "version": "1.6.48-1+deb13u5",
+   "filename": "pool/main/libp/libpng1.6/libpng16-16t64_1.6.48-1+deb13u5_arm64.deb",
+   "sha256": "11096ad43504ca24e8044bcc89e922d932a2812ff25568613b28d22235190ba5",
+   "size": 275192,
+   "installed": 488448
+  },
+  {
+   "name": "libqt5dbus5t64",
+   "version": "5.15.15+dfsg-6+deb13u1",
+   "filename": "pool/main/q/qtbase-opensource-src/libqt5dbus5t64_5.15.15+dfsg-6+deb13u1_arm64.deb",
+   "sha256": "1582eb7aae3f09506a8811a7491c3edcbee2fbe39aee98a68c331c4e47f171be",
+   "size": 205580,
+   "installed": 849920
+  },
+  {
+   "name": "libsm6",
+   "version": "2:1.2.6-1",
+   "filename": "pool/main/libs/libsm/libsm6_1.2.6-1_arm64.deb",
+   "sha256": "4906619bbec923da6808cb7e4e817a7667d13cd43bc7d98c77702a03bb103f42",
+   "size": 36364,
+   "installed": 104448
+  },
+  {
+   "name": "libudev1",
+   "version": "257.13-1~deb13u1",
+   "filename": "pool/main/s/systemd/libudev1_257.13-1~deb13u1_arm64.deb",
+   "sha256": "459b1c9c17cc3c586e90d13d2a991715d498c6eed6c046cabf321021167bc380",
+   "size": 144536,
+   "installed": 414720
+  },
+  {
+   "name": "libx11-6",
+   "version": "2:1.8.12-1",
+   "filename": "pool/main/libx/libx11/libx11-6_1.8.12-1_arm64.deb",
+   "sha256": "646f2d3f2165c8eebceb7f4aaca31e97a818bb11a045964833a9f764b738bac2",
+   "size": 794952,
+   "installed": 1729536
+  },
+  {
+   "name": "libx11-xcb1",
+   "version": "2:1.8.12-1",
+   "filename": "pool/main/libx/libx11/libx11-xcb1_1.8.12-1_arm64.deb",
+   "sha256": "1eafaa4295e129d6a81e742ab8da43194daa6b916199923c8cef8ad358985894",
+   "size": 247336,
+   "installed": 366592
+  },
+  {
+   "name": "libxcb-glx0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-glx0_1.17.0-2+b1_arm64.deb",
+   "sha256": "a0d96ab5faea8fa1f3e095d6236597622a6b763f061f8f9fa23b77733608fdbc",
+   "size": 122608,
+   "installed": 271360
+  },
+  {
+   "name": "libxcb-icccm4",
+   "version": "0.4.2-1",
+   "filename": "pool/main/x/xcb-util-wm/libxcb-icccm4_0.4.2-1_arm64.deb",
+   "sha256": "4f9b048b98cd9cd7b0a553c8eff05bcd25cfc4fbfddbe4f83e9d6a9c82e2d876",
+   "size": 27208,
+   "installed": 104448
+  },
+  {
+   "name": "libxcb-image0",
+   "version": "0.4.0-2+b2",
+   "filename": "pool/main/x/xcb-util-image/libxcb-image0_0.4.0-2+b2_arm64.deb",
+   "sha256": "25ea3790081635a5f69c96afa2d44efbd04ad4e4c02d0357bf98ff000f12702a",
+   "size": 21924,
+   "installed": 98304
+  },
+  {
+   "name": "libxcb-keysyms1",
+   "version": "0.4.1-1",
+   "filename": "pool/main/x/xcb-util-keysyms/libxcb-keysyms1_0.4.1-1_arm64.deb",
+   "sha256": "aa1d09f42d23dc8fb4d7e6069d8d15fe20080f8574321220bcf0d028c8e7a57f",
+   "size": 16776,
+   "installed": 96256
+  },
+  {
+   "name": "libxcb-randr0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-randr0_1.17.0-2+b1_arm64.deb",
+   "sha256": "dbeb78d1d032959fe65548758ab12bfc6bb5919ec2984c3d871496b52aef929a",
+   "size": 116736,
+   "installed": 197632
+  },
+  {
+   "name": "libxcb-render-util0",
+   "version": "0.3.10-1",
+   "filename": "pool/main/x/xcb-util-renderutil/libxcb-render-util0_0.3.10-1_arm64.deb",
+   "sha256": "f4a33bcc7780f404623a608823b48b91d9ac776a1396d56e9916cbfee49b182c",
+   "size": 18456,
+   "installed": 97280
+  },
+  {
+   "name": "libxcb-render0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-render0_1.17.0-2+b1_arm64.deb",
+   "sha256": "7d6faf0afad0b27a047bbf320bf80999e94b7e6a0f73e42069e8b08958910466",
+   "size": 114896,
+   "installed": 193536
+  },
+  {
+   "name": "libxcb-shape0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-shape0_1.17.0-2+b1_arm64.deb",
+   "sha256": "49f24031f68b9188524954fd1cc237d7cbfe9392d91624cef88d06be13c8075f",
+   "size": 105784,
+   "installed": 184320
+  },
+  {
+   "name": "libxcb-shm0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-shm0_1.17.0-2+b1_arm64.deb",
+   "sha256": "e9e871dc5d2f9265eb5d3028f0d0545cb6f8b748a68997b4c43f5a9416c7ead7",
+   "size": 105480,
+   "installed": 183296
+  },
+  {
+   "name": "libxcb-sync1",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-sync1_1.17.0-2+b1_arm64.deb",
+   "sha256": "eb428ac77daac9e5eea8a4e9ba48d1d78cc8ca400e415c8e4628cc729c6f4749",
+   "size": 108792,
+   "installed": 186368
+  },
+  {
+   "name": "libxcb-xfixes0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-xfixes0_1.17.0-2+b1_arm64.deb",
+   "sha256": "19cdb8502827bc010993e69eaba09c670024976f7edd35b2b504bd646b141b0a",
+   "size": 109644,
+   "installed": 188416
+  },
+  {
+   "name": "libxcb-xinerama0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-xinerama0_1.17.0-2+b1_arm64.deb",
+   "sha256": "a55fa7be97bdbd1ee544ddc3fcd990929e181a5221e28a8db93b837419b50050",
+   "size": 105180,
+   "installed": 184320
+  },
+  {
+   "name": "libxcb-xinput0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-xinput0_1.17.0-2+b1_arm64.deb",
+   "sha256": "ebc39f2f1940a03963b0c1db916b19178e8078132adb669a27cfa8dd38c5d3c3",
+   "size": 129924,
+   "installed": 313344
+  },
+  {
+   "name": "libxcb-xkb1",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-xkb1_1.17.0-2+b1_arm64.deb",
+   "sha256": "739b023ad82b4c9ac2c6cc9e6cc8602a17a05f7f5387d45a5a60eafdc17bf0e5",
+   "size": 128572,
+   "installed": 270336
+  },
+  {
+   "name": "libxcb1",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb1_1.17.0-2+b1_arm64.deb",
+   "sha256": "d0178198e80ed4cacdececabe2c112ec88c7a9258cc11a55b8e267ab14a90d82",
+   "size": 143168,
+   "installed": 336896
+  },
+  {
+   "name": "libxkbcommon-x11-0",
+   "version": "1.7.0-2",
+   "filename": "pool/main/libx/libxkbcommon/libxkbcommon-x11-0_1.7.0-2_arm64.deb",
+   "sha256": "414ec70596c8193b309279dc6d8a35f809ffe5047addc3587a6d52eb462bebc5",
+   "size": 15168,
+   "installed": 87040
+  },
+  {
+   "name": "libxkbcommon0",
+   "version": "1.7.0-2",
+   "filename": "pool/main/libx/libxkbcommon/libxkbcommon0_1.7.0-2_arm64.deb",
+   "sha256": "866888d3cfeb32388dd88a2615c4f78ebf8dd7b272821a83494cba260d8fa7d1",
+   "size": 106024,
+   "installed": 353280
+  },
+  {
+   "name": "libxrender1",
+   "version": "1:0.9.12-1",
+   "filename": "pool/main/libx/libxrender/libxrender1_0.9.12-1_arm64.deb",
+   "sha256": "28396c96e460288d5851913121b053609f7ff34f996d78d7a38c1d2b6ab9f006",
+   "size": 27024,
+   "installed": 94208
+  },
+  {
+   "name": "python3.13-minimal",
+   "version": "3.13.5-2+deb13u5",
+   "filename": "pool/main/p/python3.13/python3.13-minimal_3.13.5-2+deb13u5_arm64.deb",
+   "sha256": "95237a3ad99bf9366308e16f7c79449c9371c4cff9c883772fb7c254652467eb",
+   "size": 2008016,
+   "installed": 6771712
+  },
+  {
+   "name": "media-types",
+   "version": "13.0.0",
+   "filename": "pool/main/m/media-types/media-types_13.0.0_all.deb",
+   "sha256": "0788e4b0b72db1bcf74a19cb24c3511e7770ad0b341f0f30e361701c3072f53e",
+   "size": 29336,
+   "installed": 100352
+  },
+  {
+   "name": "tzdata",
+   "version": "2026c-0+deb13u1",
+   "filename": "pool/main/t/tzdata/tzdata_2026c-0+deb13u1_all.deb",
+   "sha256": "813b9bbbe14ccda2b24617b8bade0ade4d745957e75921766c153d249886bd4c",
+   "size": 264156,
+   "installed": 1390592
+  },
+  {
+   "name": "dpkg",
+   "version": "1.22.22",
+   "filename": "pool/main/d/dpkg/dpkg_1.22.22_arm64.deb",
+   "sha256": "1142468e57f69e13d174f517dff739508c61ee97d81c182c120cd6b281d8cdfa",
+   "size": 1521436,
+   "installed": 7071744
+  },
+  {
+   "name": "fonts-dejavu-core",
+   "version": "2.37-8",
+   "filename": "pool/main/f/fonts-dejavu/fonts-dejavu-core_2.37-8_all.deb",
+   "sha256": "86635b3d25b3655fc11cb3ecc3af59f0bf19643b02b94f2de48bd10253cdba12",
+   "size": 840460,
+   "installed": 2347008
+  },
+  {
+   "name": "fonts-lyx",
+   "version": "2.4.3-1",
+   "filename": "pool/main/l/lyx/fonts-lyx_2.4.3-1_all.deb",
+   "sha256": "ed031115bd478c1e7c479ab638a72182cb779541cd238b2b4e628a06b6b8587f",
+   "size": 190040,
+   "installed": 355328
+  },
+  {
+   "name": "python3-tk",
+   "version": "3.13.5-1",
+   "filename": "pool/main/p/python3-stdlib-extensions/python3-tk_3.13.5-1_arm64.deb",
+   "sha256": "252f32657b602b792b60b91d6b8476faf2378bf228f9df63843c2b31987e3f2b",
+   "size": 9604,
+   "installed": 32768
+  },
+  {
+   "name": "python3-brotli",
+   "version": "1.1.0-2+b7",
+   "filename": "pool/main/b/brotli/python3-brotli_1.1.0-2+b7_arm64.deb",
+   "sha256": "60fc3ae56d92ba4106990cc3ad0c564939754f9d1927c1af9cdc1faf2c5289e8",
+   "size": 299808,
+   "installed": 819200
+  },
+  {
+   "name": "python3-fs",
+   "version": "2.4.16-7",
+   "filename": "pool/main/p/python-fs/python3-fs_2.4.16-7_all.deb",
+   "sha256": "9fa1f0a961abd80f00c8eff66f813a5fae5d718d37cb6762144d494ddae12efe",
+   "size": 95176,
+   "installed": 565248
+  },
+  {
+   "name": "python3-lxml",
+   "version": "5.4.0-1",
+   "filename": "pool/main/l/lxml/python3-lxml_5.4.0-1_arm64.deb",
+   "sha256": "1c4ea541e963622080b00d28bb72e6a109452900c575e136400555230e56ce1c",
+   "size": 1139440,
+   "installed": 4923392
+  },
+  {
+   "name": "python3-lz4",
+   "version": "4.4.0+dfsg-2",
+   "filename": "pool/main/p/python-lz4/python3-lz4_4.4.0+dfsg-2_arm64.deb",
+   "sha256": "6507ce3526bbe2ba0a88da1d9f6a3aa1adebce2d3fe56399094f8465a1766661",
+   "size": 25344,
+   "installed": 271360
+  },
+  {
+   "name": "python3-scipy",
+   "version": "1.15.3-1",
+   "filename": "pool/main/s/scipy/python3-scipy_1.15.3-1_arm64.deb",
+   "sha256": "c6ba095d7215460b7661b40f06f418acefbbb117a8738d669c7aa88ad5a6bf5a",
+   "size": 14853956,
+   "installed": 73459712
+  },
+  {
+   "name": "python3-sympy",
+   "version": "1.13.3-5",
+   "filename": "pool/main/s/sympy/python3-sympy_1.13.3-5_all.deb",
+   "sha256": "62fef103cd6b536e1c49808f0a6ac2aeb2c951e355cec3d461425ae1551d5f8b",
+   "size": 4147732,
+   "installed": 27064320
+  },
+  {
+   "name": "python3-ufolib2",
+   "version": "0.17.1+dfsg1-1",
+   "filename": "pool/main/u/ufolib2/python3-ufolib2_0.17.1+dfsg1-1_all.deb",
+   "sha256": "de5fdd51d77d379998172e525d93834318e90b8d395ca0c0476c08723cfb760d",
+   "size": 33016,
+   "installed": 189440
+  },
+  {
+   "name": "python3-unicodedata2",
+   "version": "15.1.0+ds-1+b5",
+   "filename": "pool/main/p/python-unicodedata2/python3-unicodedata2_15.1.0+ds-1+b5_arm64.deb",
+   "sha256": "0d646674825ade622fb3f694dafcb5f7845a42baa53a224caade2eea3549bf69",
+   "size": 297532,
+   "installed": 1276928
+  },
+  {
+   "name": "python3-zopfli",
+   "version": "0.2.3.post1-1",
+   "filename": "pool/main/p/python-zopfli/python3-zopfli_0.2.3.post1-1_arm64.deb",
+   "sha256": "366869aacba2ce1442498f86df5b5e9d824806f8c4dbfb37f4932158e0b350b9",
+   "size": 10176,
+   "installed": 102400
+  },
+  {
+   "name": "unicode-data",
+   "version": "15.1.0-1",
+   "filename": "pool/main/u/unicode-data/unicode-data_15.1.0-1_all.deb",
+   "sha256": "44d03e773a178dc46478b7b8348cd22ee856636138793cee26ff4d5050860995",
+   "size": 8547256,
+   "installed": 40432640
+  },
+  {
+   "name": "python3-numpy-dev",
+   "version": "1:2.2.4+ds-1",
+   "filename": "pool/main/n/numpy/python3-numpy-dev_2.2.4+ds-1_arm64.deb",
+   "sha256": "5a6d9ba658bee679dd43936458ba29e7235a19bcacaa123e9a8952d30529974f",
+   "size": 136096,
+   "installed": 741376
+  },
+  {
+   "name": "libblas3",
+   "version": "3.12.1-6",
+   "filename": "pool/main/l/lapack/libblas3_3.12.1-6_arm64.deb",
+   "sha256": "33ed1d0770978f11493d24e0416a51ea7de77ede8c23d179a8ad88802a167be2",
+   "size": 104092,
+   "installed": 422912
+  },
+  {
+   "name": "liblapack3",
+   "version": "3.12.1-6",
+   "filename": "pool/main/l/lapack/liblapack3_3.12.1-6_arm64.deb",
+   "sha256": "b1375f31fd6977f0cdacdd1de44a5f5081433d91737ea8fe9d0e64ab2ccfab12",
+   "size": 1820060,
+   "installed": 5800960
+  },
+  {
+   "name": "libimagequant0",
+   "version": "2.18.0-1+b2",
+   "filename": "pool/main/libi/libimagequant/libimagequant0_2.18.0-1+b2_arm64.deb",
+   "sha256": "cac78241d9022f4107c9e167aa9e3fe68878eb8b0c6388b780b99ea1ad7eb628",
+   "size": 34596,
+   "installed": 93184
+  },
+  {
+   "name": "liblcms2-2",
+   "version": "2.16-2+deb13u2",
+   "filename": "pool/main/l/lcms2/liblcms2-2_2.16-2+deb13u2_arm64.deb",
+   "sha256": "6636997fc488327a8d0951a038df6e5178a52b3f5e5cc2386d42655621f5672d",
+   "size": 151540,
+   "installed": 513024
+  },
+  {
+   "name": "libopenjp2-7",
+   "version": "2.5.3-2.1~deb13u2",
+   "filename": "pool/main/o/openjpeg2/libopenjp2-7_2.5.3-2.1~deb13u2_arm64.deb",
+   "sha256": "e27f4d03d4b5836473be3210b16567aa9435a337f8c4537868773a123f9c9e57",
+   "size": 189464,
+   "installed": 540672
+  },
+  {
+   "name": "libraqm0",
+   "version": "0.10.2-1",
+   "filename": "pool/main/r/raqm/libraqm0_0.10.2-1_arm64.deb",
+   "sha256": "64fc3ba82f0ed40a2ed03f91aaaa27b8b68284417be1f0c926ae92c87d9f6563",
+   "size": 13580,
+   "installed": 83968
+  },
+  {
+   "name": "libtiff6",
+   "version": "4.7.0-3+deb13u3",
+   "filename": "pool/main/t/tiff/libtiff6_4.7.0-3+deb13u3_arm64.deb",
+   "sha256": "208e9fdc14ed88a30f31fdfb993d1e8ab19f9ab29f3cd8546ffb4ea3f74f5a3f",
+   "size": 325232,
+   "installed": 772096
+  },
+  {
+   "name": "libwebp7",
+   "version": "1.5.0-0.1",
+   "filename": "pool/main/libw/libwebp/libwebp7_1.5.0-0.1_arm64.deb",
+   "sha256": "d5ebdb920770ee135c4e319babb2bcef61e9f37283a37a8cb4e673769dd0d676",
+   "size": 271148,
+   "installed": 515072
+  },
+  {
+   "name": "libwebpdemux2",
+   "version": "1.5.0-0.1",
+   "filename": "pool/main/libw/libwebp/libwebpdemux2_1.5.0-0.1_arm64.deb",
+   "sha256": "3ce742d0420c9b4c7f875a150eebed63e2e2fb1c7191edb0bdd482c28cc52f51",
+   "size": 113008,
+   "installed": 187392
+  },
+  {
+   "name": "libwebpmux3",
+   "version": "1.5.0-0.1",
+   "filename": "pool/main/libw/libwebp/libwebpmux3_1.5.0-0.1_arm64.deb",
+   "sha256": "84a98af076003c5a502afb95b2a1412e14dbe029e10272ddcdf2ac6f75d8c0d1",
+   "size": 124504,
+   "installed": 187392
+  },
+  {
+   "name": "libbrotli1",
+   "version": "1.1.0-2+b7",
+   "filename": "pool/main/b/brotli/libbrotli1_1.1.0-2+b7_arm64.deb",
+   "sha256": "10270398c4842e71c72b4081fa1761728b3225d6c8dce7c58d5baafe58a5e18f",
+   "size": 307600,
+   "installed": 952320
+  },
+  {
+   "name": "libbz2-1.0",
+   "version": "1.0.8-6",
+   "filename": "pool/main/b/bzip2/libbz2-1.0_1.0.8-6_arm64.deb",
+   "sha256": "3537fe4fc577a60c8a9568873cd577db7ebc135eb8bb1825f18caf8972d9d2f2",
+   "size": 37772,
+   "installed": 94208
+  },
+  {
+   "name": "libglx0",
+   "version": "1.7.0-1+b2",
+   "filename": "pool/main/libg/libglvnd/libglx0_1.7.0-1+b2_arm64.deb",
+   "sha256": "0245aafaac5e68ca9511f23c5bebf010327e63c65790c03dbb80bf14d485956d",
+   "size": 31080,
+   "installed": 224256
+  },
+  {
+   "name": "libopengl0",
+   "version": "1.7.0-1+b2",
+   "filename": "pool/main/libg/libglvnd/libopengl0_1.7.0-1+b2_arm64.deb",
+   "sha256": "1880bc8e29a9dfd2823fc0b88f514eb65699d961ec967d2ed2ba692c241fa09a",
+   "size": 32148,
+   "installed": 446464
+  },
+  {
+   "name": "libqt5opengl5t64",
+   "version": "5.15.15+dfsg-6+deb13u1",
+   "filename": "pool/main/q/qtbase-opensource-src/libqt5opengl5t64_5.15.15+dfsg-6+deb13u1_arm64.deb",
+   "sha256": "39aa7f465c7621a00fd25001895c0455e03fccfb627103f61c638eee26511e4c",
+   "size": 144336,
+   "installed": 603136
+  },
+  {
+   "name": "libxi6",
+   "version": "2:1.8.2-1",
+   "filename": "pool/main/libx/libxi/libxi6_1.8.2-1_arm64.deb",
+   "sha256": "b7148d371c908fa81bf45153fdcb3e7d178fe11e15f9907e29ce6e9ed9aaad24",
+   "size": 77768,
+   "installed": 138240
+  },
+  {
+   "name": "libclang1-19",
+   "version": "1:19.1.7-3+b1",
+   "filename": "pool/main/l/llvm-toolchain-19/libclang1-19_19.1.7-3+b1_arm64.deb",
+   "sha256": "e0719cbb2bd6bb3b91f471d1fa41b364eae0604774db56a7b3dd8d24738a5f20",
+   "size": 6865736,
+   "installed": 37023744
+  },
+  {
+   "name": "libxml2",
+   "version": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
+   "filename": "pool/main/libx/libxml2/libxml2_2.12.7+dfsg+really2.9.14-2.1+deb13u3_arm64.deb",
+   "sha256": "a66b9c960acef8ed9653223cbd00b155a92ebb758ea13a788c41609246c23bc7",
+   "size": 631428,
+   "installed": 1936384
+  },
+  {
+   "name": "libxslt1.1",
+   "version": "1.1.35-1.2+deb13u3",
+   "filename": "pool/main/libx/libxslt/libxslt1.1_1.1.35-1.2+deb13u3_arm64.deb",
+   "sha256": "590a5d177dcfa2bf432f0d7db80b936ac7afadfebdb7f077d0c3305da20d1897",
+   "size": 222332,
+   "installed": 604160
+  },
+  {
+   "name": "libqt5qml5",
+   "version": "5.15.15+dfsg-3",
+   "filename": "pool/main/q/qtdeclarative-opensource-src/libqt5qml5_5.15.15+dfsg-3_arm64.deb",
+   "sha256": "b302f6912ab3e29b585c3097a6335c7d1d959c620af08abd7aad875cb07e6438",
+   "size": 1289484,
+   "installed": 5357568
+  },
+  {
+   "name": "libssl3t64",
+   "version": "3.5.7-1~deb13u2",
+   "filename": "pool/main/o/openssl/libssl3t64_3.5.7-1~deb13u2_arm64.deb",
+   "sha256": "ec131326aa9fa9ec934eca386bc7991f328fe383eaefd3e43bd8901a9199c5ae",
+   "size": 2766020,
+   "installed": 8211456
+  },
+  {
+   "name": "libgssapi-krb5-2",
+   "version": "1.21.3-5+deb13u1",
+   "filename": "pool/main/k/krb5/libgssapi-krb5-2_1.21.3-5+deb13u1_arm64.deb",
+   "sha256": "70803e8f5b9dd0a7167671bdd0b3cd05642384c1fc49e8270d340d85bf6c7d4c",
+   "size": 127624,
+   "installed": 498688
+  },
+  {
+   "name": "libglvnd0",
+   "version": "1.7.0-1+b2",
+   "filename": "pool/main/libg/libglvnd/libglvnd0_1.7.0-1+b2_arm64.deb",
+   "sha256": "29ec7b8cf1c9a47055de643eb0a1921854e762b4789a7f3bc3b0dea498fd4da9",
+   "size": 41588,
+   "installed": 1602560
+  },
+  {
+   "name": "libhdf5-openmpi-310",
+   "version": "1.14.5+repack-3",
+   "filename": "pool/main/h/hdf5/libhdf5-openmpi-310_1.14.5+repack-3_arm64.deb",
+   "sha256": "a262061e7cae13b7f6e2576311e9f8b660d0157d387a42f0eff31abc00f6231f",
+   "size": 1207068,
+   "installed": 4769792
+  },
+  {
+   "name": "libfreeimage3",
+   "version": "3.18.0+ds2-11",
+   "filename": "pool/main/f/freeimage/libfreeimage3_3.18.0+ds2-11_arm64.deb",
+   "sha256": "e136b8d191b1c255310a804c1192d4a8fb6d4ba12285ec352635c4324cdc5656",
+   "size": 275560,
+   "installed": 882688
+  },
+  {
+   "name": "libocct-draw-7.8",
+   "version": "7.8.1+dfsg1-3",
+   "filename": "pool/main/o/opencascade/libocct-draw-7.8_7.8.1+dfsg1-3_arm64.deb",
+   "sha256": "06c4e687ca59fca56417f4ea922f2e7045d924f754d25eeab1a554068c5f7be5",
+   "size": 2278516,
+   "installed": 9990144
+  },
+  {
+   "name": "occt-misc",
+   "version": "7.8.1+dfsg1-3",
+   "filename": "pool/main/o/opencascade/occt-misc_7.8.1+dfsg1-3_all.deb",
+   "sha256": "78243f65b729f0beab7c86ffadf913b6a9b4fa2266b796177c193719dc41c516",
+   "size": 10385732,
+   "installed": 61349888
+  },
+  {
+   "name": "libcups2t64",
+   "version": "2.4.10-3+deb13u2",
+   "filename": "pool/main/c/cups/libcups2t64_2.4.10-3+deb13u2_arm64.deb",
+   "sha256": "7ab4a1f78863f9f4c9fab7e56633e84932c94fb835c8f9e83062988be53e5b5d",
+   "size": 235728,
+   "installed": 782336
+  },
+  {
+   "name": "libtbbbind-2-5",
+   "version": "2022.1.0-1+deb13u1",
+   "filename": "pool/main/o/onetbb/libtbbbind-2-5_2022.1.0-1+deb13u1_arm64.deb",
+   "sha256": "dc742ce5db64156e8f36e006decd08517e4dba423b3409b85063c7aebf2f1d02",
+   "size": 13760,
+   "installed": 94208
+  },
+  {
+   "name": "libtbbmalloc2",
+   "version": "2022.1.0-1+deb13u1",
+   "filename": "pool/main/o/onetbb/libtbbmalloc2_2022.1.0-1+deb13u1_arm64.deb",
+   "sha256": "fa1721ac56903a7a4e23e313516c205d740d20d6496a1e5102e8655f08212e9c",
+   "size": 35844,
+   "installed": 161792
+  },
+  {
+   "name": "libgl2ps1.4",
+   "version": "1.4.2+dfsg1-2+b1",
+   "filename": "pool/main/g/gl2ps/libgl2ps1.4_1.4.2+dfsg1-2+b1_arm64.deb",
+   "sha256": "5095f26923822212f14c995e8d9009fd47efe4916dd973e138fe95d1582f8319",
+   "size": 36960,
+   "installed": 150528
+  },
+  {
+   "name": "libglew2.2",
+   "version": "2.2.0-4+b2",
+   "filename": "pool/main/g/glew/libglew2.2_2.2.0-4+b2_arm64.deb",
+   "sha256": "184ddca9d9a55201d86dfb96a76641a0aba4eddccd29bf6f0c88586f4f5ab1ba",
+   "size": 162312,
+   "installed": 980992
+  },
+  {
+   "name": "libhdf5-310",
+   "version": "1.14.5+repack-3",
+   "filename": "pool/main/h/hdf5/libhdf5-310_1.14.5+repack-3_arm64.deb",
+   "sha256": "c6277e95c996330bd2dc74a5b3dfea52b5a61d22092a7d770a6bf4ac61ee73f2",
+   "size": 1155480,
+   "installed": 4582400
+  },
+  {
+   "name": "libjsoncpp26",
+   "version": "1.9.6-3",
+   "filename": "pool/main/libj/libjsoncpp/libjsoncpp26_1.9.6-3_arm64.deb",
+   "sha256": "346da1614a66ae07549243f2abf1dc5fdcc590a4ccb408458b5ea7ef7997477d",
+   "size": 72912,
+   "installed": 287744
+  },
+  {
+   "name": "liblz4-1",
+   "version": "1.10.0-4",
+   "filename": "pool/main/l/lz4/liblz4-1_1.10.0-4_arm64.deb",
+   "sha256": "f86fa7f8112d56b74f99c4a8baade57a9962d187d7c8e319428e171b2a34d223",
+   "size": 59988,
+   "installed": 222208
+  },
+  {
+   "name": "liblzma5",
+   "version": "5.8.1-1+deb13u1",
+   "filename": "pool/main/x/xz-utils/liblzma5_5.8.1-1+deb13u1_arm64.deb",
+   "sha256": "6a7b98005f84fc26d66a45e432f70d0793646a734f8c44cd1626b3ffa8edd7c6",
+   "size": 302720,
+   "installed": 445440
+  },
+  {
+   "name": "libnetcdf22",
+   "version": "1:4.9.3-1",
+   "filename": "pool/main/n/netcdf/libnetcdf22_4.9.3-1_arm64.deb",
+   "sha256": "a5634ac9cdcd9a0b8652592fe8d65fd536bba61da45addc563eec287c9d6b6f5",
+   "size": 480544,
+   "installed": 1844224
+  },
+  {
+   "name": "libogg0",
+   "version": "1.3.5-3+b2",
+   "filename": "pool/main/libo/libogg/libogg0_1.3.5-3+b2_arm64.deb",
+   "sha256": "d59a83ab352bf0c16ce9513fdf264f87214813ca8c628c652801ef476ece8286",
+   "size": 23580,
+   "installed": 92160
+  },
+  {
+   "name": "libopenmpi40",
+   "version": "5.0.7-1",
+   "filename": "pool/main/o/openmpi/libopenmpi40_5.0.7-1_arm64.deb",
+   "sha256": "f5b46f915692bcf81169d954f4067d7c0af088104e923403b1bb1d1f63f6d96e",
+   "size": 2086828,
+   "installed": 10729472
+  },
+  {
+   "name": "libproj25",
+   "version": "9.6.0-1",
+   "filename": "pool/main/p/proj/libproj25_9.6.0-1_arm64.deb",
+   "sha256": "2ed0e3bdf5d5e630e3edb3df8ee027e5415685ca3591fce78d7ce3121e361559",
+   "size": 1242604,
+   "installed": 4530176
+  },
+  {
+   "name": "libsqlite3-0",
+   "version": "3.46.1-7+deb13u2",
+   "filename": "pool/main/s/sqlite3/libsqlite3-0_3.46.1-7+deb13u2_arm64.deb",
+   "sha256": "5b09efca71cb7a16d67f5453af3989ae1a84fe6b68c6dd3913de527cb0ca23aa",
+   "size": 854152,
+   "installed": 1898496
+  },
+  {
+   "name": "libtcl8.6",
+   "version": "8.6.16+dfsg-1",
+   "filename": "pool/main/t/tcl8.6/libtcl8.6_8.6.16+dfsg-1_arm64.deb",
+   "sha256": "7a9f7eda696d505657a6cf54550fe50d4684bd79dc888d6b72f486f8066a14f5",
+   "size": 983536,
+   "installed": 4450304
+  },
+  {
+   "name": "libtheoradec1",
+   "version": "1.2.0~alpha1+dfsg-6",
+   "filename": "pool/main/libt/libtheora/libtheoradec1_1.2.0~alpha1+dfsg-6_arm64.deb",
+   "sha256": "e233aa1a1d345e6db838040f0ced479c5cda3fcc04d6637468275c398f585924",
+   "size": 52560,
+   "installed": 160768
+  },
+  {
+   "name": "libtheoraenc1",
+   "version": "1.2.0~alpha1+dfsg-6",
+   "filename": "pool/main/libt/libtheora/libtheoraenc1_1.2.0~alpha1+dfsg-6_arm64.deb",
+   "sha256": "b09a5ad17f11b0f90b7d0f0262dc363b6ec59625a9b55d1cdc2a6feb7c7f349e",
+   "size": 99108,
+   "installed": 225280
+  },
+  {
+   "name": "libtk8.6",
+   "version": "8.6.16-1",
+   "filename": "pool/main/t/tk8.6/libtk8.6_8.6.16-1_arm64.deb",
+   "sha256": "b852fdd017cce982dd693fceed9f37f6deae399de306f14b147b88e8101a189c",
+   "size": 740504,
+   "installed": 2580480
+  },
+  {
+   "name": "libcurl3t64-gnutls",
+   "version": "8.14.1-2+deb13u5",
+   "filename": "pool/main/c/curl/libcurl3t64-gnutls_8.14.1-2+deb13u5_arm64.deb",
+   "sha256": "e7907dba88227fa61f86e1e3ea198c770cb0a255d506f31d9564278dfba3c898",
+   "size": 354020,
+   "installed": 1046528
+  },
+  {
+   "name": "libpython3.13-minimal",
+   "version": "3.13.5-2+deb13u5",
+   "filename": "pool/main/p/python3.13/libpython3.13-minimal_3.13.5-2+deb13u5_arm64.deb",
+   "sha256": "3655ef258b19142cf6fe38ef89731d5c630b2cf3309632494a720b28c1cfcd85",
+   "size": 856328,
+   "installed": 5599232
+  },
+  {
+   "name": "netbase",
+   "version": "6.5",
+   "filename": "pool/main/n/netbase/netbase_6.5_all.deb",
+   "sha256": "76bafa92947ebd37b0a6f9ec6570412041f56edebc1c66d323731216d318471e",
+   "size": 12436,
+   "installed": 35840
+  },
+  {
+   "name": "libdb5.3t64",
+   "version": "5.3.28+dfsg2-9",
+   "filename": "pool/main/d/db5.3/libdb5.3t64_5.3.28+dfsg2-9_arm64.deb",
+   "sha256": "bfef56508d69fd3f940668f6abd0a466a362cabf63c4cc1c787cc58d28f6e92f",
+   "size": 629132,
+   "installed": 1817600
+  },
+  {
+   "name": "libffi8",
+   "version": "3.4.8-2",
+   "filename": "pool/main/libf/libffi/libffi8_3.4.8-2_arm64.deb",
+   "sha256": "d84a783b818f2386627604e64b793eb4ac5bb9ea1ba321a194a1c9c82fe09a01",
+   "size": 21260,
+   "installed": 94208
+  },
+  {
+   "name": "libncursesw6",
+   "version": "6.5+20250216-2",
+   "filename": "pool/main/n/ncurses/libncursesw6_6.5+20250216-2_arm64.deb",
+   "sha256": "72121aeb08be2d915da321ddfae74f62a0764286f336279b2c2609ba07496d6d",
+   "size": 124048,
+   "installed": 581632
+  },
+  {
+   "name": "libreadline8t64",
+   "version": "8.2-6",
+   "filename": "pool/main/r/readline/libreadline8t64_8.2-6_arm64.deb",
+   "sha256": "f78ff432b2a627bc04f7eef0e6e2696501c9e06feca748a5b741d5e594429033",
+   "size": 159264,
+   "installed": 570368
+  },
+  {
+   "name": "libtinfo6",
+   "version": "6.5+20250216-2",
+   "filename": "pool/main/n/ncurses/libtinfo6_6.5+20250216-2_arm64.deb",
+   "sha256": "2a747f7fff3c2347c357387a7133df997410f07ba1b1df1a1461a97bd7fbc2fc",
+   "size": 341360,
+   "installed": 689152
+  },
+  {
+   "name": "libuuid1",
+   "version": "2.41.5-0+deb13u1",
+   "filename": "pool/main/u/util-linux/libuuid1_2.41.5-0+deb13u1_arm64.deb",
+   "sha256": "448ad6b190184dbff24508ef2eda88bd737a5ffc0f9750eb779fcf9885292bea",
+   "size": 37648,
+   "installed": 129024
+  },
+  {
+   "name": "libatomic1",
+   "version": "14.2.0-19",
+   "filename": "pool/main/g/gcc-14/libatomic1_14.2.0-19_arm64.deb",
+   "sha256": "7ccff90234484bf21ae5ecb79d25b6a84b2f4038f65dd139085b2e3a937cd8dc",
+   "size": 10128,
+   "installed": 82944
+  },
+  {
+   "name": "libmount1",
+   "version": "2.41.5-0+deb13u1",
+   "filename": "pool/main/u/util-linux/libmount1_2.41.5-0+deb13u1_arm64.deb",
+   "sha256": "14e2d555459f3c0b1442bb49dd2d266ea202a003198c86f65508a1dbfaa18732",
+   "size": 200668,
+   "installed": 668672
+  },
+  {
+   "name": "libpcre2-8-0",
+   "version": "10.46-1~deb13u2",
+   "filename": "pool/main/p/pcre2/libpcre2-8-0_10.46-1~deb13u2_arm64.deb",
+   "sha256": "e7d2c997dac145c16457be0fed3d084c98cd030bec7633eec7e5bde6dbb97712",
+   "size": 262840,
+   "installed": 739328
+  },
+  {
+   "name": "libselinux1",
+   "version": "3.8.1-1",
+   "filename": "pool/main/libs/libselinux/libselinux1_3.8.1-1_arm64.deb",
+   "sha256": "fc13da4c7783b8f4361d92ef1045931f298d1b0ac78ed1a85c2232615f49fc6f",
+   "size": 79352,
+   "installed": 295936
+  },
+  {
+   "name": "fontconfig-config",
+   "version": "2.15.0-2.3",
+   "filename": "pool/main/f/fontconfig/fontconfig-config_2.15.0-2.3_arm64.deb",
+   "sha256": "10f643f467b51cf25fc18d1945bc61246dd8d8d1fe6bc712a2b1712c74ebc4d6",
+   "size": 318304,
+   "installed": 545792
+  },
+  {
+   "name": "libdrm-common",
+   "version": "2.4.124-2",
+   "filename": "pool/main/libd/libdrm/libdrm-common_2.4.124-2_all.deb",
+   "sha256": "9a8a6c65c165e9964f106fb4ac710959b5d33e0790227e3ab6b27c4742d1254a",
+   "size": 8288,
+   "installed": 46080
+  },
+  {
+   "name": "libegl-mesa0",
+   "version": "25.0.7-2+deb13u1",
+   "filename": "pool/main/m/mesa/libegl-mesa0_25.0.7-2+deb13u1_arm64.deb",
+   "sha256": "e344e0c87657d91ebfcb059bee3a3c87ba05871e2918079c3f9393665d4472af",
+   "size": 120960,
+   "installed": 448512
+  },
+  {
+   "name": "libwayland-server0",
+   "version": "1.23.1-3",
+   "filename": "pool/main/w/wayland/libwayland-server0_1.23.1-3_arm64.deb",
+   "sha256": "062702d57cf07b42ab7f0fa1aac8bc3f605eb47f2f0b9ecb1614674140d79f1b",
+   "size": 33656,
+   "installed": 155648
+  },
+  {
+   "name": "mesa-libgallium",
+   "version": "25.0.7-2+deb13u1",
+   "filename": "pool/main/m/mesa/mesa-libgallium_25.0.7-2+deb13u1_arm64.deb",
+   "sha256": "a27576030704ff305adaef8bd143954b281680861d5bfe21aabd7d376a939149",
+   "size": 8032536,
+   "installed": 35059712
+  },
+  {
+   "name": "libgraphite2-3",
+   "version": "1.3.14-2+deb13u1",
+   "filename": "pool/main/g/graphite2/libgraphite2-3_1.3.14-2+deb13u1_arm64.deb",
+   "sha256": "b0c3414b113de62be1dc28fa2c899ac0856256e2f094d92c36c3275a5053311a",
+   "size": 70348,
+   "installed": 228352
+  },
+  {
+   "name": "x11-common",
+   "version": "1:7.7+24+deb13u1",
+   "filename": "pool/main/x/xorg/x11-common_7.7+24+deb13u1_all.deb",
+   "sha256": "57a981938506b26dc552f19cafeaa8c04e9b59dc7508509151f8507a9d4e5f24",
+   "size": 216864,
+   "installed": 281600
+  },
+  {
+   "name": "libevdev2",
+   "version": "1.13.4+dfsg-1",
+   "filename": "pool/main/libe/libevdev/libevdev2_1.13.4+dfsg-1_arm64.deb",
+   "sha256": "abdb9ca2f0a27d88ec16b480f346d1d6c183c59e3d071734ba8d8b9794aacfc6",
+   "size": 30356,
+   "installed": 157696
+  },
+  {
+   "name": "libwacom9",
+   "version": "2.14.0-1",
+   "filename": "pool/main/libw/libwacom/libwacom9_2.14.0-1_arm64.deb",
+   "sha256": "8fb8419c43fcc166f996c30cc262fcc86457bdd6f82656dad8619c88dc00b013",
+   "size": 24192,
+   "installed": 89088
+  },
+  {
+   "name": "libinput-bin",
+   "version": "1.28.1-1+deb13u1",
+   "filename": "pool/main/libi/libinput/libinput-bin_1.28.1-1+deb13u1_arm64.deb",
+   "sha256": "9da373d042dd8e0c45e34a5a0dc361cb386fd5ff4f066b7b3e64e1ea66de0835",
+   "size": 26788,
+   "installed": 316416
+  },
+  {
+   "name": "libdbus-1-3",
+   "version": "1.16.2-2",
+   "filename": "pool/main/d/dbus/libdbus-1-3_1.16.2-2_arm64.deb",
+   "sha256": "ca6bb5f2047ad58d274cb7d14216035a07d8e5aae6f6a0122c4f6293c9c39515",
+   "size": 169068,
+   "installed": 500736
+  },
+  {
+   "name": "libcap2",
+   "version": "1:2.75-10+deb13u1+b3",
+   "filename": "pool/main/libc/libcap2/libcap2_2.75-10+deb13u1+b3_arm64.deb",
+   "sha256": "863aa5b9cdf6f80010b48982d4639126b09a89eeef2c0c5c7be226297c811581",
+   "size": 28568,
+   "installed": 163840
+  },
+  {
+   "name": "libx11-data",
+   "version": "2:1.8.12-1",
+   "filename": "pool/main/libx/libx11/libx11-data_1.8.12-1_all.deb",
+   "sha256": "c54f87069888f80ba4da586da6147d74c7598ccdd8b90906dbc4271fa414c738",
+   "size": 343072,
+   "installed": 1613824
+  },
+  {
+   "name": "libxcb-util1",
+   "version": "0.4.1-1",
+   "filename": "pool/main/x/xcb-util/libxcb-util1_0.4.1-1_arm64.deb",
+   "sha256": "a82432686fcb65dbbf5319b79cc68ab9c8a0102e969163219c6f0e0b657e393e",
+   "size": 23564,
+   "installed": 99328
+  },
+  {
+   "name": "libxau6",
+   "version": "1:1.0.11-1",
+   "filename": "pool/main/libx/libxau/libxau6_1.0.11-1_arm64.deb",
+   "sha256": "ac1061728670f4626adaa1288953a0e6fb801c9cae72ee1c3231e63e2609d23a",
+   "size": 20576,
+   "installed": 96256
+  },
+  {
+   "name": "libxdmcp6",
+   "version": "1:1.1.5-1",
+   "filename": "pool/main/libx/libxdmcp/libxdmcp6_1.1.5-1_arm64.deb",
+   "sha256": "e10bbb0802181992ecf091e9425171850eee16068729c109214ba4924f81fb52",
+   "size": 27752,
+   "installed": 101376
+  },
+  {
+   "name": "xkb-data",
+   "version": "2.42-1",
+   "filename": "pool/main/x/xkeyboard-config/xkb-data_2.42-1_all.deb",
+   "sha256": "196ff18533382f64e057ea49df2bb486bd4275a4cc0917361edb560b8756dada",
+   "size": 789736,
+   "installed": 7076864
+  },
+  {
+   "name": "debconf",
+   "version": "1.5.91",
+   "filename": "pool/main/d/debconf/debconf_1.5.91_all.deb",
+   "sha256": "1ddc7e6c5925f748eefb7ca811d98e049f18c158bb21fbc7e122262ce6011e49",
+   "size": 121088,
+   "installed": 508928
+  },
+  {
+   "name": "tar",
+   "version": "1.35+dfsg-3.1",
+   "filename": "pool/main/t/tar/tar_1.35+dfsg-3.1_arm64.deb",
+   "sha256": "c460a8294202ca3802b7c703b0bd70dd8bda1f2fc8785839595cf9d5e060d71b",
+   "size": 802008,
+   "installed": 3179520
+  },
+  {
+   "name": "libmd0",
+   "version": "1.1.0-2+b1",
+   "filename": "pool/main/libm/libmd/libmd0_1.1.0-2+b1_arm64.deb",
+   "sha256": "772e86842fd3fa1816a0cfee4833a73996aaa550461491543b886b9c8f999052",
+   "size": 33664,
+   "installed": 104448
+  },
+  {
+   "name": "fonts-dejavu-mono",
+   "version": "2.37-8",
+   "filename": "pool/main/f/fonts-dejavu/fonts-dejavu-mono_2.37-8_all.deb",
+   "sha256": "3003e98a5debfdeadc7040a7f715fe9fe6fb67f68deacf6049b54e30f07fc014",
+   "size": 488808,
+   "installed": 1311744
+  },
+  {
+   "name": "python3.13-tk",
+   "version": "3.13.5-2+deb13u5",
+   "filename": "pool/main/p/python3.13/python3.13-tk_3.13.5-2+deb13u5_arm64.deb",
+   "sha256": "5dd7edd4cc3695d45abd9f13dfa6b4e782dc8f5b7a7880c2cedda982db29e063",
+   "size": 105916,
+   "installed": 458752
+  },
+  {
+   "name": "blt",
+   "version": "2.5.3+dfsg-8",
+   "filename": "pool/main/b/blt/blt_2.5.3+dfsg-8_arm64.deb",
+   "sha256": "57a562e486634daea2a8bd44a011011dd1c4144a3f3460bf7cbf673822cf8257",
+   "size": 5984,
+   "installed": 21504
+  },
+  {
+   "name": "python3-platformdirs",
+   "version": "4.3.7-1",
+   "filename": "pool/main/p/platformdirs/python3-platformdirs_4.3.7-1_all.deb",
+   "sha256": "53e10f9029f195496f26f224f7166e9a5dceb58cc0242a9b167485bfc16a4b97",
+   "size": 16608,
+   "installed": 108544
+  },
+  {
+   "name": "python3-decorator",
+   "version": "5.2.1-2",
+   "filename": "pool/main/p/python-decorator/python3-decorator_5.2.1-2_all.deb",
+   "sha256": "2822307c88b15aed40b62910dbb79523fad7bea9585c750788a4c6d00e76b03e",
+   "size": 33004,
+   "installed": 64512
+  },
+  {
+   "name": "libgfortran5",
+   "version": "14.2.0-19",
+   "filename": "pool/main/g/gcc-14/libgfortran5_14.2.0-19_arm64.deb",
+   "sha256": "5f771ed84bf8779d4598e66b719121ab1413c11412c87629e50c79d26b042612",
+   "size": 361252,
+   "installed": 1577984
+  },
+  {
+   "name": "python3-mpmath",
+   "version": "1.3.0-1",
+   "filename": "pool/main/m/mpmath/python3-mpmath_1.3.0-1_all.deb",
+   "sha256": "36596f8992df86d1acada0b5d3e64307449ca13326090fb8d6423e8f8d6d9e60",
+   "size": 418668,
+   "installed": 2026496
+  },
+  {
+   "name": "python3-attr",
+   "version": "25.3.0-1",
+   "filename": "pool/main/p/python-attrs/python3-attr_25.3.0-1_all.deb",
+   "sha256": "72cee7fff9e57e8410956e3071ffe910d9de14ddedf14d598a616319428b369c",
+   "size": 69532,
+   "installed": 274432
+  },
+  {
+   "name": "libzopfli1",
+   "version": "1.0.3-3",
+   "filename": "pool/main/z/zopfli/libzopfli1_1.0.3-3_arm64.deb",
+   "sha256": "455bcc3f802c67a2b41d5c16ffda04ebbc4167abe6c5d7201e9a4b3517d0e279",
+   "size": 95224,
+   "installed": 351232
+  },
+  {
+   "name": "libfribidi0",
+   "version": "1.0.16-1",
+   "filename": "pool/main/f/fribidi/libfribidi0_1.0.16-1_arm64.deb",
+   "sha256": "5f5bfdf6ef126b0a38f8ebb8751cbbb845fe2cd4e1dd5258d241be243e09897f",
+   "size": 26460,
+   "installed": 161792
+  },
+  {
+   "name": "libdeflate0",
+   "version": "1.23-2",
+   "filename": "pool/main/libd/libdeflate/libdeflate0_1.23-2_arm64.deb",
+   "sha256": "ddd23094f9608f2ff9ea2256df2e917e315524371a6a82cb9daa921557c5a595",
+   "size": 42376,
+   "installed": 149504
+  },
+  {
+   "name": "libjbig0",
+   "version": "2.1-6.1+b2",
+   "filename": "pool/main/j/jbigkit/libjbig0_2.1-6.1+b2_arm64.deb",
+   "sha256": "dbecef09dbafd82ff6444aa1cb45053b6331985b20ab2590eff052d7d6b1bb18",
+   "size": 30360,
+   "installed": 99328
+  },
+  {
+   "name": "liblerc4",
+   "version": "4.0.0+ds-5",
+   "filename": "pool/main/l/lerc/liblerc4_4.0.0+ds-5_arm64.deb",
+   "sha256": "db015dc1888371e490594f8aaaaa55356313478d744fa69e242e034e4c2a0019",
+   "size": 146184,
+   "installed": 565248
+  },
+  {
+   "name": "libsharpyuv0",
+   "version": "1.5.0-0.1",
+   "filename": "pool/main/libw/libwebp/libsharpyuv0_1.5.0-0.1_arm64.deb",
+   "sha256": "5a37f40f806df4b67a2bdaa750add7a9ff29abd3119a8ceac773b886cbf3d9f9",
+   "size": 114456,
+   "installed": 187392
+  },
+  {
+   "name": "libglx-mesa0",
+   "version": "25.0.7-2+deb13u1",
+   "filename": "pool/main/m/mesa/libglx-mesa0_25.0.7-2+deb13u1_arm64.deb",
+   "sha256": "18c02afcdd88f547ba66d3ae9290f93ab155381bf8d96b0127f9028374acfc64",
+   "size": 142320,
+   "installed": 610304
+  },
+  {
+   "name": "libxext6",
+   "version": "2:1.3.4-1+b3",
+   "filename": "pool/main/libx/libxext/libxext6_1.3.4-1+b3_arm64.deb",
+   "sha256": "27cf208c6d2924b22ed3b9ceff304b992e1f07ef7b0ef00239585595581dac99",
+   "size": 49244,
+   "installed": 185344
+  },
+  {
+   "name": "libllvm19",
+   "version": "1:19.1.7-3+b1",
+   "filename": "pool/main/l/llvm-toolchain-19/libllvm19_19.1.7-3+b1_arm64.deb",
+   "sha256": "8a48e1a49f7fcc3be74e697767d72902f4b03041401d1529bcfad1849df39148",
+   "size": 23285344,
+   "installed": 123305984
+  },
+  {
+   "name": "libgcrypt20",
+   "version": "1.11.0-7+deb13u1",
+   "filename": "pool/main/libg/libgcrypt20/libgcrypt20_1.11.0-7+deb13u1_arm64.deb",
+   "sha256": "243a42b879c6675348279a3f9a40e535d57185af00dbfd51b7481e777f163da6",
+   "size": 741128,
+   "installed": 1558528
+  },
+  {
+   "name": "openssl-provider-legacy",
+   "version": "3.5.7-1~deb13u2",
+   "filename": "pool/main/o/openssl/openssl-provider-legacy_3.5.7-1~deb13u2_arm64.deb",
+   "sha256": "7628954796eb651fc499ad98d4e51435691c2ccce0b5fbae6b198cbece742db4",
+   "size": 313492,
+   "installed": 425984
+  },
+  {
+   "name": "libkrb5-3",
+   "version": "1.21.3-5+deb13u1",
+   "filename": "pool/main/k/krb5/libkrb5-3_1.21.3-5+deb13u1_arm64.deb",
+   "sha256": "1f5c46480abf894f662d894696c8a6c6510c2b20616cd453e88b27b11d3be25d",
+   "size": 308256,
+   "installed": 1193984
+  },
+  {
+   "name": "libcom-err2",
+   "version": "1.47.2-3+b12",
+   "filename": "pool/main/e/e2fsprogs/libcom-err2_1.47.2-3+b12_arm64.deb",
+   "sha256": "1acba7e14a17a3f4b8008454e1a75840a5cdff4259d3c1d369092d82089ea0d8",
+   "size": 24932,
+   "installed": 114688
+  },
+  {
+   "name": "libk5crypto3",
+   "version": "1.21.3-5+deb13u1",
+   "filename": "pool/main/k/krb5/libk5crypto3_1.21.3-5+deb13u1_arm64.deb",
+   "sha256": "2453e8d4fa3b91b868d5bc10e84a15ad9c7bc4e4cb49379cb1f560bdce50db4a",
+   "size": 81416,
+   "installed": 284672
+  },
+  {
+   "name": "libkrb5support0",
+   "version": "1.21.3-5+deb13u1",
+   "filename": "pool/main/k/krb5/libkrb5support0_1.21.3-5+deb13u1_arm64.deb",
+   "sha256": "6381bcb54e58854f9ebac2dfa580c3d6112d01b4ca3f725e7263b9374f79608e",
+   "size": 32508,
+   "installed": 157696
+  },
+  {
+   "name": "libcurl4t64",
+   "version": "8.14.1-2+deb13u5",
+   "filename": "pool/main/c/curl/libcurl4t64_8.14.1-2+deb13u5_arm64.deb",
+   "sha256": "af72e1cd69240a42a76a578e6902b65f9fa641f5e7352e4bfa0ec5aa38d25204",
+   "size": 359892,
+   "installed": 1041408
+  },
+  {
+   "name": "libsz2",
+   "version": "1.1.3-1+b1",
+   "filename": "pool/main/liba/libaec/libsz2_1.1.3-1+b1_arm64.deb",
+   "sha256": "843d352324c34083b78093eb2e87cc954b821146aac11324a763f3b8a8b3191b",
+   "size": 8044,
+   "installed": 84992
+  },
+  {
+   "name": "libimath-3-1-29t64",
+   "version": "3.1.12-1+b3",
+   "filename": "pool/main/i/imath/libimath-3-1-29t64_3.1.12-1+b3_arm64.deb",
+   "sha256": "924d8126ef2360ca4ea8d56bbf75553803d72b7b49c8dd5f992e65026de69d80",
+   "size": 37972,
+   "installed": 358400
+  },
+  {
+   "name": "libjxr0t64",
+   "version": "1.2~git20170615.f752187-5.3",
+   "filename": "pool/main/j/jxrlib/libjxr0t64_1.2~git20170615.f752187-5.3_arm64.deb",
+   "sha256": "7b7d21ae47abb1d5d5d7aabec1d742f9ad62c871b27dc4d0c210dbb084b418b7",
+   "size": 157164,
+   "installed": 525312
+  },
+  {
+   "name": "libopenexr-3-1-30",
+   "version": "3.1.13-2",
+   "filename": "pool/main/o/openexr/libopenexr-3-1-30_3.1.13-2_arm64.deb",
+   "sha256": "5a786fcd4e09948ca7d3c52398c78473c9ada8290cf1e0fa667629e84817c7d9",
+   "size": 875180,
+   "installed": 6430720
+  },
+  {
+   "name": "libraw23t64",
+   "version": "0.21.4-2+deb13u1",
+   "filename": "pool/main/libr/libraw/libraw23t64_0.21.4-2+deb13u1_arm64.deb",
+   "sha256": "4f66673dc192d1bc0d555e463b7ba78aeb608854e0568a79670fd32a5b279f3b",
+   "size": 371216,
+   "installed": 2549760
+  },
+  {
+   "name": "libavahi-client3",
+   "version": "0.8-16",
+   "filename": "pool/main/a/avahi/libavahi-client3_0.8-16_arm64.deb",
+   "sha256": "aad7c1a4f0e8b9131881ebdd61150bb9e15f11534aafe4877e61fefc266f1586",
+   "size": 46740,
+   "installed": 179200
+  },
+  {
+   "name": "libavahi-common3",
+   "version": "0.8-16",
+   "filename": "pool/main/a/avahi/libavahi-common3_0.8-16_arm64.deb",
+   "sha256": "495d3502dbaed9e71c54cd0030fd135d62140b7c780620cc14a0a8a615adda14",
+   "size": 43340,
+   "installed": 114688
+  },
+  {
+   "name": "libgnutls30t64",
+   "version": "3.8.9-3+deb13u4",
+   "filename": "pool/main/g/gnutls28/libgnutls30t64_3.8.9-3+deb13u4_arm64.deb",
+   "sha256": "337ef41ab360015d051d6a07f85f8aa6706b35712e3dea23157eba9c902196e2",
+   "size": 1378804,
+   "installed": 3709952
+  },
+  {
+   "name": "libhwloc15",
+   "version": "2.12.0-4",
+   "filename": "pool/main/h/hwloc/libhwloc15_2.12.0-4_arm64.deb",
+   "sha256": "e34c74eee1a87dd2c823922ada975c7429ec4a47ece13196a4070297b3a5e332",
+   "size": 141600,
+   "installed": 415744
+  },
+  {
+   "name": "libxxhash0",
+   "version": "0.8.3-2",
+   "filename": "pool/main/x/xxhash/libxxhash0_0.8.3-2_arm64.deb",
+   "sha256": "66665776740ced6c5ddcb48a89a92b056d0dcb13851e1ff573d2b99b766e5c6c",
+   "size": 22276,
+   "installed": 90112
+  },
+  {
+   "name": "libhdf5-hl-310",
+   "version": "1.14.5+repack-3",
+   "filename": "pool/main/h/hdf5/libhdf5-hl-310_1.14.5+repack-3_arm64.deb",
+   "sha256": "9cd4c39e112efa226dd023888da969fcc679df58ff1adc6add68db5a01b09dd1",
+   "size": 66104,
+   "installed": 253952
+  },
+  {
+   "name": "libevent-core-2.1-7t64",
+   "version": "2.1.12-stable-10+b1",
+   "filename": "pool/main/libe/libevent/libevent-core-2.1-7t64_2.1.12-stable-10+b1_arm64.deb",
+   "sha256": "84a27a752d520df78bab24a499f66db21d5274803eb9a2e4d7f88554210f7dea",
+   "size": 125752,
+   "installed": 358400
+  },
+  {
+   "name": "libevent-pthreads-2.1-7t64",
+   "version": "2.1.12-stable-10+b1",
+   "filename": "pool/main/libe/libevent/libevent-pthreads-2.1-7t64_2.1.12-stable-10+b1_arm64.deb",
+   "sha256": "4fe9a2d4adda4c829aac325abfe2665afc24014798baf76b40b124770086dafa",
+   "size": 54440,
+   "installed": 143360
+  },
+  {
+   "name": "libfabric1",
+   "version": "2.1.0-1.1",
+   "filename": "pool/main/libf/libfabric/libfabric1_2.1.0-1.1_arm64.deb",
+   "sha256": "89c50de71be441ba6c0caf91825c10af11f3b375c7859227b45167f269d0e876",
+   "size": 547872,
+   "installed": 1651712
+  },
+  {
+   "name": "libnl-3-200",
+   "version": "3.7.0-2",
+   "filename": "pool/main/libn/libnl3/libnl-3-200_3.7.0-2_arm64.deb",
+   "sha256": "0489548a052d64b1acf7f61b0f08fd2da954b6fd6b9c729a4e740d7d39652d00",
+   "size": 57068,
+   "installed": 241664
+  },
+  {
+   "name": "libpmix2t64",
+   "version": "5.0.7-1",
+   "filename": "pool/main/p/pmix/libpmix2t64_5.0.7-1_arm64.deb",
+   "sha256": "20dddfa1b64b3726548d04f31690e8e78d441a6e3a6d486afbb6a81b0282f91b",
+   "size": 584656,
+   "installed": 2370560
+  },
+  {
+   "name": "libucx0",
+   "version": "1.18.1+ds-2+b1",
+   "filename": "pool/main/u/ucx/libucx0_1.18.1+ds-2+b1_arm64.deb",
+   "sha256": "c331d2385879c665bf7667a7e2b1350f8684c723acbfa849c4a20b6b50febd58",
+   "size": 1016308,
+   "installed": 3942400
+  },
+  {
+   "name": "libhwloc-plugins",
+   "version": "2.12.0-4",
+   "filename": "pool/main/h/hwloc/libhwloc-plugins_2.12.0-4_arm64.deb",
+   "sha256": "2ddeda5f672cecec691749a2a0fc57640b573e8bc3b5bd93b86557f11f3668f5",
+   "size": 18080,
+   "installed": 290816
+  },
+  {
+   "name": "proj-data",
+   "version": "9.6.0-1",
+   "filename": "pool/main/p/proj/proj-data_9.6.0-1_all.deb",
+   "sha256": "1b916075d1276853018c2dfb60eb3ea504e1bf5d312ff37d3805cca5243244b5",
+   "size": 6303116,
+   "installed": 24365056
+  },
+  {
+   "name": "libcairo2",
+   "version": "1.18.4-1+b1",
+   "filename": "pool/main/c/cairo/libcairo2_1.18.4-1+b1_arm64.deb",
+   "sha256": "de0e190f4566b51942387fb84fe85f064d23da896b8e2080930d53879a11630d",
+   "size": 483084,
+   "installed": 1379328
+  },
+  {
+   "name": "libxft2",
+   "version": "2.3.6-1+b4",
+   "filename": "pool/main/x/xft/libxft2_2.3.6-1+b4_arm64.deb",
+   "sha256": "c8053babb508229092aa98e80d9efb58eb157fe92781476edf5be2e21891c368",
+   "size": 51588,
+   "installed": 162816
+  },
+  {
+   "name": "libxss1",
+   "version": "1:1.2.3-1+b3",
+   "filename": "pool/main/libx/libxss/libxss1_1.2.3-1+b3_arm64.deb",
+   "sha256": "ffbdfe7ee0644984dfe7577a22edee74f1e3b2dd76721417c8e45aed9388a220",
+   "size": 17088,
+   "installed": 96256
+  },
+  {
+   "name": "libidn2-0",
+   "version": "2.3.8-2",
+   "filename": "pool/main/libi/libidn2/libidn2-0_2.3.8-2_arm64.deb",
+   "sha256": "d2e5cef812f15db1eeb35f0a193158ee102a9e94284036c0e293521f2761d2d7",
+   "size": 107232,
+   "installed": 452608
+  },
+  {
+   "name": "libldap2",
+   "version": "2.6.10+dfsg-1",
+   "filename": "pool/main/o/openldap/libldap2_2.6.10+dfsg-1_arm64.deb",
+   "sha256": "38fae6af20d41e4b0a8ea1b96d0b81a7a5551a61595bc866c9af870eadfdf1bd",
+   "size": 179312,
+   "installed": 589824
+  },
+  {
+   "name": "libnettle8t64",
+   "version": "3.10.1-1",
+   "filename": "pool/main/n/nettle/libnettle8t64_3.10.1-1_arm64.deb",
+   "sha256": "16107ce5a7b522da021fa8aba42d42af9c5e90ddabfcda3710aff6ea95808ee0",
+   "size": 310548,
+   "installed": 556032
+  },
+  {
+   "name": "libnghttp2-14",
+   "version": "1.64.0-1.1+deb13u1",
+   "filename": "pool/main/n/nghttp2/libnghttp2-14_1.64.0-1.1+deb13u1_arm64.deb",
+   "sha256": "ca222b98d5bef2193c05a1e736d0619798ba7a8f8e92526f3e1d06edcd0bf751",
+   "size": 71604,
+   "installed": 234496
+  },
+  {
+   "name": "libnghttp3-9",
+   "version": "1.8.0-1",
+   "filename": "pool/main/n/nghttp3/libnghttp3-9_1.8.0-1_arm64.deb",
+   "sha256": "26bfb8d1bead043f57d95663bab02f7611e7078fb7cf71383fa480c4b4c24d81",
+   "size": 63232,
+   "installed": 238592
+  },
+  {
+   "name": "libngtcp2-16",
+   "version": "1.11.0-1+deb13u1",
+   "filename": "pool/main/n/ngtcp2/libngtcp2-16_1.11.0-1+deb13u1_arm64.deb",
+   "sha256": "1ced2874229e4a503060c244730baf75e61b1d5444472b10e5022f1594f4ab88",
+   "size": 121080,
+   "installed": 371712
+  },
+  {
+   "name": "libngtcp2-crypto-gnutls8",
+   "version": "1.11.0-1+deb13u1",
+   "filename": "pool/main/n/ngtcp2/libngtcp2-crypto-gnutls8_1.11.0-1+deb13u1_arm64.deb",
+   "sha256": "4a220245385ec7222f4a20e444532808b90139b70ea9c7eeab179c927a27b37f",
+   "size": 28404,
+   "installed": 106496
+  },
+  {
+   "name": "libpsl5t64",
+   "version": "0.21.2-1.1+b1",
+   "filename": "pool/main/libp/libpsl/libpsl5t64_0.21.2-1.1+b1_arm64.deb",
+   "sha256": "7ea03d8a7d16edce7b1b1e94980c058c0f1fb3c595eb9154b0e8590d0e7f75af",
+   "size": 57076,
+   "installed": 159744
+  },
+  {
+   "name": "librtmp1",
+   "version": "2.4+20151223.gitfa8646d.1-2+b5",
+   "filename": "pool/main/r/rtmpdump/librtmp1_2.4+20151223.gitfa8646d.1-2+b5_arm64.deb",
+   "sha256": "20d52d20c4834158e956ae8e1d42a61d22330062052116d5422daa2d3b1d433b",
+   "size": 56840,
+   "installed": 159744
+  },
+  {
+   "name": "libssh2-1t64",
+   "version": "1.11.1-1+deb13u2",
+   "filename": "pool/main/libs/libssh2/libssh2-1t64_1.11.1-1+deb13u2_arm64.deb",
+   "sha256": "245565f4ce5493d67a3c54e26bc3d9cf28b1b70eeb912de7cda61af52268017d",
+   "size": 236268,
+   "installed": 484352
+  },
+  {
+   "name": "readline-common",
+   "version": "8.2-6",
+   "filename": "pool/main/r/readline/readline-common_8.2-6_all.deb",
+   "sha256": "f77e8aa0bf0de618f11cb0b21658a4ed60f177d63b3cf26d7fc3706b6d0eaaa9",
+   "size": 69360,
+   "installed": 91136
+  },
+  {
+   "name": "libblkid1",
+   "version": "2.41.5-0+deb13u1",
+   "filename": "pool/main/u/util-linux/libblkid1_2.41.5-0+deb13u1_arm64.deb",
+   "sha256": "d7d122b4c7a0a8ae6135a1687c9c4ce80a88f9e498c01998f634dd32caab9016",
+   "size": 166472,
+   "installed": 530432
+  },
+  {
+   "name": "libwayland-client0",
+   "version": "1.23.1-3",
+   "filename": "pool/main/w/wayland/libwayland-client0_1.23.1-3_arm64.deb",
+   "sha256": "8abdc649e46470548c545f827e16f52e1bc16d05d4a3794e6dedb2d74ce58c9a",
+   "size": 26140,
+   "installed": 88064
+  },
+  {
+   "name": "libxcb-dri3-0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-dri3-0_1.17.0-2+b1_arm64.deb",
+   "sha256": "247bf758dd78d6c285fdd47942ddacf4a3189fd50de4f0891c9bd9aea12da3a1",
+   "size": 107068,
+   "installed": 185344
+  },
+  {
+   "name": "libxcb-present0",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb-present0_1.17.0-2+b1_arm64.deb",
+   "sha256": "73521d715554a2230901d1d480465d6358b3083a5ce8801639595ffde6f31441",
+   "size": 105784,
+   "installed": 184320
+  },
+  {
+   "name": "libdrm-amdgpu1",
+   "version": "2.4.124-2",
+   "filename": "pool/main/libd/libdrm/libdrm-amdgpu1_2.4.124-2_arm64.deb",
+   "sha256": "e36c72774cc215818b48ee2174c7ad1d9a2bf89a09cdee7a7a128d288d8eef43",
+   "size": 21828,
+   "installed": 103424
+  },
+  {
+   "name": "libelf1t64",
+   "version": "0.192-4",
+   "filename": "pool/main/e/elfutils/libelf1t64_0.192-4_arm64.deb",
+   "sha256": "815b4265c7d6c89c5bbad456bdeed7af893da6912c9d16cf4c581001927c0e37",
+   "size": 189080,
+   "installed": 1273856
+  },
+  {
+   "name": "libsensors5",
+   "version": "1:3.6.2-2",
+   "filename": "pool/main/l/lm-sensors/libsensors5_3.6.2-2_arm64.deb",
+   "sha256": "7469f1ccce8afdba33d3b11847d0ecdf2221805a0694dee21ee4d622e8f72145",
+   "size": 36444,
+   "installed": 98304
+  },
+  {
+   "name": "libxshmfence1",
+   "version": "1.3.3-1",
+   "filename": "pool/main/libx/libxshmfence/libxshmfence1_1.3.3-1_arm64.deb",
+   "sha256": "34b494c83cebcf138d1f87c2cbdd5ee8efe9da2befbd69c2a025b0e214c64d2d",
+   "size": 11104,
+   "installed": 90112
+  },
+  {
+   "name": "lsb-base",
+   "version": "11.6",
+   "filename": "pool/main/l/lsb/lsb-base_11.6_all.deb",
+   "sha256": "f8bedd167280e76636df3a1bc023cd2906d458916c1af4c1d7912c5b971fc642",
+   "size": 4584,
+   "installed": 12288
+  },
+  {
+   "name": "libgudev-1.0-0",
+   "version": "238-6",
+   "filename": "pool/main/libg/libgudev/libgudev-1.0-0_238-6_arm64.deb",
+   "sha256": "f0fec02f1bbc0803c9d044413609d3cd0fde24bfe6a5141a38aabfa86c292b21",
+   "size": 13720,
+   "installed": 86016
+  },
+  {
+   "name": "libwacom-common",
+   "version": "2.14.0-1",
+   "filename": "pool/main/libw/libwacom/libwacom-common_2.14.0-1_all.deb",
+   "sha256": "214956bd9b26600c4d5ac0d60c1685be6ef650644e36b712620c56fccd4d4f58",
+   "size": 102748,
+   "installed": 1777664
+  },
+  {
+   "name": "libsystemd0",
+   "version": "257.13-1~deb13u1",
+   "filename": "pool/main/s/systemd/libsystemd0_257.13-1~deb13u1_arm64.deb",
+   "sha256": "d2f63c408549c29eaefb6f4c948393edce99f45ee8e43c991391bef63fb7d54b",
+   "size": 422500,
+   "installed": 1306624
+  },
+  {
+   "name": "libacl1",
+   "version": "2.3.2-2+b1",
+   "filename": "pool/main/a/acl/libacl1_2.3.2-2+b1_arm64.deb",
+   "sha256": "10b2399169e42e6d8db55944116cb2ed61caab997cf700acb83de0b0668e5721",
+   "size": 32216,
+   "installed": 104448
+  },
+  {
+   "name": "tk8.6-blt2.5",
+   "version": "2.5.3+dfsg-8",
+   "filename": "pool/main/b/blt/tk8.6-blt2.5_2.5.3+dfsg-8_arm64.deb",
+   "sha256": "9dcaea336bdcd8708dd85595980738ebba708897c9fd8b9e436d6ecf5c9dd101",
+   "size": 537472,
+   "installed": 2129920
+  },
+  {
+   "name": "libxxf86vm1",
+   "version": "1:1.1.4-1+b4",
+   "filename": "pool/main/libx/libxxf86vm/libxxf86vm1_1.1.4-1+b4_arm64.deb",
+   "sha256": "9ed4bb25e311486207eeaa609decc3905aa9071c4c7f2a605829e3a79ec88b83",
+   "size": 19176,
+   "installed": 94208
+  },
+  {
+   "name": "libgl1-mesa-dri",
+   "version": "25.0.7-2+deb13u1",
+   "filename": "pool/main/m/mesa/libgl1-mesa-dri_25.0.7-2+deb13u1_arm64.deb",
+   "sha256": "628245ff9d8e4f11edb66c0854915018402853e0eb588343d472111f6c4fb582",
+   "size": 45852,
+   "installed": 314368
+  },
+  {
+   "name": "libedit2",
+   "version": "3.1-20250104-1",
+   "filename": "pool/main/libe/libedit/libedit2_3.1-20250104-1_arm64.deb",
+   "sha256": "496c31df89fac9cb7e98102fcc21daf887376dcd9914f6322c86dd5bd4360ff1",
+   "size": 89296,
+   "installed": 313344
+  },
+  {
+   "name": "libz3-4",
+   "version": "4.13.3-1",
+   "filename": "pool/main/z/z3/libz3-4_4.13.3-1_arm64.deb",
+   "sha256": "29a7b924a5a38c9ac4e2a64aa11586a9c54f26b579b18e4f75adf8f7c1106e45",
+   "size": 7506868,
+   "installed": 26916864
+  },
+  {
+   "name": "libgpg-error0",
+   "version": "1.51-4",
+   "filename": "pool/main/libg/libgpg-error/libgpg-error0_1.51-4_arm64.deb",
+   "sha256": "f9a8ee3f325360dbbb1c98331c60c7aa454a054a8a4564bc36b3e52fb53e019e",
+   "size": 78544,
+   "installed": 241664
+  },
+  {
+   "name": "libkeyutils1",
+   "version": "1.6.3-6",
+   "filename": "pool/main/k/keyutils/libkeyutils1_1.6.3-6_arm64.deb",
+   "sha256": "5e680f317a6613161986417fb3ed63007c9228343f5ac2348551b103cc7fd7b4",
+   "size": 9716,
+   "installed": 87040
+  },
+  {
+   "name": "libaec0",
+   "version": "1.1.3-1+b1",
+   "filename": "pool/main/liba/libaec/libaec0_1.1.3-1+b1_arm64.deb",
+   "sha256": "aef40ab24351d980bb3f046779ba4b30026b263e69b0d79bf45e60d5a81adce8",
+   "size": 22544,
+   "installed": 94208
+  },
+  {
+   "name": "libavahi-common-data",
+   "version": "0.8-16",
+   "filename": "pool/main/a/avahi/libavahi-common-data_0.8-16_arm64.deb",
+   "sha256": "75d80488f931f6cc577aaf366b1a17099bd4d0c179dfd33d014f564094255da9",
+   "size": 112288,
+   "installed": 778240
+  },
+  {
+   "name": "libgmp10",
+   "version": "2:6.3.0+dfsg-3",
+   "filename": "pool/main/g/gmp/libgmp10_6.3.0+dfsg-3_arm64.deb",
+   "sha256": "a27bbc27f119161ea9702c8dd66f54131cdf0d2ca73000f50ea91ef2fdfef0fb",
+   "size": 535088,
+   "installed": 866304
+  },
+  {
+   "name": "libhogweed6t64",
+   "version": "3.10.1-1",
+   "filename": "pool/main/n/nettle/libhogweed6t64_3.10.1-1_arm64.deb",
+   "sha256": "cb92d5a51c4fd6c7b7cbb62aaa60c7af830d0bea5b410fb1f47ee685e26944d1",
+   "size": 331628,
+   "installed": 519168
+  },
+  {
+   "name": "libp11-kit0",
+   "version": "0.25.5-3",
+   "filename": "pool/main/p/p11-kit/libp11-kit0_0.25.5-3_arm64.deb",
+   "sha256": "78bfc746e68a5217e845f488f69100ed89d10c8886fbd3ffce937acb6a7d88fb",
+   "size": 409108,
+   "installed": 2111488
+  },
+  {
+   "name": "libtasn1-6",
+   "version": "4.20.0-2+deb13u1",
+   "filename": "pool/main/libt/libtasn1-6/libtasn1-6_4.20.0-2+deb13u1_arm64.deb",
+   "sha256": "e421da949cd26245f24c594265d6a01900b5e060e80793f68b977f7bfaa009ef",
+   "size": 47304,
+   "installed": 171008
+  },
+  {
+   "name": "libunistring5",
+   "version": "1.3-2",
+   "filename": "pool/main/libu/libunistring/libunistring5_1.3-2_arm64.deb",
+   "sha256": "4847467a0e47039837895e88f5a99a4a86a3d8266be40c3c896fc7c10d552dc7",
+   "size": 452856,
+   "installed": 2179072
+  },
+  {
+   "name": "ibverbs-providers",
+   "version": "56.1-1",
+   "filename": "pool/main/r/rdma-core/ibverbs-providers_56.1-1_arm64.deb",
+   "sha256": "76a9edb0c7a47163c37189ab38ad1deaf8b29eb696eef336c3b78e1669e38889",
+   "size": 332800,
+   "installed": 1718272
+  },
+  {
+   "name": "libibverbs1",
+   "version": "56.1-1",
+   "filename": "pool/main/r/rdma-core/libibverbs1_56.1-1_arm64.deb",
+   "sha256": "c3c57dcc2d4bf2ac2d73a4c93da3d0939198ad6f1de80f10b60b9042d33cbe54",
+   "size": 58884,
+   "installed": 193536
+  },
+  {
+   "name": "librdmacm1t64",
+   "version": "56.1-1",
+   "filename": "pool/main/r/rdma-core/librdmacm1t64_56.1-1_arm64.deb",
+   "sha256": "5e60c3b1ae5f0ac3e68afcf1af6531bd8da6b255f6703de42af5a53f5c3153ad",
+   "size": 67232,
+   "installed": 259072
+  },
+  {
+   "name": "libmunge2",
+   "version": "0.5.16-1.1~deb13u1",
+   "filename": "pool/main/m/munge/libmunge2_0.5.16-1.1~deb13u1_arm64.deb",
+   "sha256": "f4cf1a7046026aa25f6b7c5ae9b2bde8e860a000648e0dc28354cd207dbacb0e",
+   "size": 19428,
+   "installed": 89088
+  },
+  {
+   "name": "libamdhip64-5",
+   "version": "5.7.1-6+deb13u1",
+   "filename": "pool/main/r/rocm-hipamd/libamdhip64-5_5.7.1-6+deb13u1_arm64.deb",
+   "sha256": "064c95f94a15c127c21eaff9e29dd648f9c7c2b6da5fa40205784431a1d74d8d",
+   "size": 8824988,
+   "installed": 25159680
+  },
+  {
+   "name": "libfuse3-4",
+   "version": "3.17.2-3",
+   "filename": "pool/main/f/fuse3/libfuse3-4_3.17.2-3_arm64.deb",
+   "sha256": "66793b6b9a559e95a5ff853cbbff337076ef900c4b0d927f57fd986b3b1bea09",
+   "size": 93444,
+   "installed": 386048
+  },
+  {
+   "name": "libhsa-runtime64-1",
+   "version": "6.1.2-3",
+   "filename": "pool/main/r/rocr-runtime/libhsa-runtime64-1_6.1.2-3_arm64.deb",
+   "sha256": "3554b53a6a417b1601f424f12f6d5ae1577e7f599c531ddfe7e7eccd26f0bbfa",
+   "size": 301636,
+   "installed": 1157120
+  },
+  {
+   "name": "libibmad5",
+   "version": "56.1-1",
+   "filename": "pool/main/r/rdma-core/libibmad5_56.1-1_arm64.deb",
+   "sha256": "803d22434aa90928671dcf9fea0c35124320cc09a36752c65e922676ddb29dd9",
+   "size": 42416,
+   "installed": 188416
+  },
+  {
+   "name": "libibumad3",
+   "version": "56.1-1",
+   "filename": "pool/main/r/rdma-core/libibumad3_56.1-1_arm64.deb",
+   "sha256": "5fb0f3c4173c685221bc5e5620c577119346630302dc75a41b591c4b0449dabb",
+   "size": 28564,
+   "installed": 115712
+  },
+  {
+   "name": "libpciaccess0",
+   "version": "0.17-3+b3",
+   "filename": "pool/main/libp/libpciaccess/libpciaccess0_0.17-3+b3_arm64.deb",
+   "sha256": "2d22631116e5eb4f2e49e6b1ec2933c68d72e4e54c07cf7a17b82f8073db40b2",
+   "size": 51192,
+   "installed": 123904
+  },
+  {
+   "name": "libxnvctrl0",
+   "version": "535.171.04-1+b2",
+   "filename": "pool/main/libx/libxnvctrl/libxnvctrl0_535.171.04-1+b2_arm64.deb",
+   "sha256": "87a7c8e67630667d4b6067f956ab62211f26dee2005560cb6090df22b15b25c7",
+   "size": 14012,
+   "installed": 96256
+  },
+  {
+   "name": "ocl-icd-libopencl1",
+   "version": "2.3.3-1",
+   "filename": "pool/main/o/ocl-icd/ocl-icd-libopencl1_2.3.3-1_arm64.deb",
+   "sha256": "eadc1b9341c36dbac2ad2f1ae159f55533512cec888425d53e42abacd814742b",
+   "size": 42684,
+   "installed": 205824
+  },
+  {
+   "name": "libpixman-1-0",
+   "version": "0.44.0-3",
+   "filename": "pool/main/p/pixman/libpixman-1-0_0.44.0-3_arm64.deb",
+   "sha256": "b502cd8b1ece222f42b44c42c33a300d84152c20089660167b9422ad2ebb6132",
+   "size": 168440,
+   "installed": 683008
+  },
+  {
+   "name": "libsasl2-2",
+   "version": "2.1.28+dfsg1-9",
+   "filename": "pool/main/c/cyrus-sasl2/libsasl2-2_2.1.28+dfsg1-9_arm64.deb",
+   "sha256": "6431628c62524c8397255c1c4a7c7ef63661b801f3be9a59ad41e7a2e46e6210",
+   "size": 55628,
+   "installed": 184320
+  },
+  {
+   "name": "libsensors-config",
+   "version": "1:3.6.2-2",
+   "filename": "pool/main/l/lm-sensors/libsensors-config_3.6.2-2_all.deb",
+   "sha256": "3056da80c7d963af795dab480ab6f6f4b154ad4ac39f522dc52d17c834fea253",
+   "size": 16236,
+   "installed": 37888
+  },
+  {
+   "name": "sysvinit-utils",
+   "version": "3.14-4",
+   "filename": "pool/main/s/sysvinit/sysvinit-utils_3.14-4_arm64.deb",
+   "sha256": "1366e87a382a6b95a0a7c507b8f1be9b193f772f3428f9f7e0271a217915cfae",
+   "size": 33960,
+   "installed": 200704
+  },
+  {
+   "name": "libvulkan1",
+   "version": "1.4.309.0-1",
+   "filename": "pool/main/v/vulkan-loader/libvulkan1_1.4.309.0-1_arm64.deb",
+   "sha256": "f5f576d8b9e5703702a9f3254c8c5d130bef17da9db4aecd46ba86cec7a08930",
+   "size": 126808,
+   "installed": 625664
+  },
+  {
+   "name": "libbsd0",
+   "version": "0.12.2-2",
+   "filename": "pool/main/libb/libbsd/libbsd0_0.12.2-2_arm64.deb",
+   "sha256": "6827c1b3ad8dcbf3478803f9150359433e3376a3bde01c4503888a22eb3924e3",
+   "size": 128944,
+   "installed": 268288
+  },
+  {
+   "name": "adduser",
+   "version": "3.152",
+   "filename": "pool/main/a/adduser/adduser_3.152_all.deb",
+   "sha256": "e50984d2e1ef6300e3fd51303839842189a077b10cb5cadff1923df10c61c493",
+   "size": 190932,
+   "installed": 438272
+  },
+  {
+   "name": "libnl-route-3-200",
+   "version": "3.7.0-2",
+   "filename": "pool/main/libn/libnl3/libnl-route-3-200_3.7.0-2_arm64.deb",
+   "sha256": "86cd5b58c83cd70a834625f112a6c30da249bb842c4ac4daa44fd4c08298b7be",
+   "size": 167324,
+   "installed": 680960
+  },
+  {
+   "name": "libamd-comgr2",
+   "version": "6.0+git20231212.4510c28+dfsg-3+b2",
+   "filename": "pool/main/r/rocm-compilersupport/libamd-comgr2_6.0+git20231212.4510c28+dfsg-3+b2_arm64.deb",
+   "sha256": "c8e5a5edc8825ac96430d047b6e1c14046ff651a720ac6fb2be3bc22882fe50f",
+   "size": 12057764,
+   "installed": 61990912
+  },
+  {
+   "name": "libnuma1",
+   "version": "2.0.19-1",
+   "filename": "pool/main/n/numactl/libnuma1_2.0.19-1_arm64.deb",
+   "sha256": "23bd0d4ecdc8cb44438791c10aab969bc9eb11a4b635aae573376c4e23994ff5",
+   "size": 21612,
+   "installed": 89088
+  },
+  {
+   "name": "libhsakmt1",
+   "version": "6.2.4+ds-1",
+   "filename": "pool/main/r/roct-thunk-interface/libhsakmt1_6.2.4+ds-1_arm64.deb",
+   "sha256": "492d3d045b6eb5c2da9df35f24667fa39c02336fc344c4ddc701b5898f91e803",
+   "size": 58256,
+   "installed": 268288
+  },
+  {
+   "name": "libsasl2-modules-db",
+   "version": "2.1.28+dfsg1-9",
+   "filename": "pool/main/c/cyrus-sasl2/libsasl2-modules-db_2.1.28+dfsg1-9_arm64.deb",
+   "sha256": "ed6eb05f8ded71ab16a0369845805b373fc8a71c0e7d33f73fa2fb11e83a1977",
+   "size": 20144,
+   "installed": 108544
+  },
+  {
+   "name": "passwd",
+   "version": "1:4.17.4-2",
+   "filename": "pool/main/s/shadow/passwd_4.17.4-2_arm64.deb",
+   "sha256": "a6863055a3d53bf805dd0048b836e4b7a3d14a899b832a50d577b047da4202d8",
+   "size": 1205920,
+   "installed": 5444608
+  },
+  {
+   "name": "libllvm17t64",
+   "version": "1:17.0.6-22+b2",
+   "filename": "pool/main/l/llvm-toolchain-17/libllvm17t64_17.0.6-22+b2_arm64.deb",
+   "sha256": "f75e08ab89a4c2634a0c46661840b387e7977896687dea68493117442e3466bb",
+   "size": 21287716,
+   "installed": 118788096
+  },
+  {
+   "name": "base-passwd",
+   "version": "3.6.7",
+   "filename": "pool/main/b/base-passwd/base-passwd_3.6.7_arm64.deb",
+   "sha256": "c5755fd2cbf76961a1230e708b6bfc12c5400b57f3cd8a255675e9aa11d85848",
+   "size": 53392,
+   "installed": 307200
+  },
+  {
+   "name": "libpam-modules",
+   "version": "1.7.0-5",
+   "filename": "pool/main/p/pam/libpam-modules_1.7.0-5_arm64.deb",
+   "sha256": "3c6c4b0be396f2a90d150effd480e06674d7d22739fe4c54ffbf95587fe2bcf4",
+   "size": 172452,
+   "installed": 3128320
+  },
+  {
+   "name": "login.defs",
+   "version": "1:4.17.4-2",
+   "filename": "pool/main/s/shadow/login.defs_4.17.4-2_all.deb",
+   "sha256": "b4bbb8242cbf5588de7aafeb9d578a3dee1db2891f444ab454fd30bd80ccf2b4",
+   "size": 186124,
+   "installed": 219136
+  },
+  {
+   "name": "libattr1",
+   "version": "1:2.5.2-3",
+   "filename": "pool/main/a/attr/libattr1_2.5.2-3_arm64.deb",
+   "sha256": "25057d7bfba969a76cdf18ae88ce7ff6e664520726ddf02cdde97c03d5e9a43c",
+   "size": 22664,
+   "installed": 102400
+  },
+  {
+   "name": "libaudit1",
+   "version": "1:4.0.2-2+deb13u1",
+   "filename": "pool/main/a/audit/libaudit1_4.0.2-2+deb13u1_arm64.deb",
+   "sha256": "3472a1d77e36832ea0bb6509153c721ffc46a96aa0bc25073e7b95571df16196",
+   "size": 56900,
+   "installed": 227328
+  },
+  {
+   "name": "libcrypt1",
+   "version": "1:4.4.38-1",
+   "filename": "pool/main/libx/libxcrypt/libcrypt1_4.4.38-1_arm64.deb",
+   "sha256": "b9aaa808aa3812b3de3e54eb5dfb16762c1779db032604abef2354c02fdc29b8",
+   "size": 91760,
+   "installed": 232448
+  },
+  {
+   "name": "libpam0g",
+   "version": "1.7.0-5",
+   "filename": "pool/main/p/pam/libpam0g_1.7.0-5_arm64.deb",
+   "sha256": "2dd0fdc9af8a8a48f0a54581f74005d4d8623baa8aea9ac3d201624c3217b6d3",
+   "size": 68776,
+   "installed": 302080
+  },
+  {
+   "name": "libsemanage2",
+   "version": "3.8.1-1",
+   "filename": "pool/main/libs/libsemanage/libsemanage2_3.8.1-1_arm64.deb",
+   "sha256": "ed73a76d3c39ac5cbd0a447527bba3dc33d3ec3785af7583b70ab41f85fc0243",
+   "size": 87840,
+   "installed": 362496
+  },
+  {
+   "name": "libdebconfclient0",
+   "version": "0.280",
+   "filename": "pool/main/c/cdebconf/libdebconfclient0_0.280_arm64.deb",
+   "sha256": "8c2976dc62d0f5133018ea62636105335f9b17da77adce7fed1ffb24e2533dba",
+   "size": 10784,
+   "installed": 92160
+  },
+  {
+   "name": "libpam-modules-bin",
+   "version": "1.7.0-5",
+   "filename": "pool/main/p/pam/libpam-modules-bin_1.7.0-5_arm64.deb",
+   "sha256": "8c50ad191934474b5177cba48aed2c4023ec8392ef7096808311315c50b3bfec",
+   "size": 48272,
+   "installed": 456704
+  },
+  {
+   "name": "libaudit-common",
+   "version": "1:4.0.2-2+deb13u1",
+   "filename": "pool/main/a/audit/libaudit-common_4.0.2-2+deb13u1_all.deb",
+   "sha256": "b9d32e5ff04fd747aacb7d6b3ebbbbf734ddefb2f1695f0b1b2a4b5e51b1052e",
+   "size": 12812,
+   "installed": 25600
+  },
+  {
+   "name": "libcap-ng0",
+   "version": "0.8.5-4+b1",
+   "filename": "pool/main/libc/libcap-ng/libcap-ng0_0.8.5-4+b1_arm64.deb",
+   "sha256": "eb6da83296e4710a8600c1426692ed9b9eadcab7ebd36dbabc2a562b5c1ab691",
+   "size": 17032,
+   "installed": 157696
+  },
+  {
+   "name": "libsemanage-common",
+   "version": "3.8.1-1",
+   "filename": "pool/main/libs/libsemanage/libsemanage-common_3.8.1-1_all.deb",
+   "sha256": "65375d886749c236bd1da4d9990b7c2469d2fe66019a28e5614f6814376d3dcb",
+   "size": 7812,
+   "installed": 21504
+  },
+  {
+   "name": "libsepol2",
+   "version": "3.8.1-1",
+   "filename": "pool/main/libs/libsepol/libsepol2_3.8.1-1_arm64.deb",
+   "sha256": "0119cbb4d12a6b5093430a00714019bac87a446f34f21d834453742f1af35b8b",
+   "size": 266256,
+   "installed": 883712
+  }
+ ]
+}

@@ -1,0 +1,141 @@
+#!{{PREFIX}}/bin/bash
+# lmms — 无头跑 LMMS 1.2（.mmp 工程 → WAV）
+#
+#   lmms -r project.mmp -o out.wav
+#   lmms --selftest
+#
+# LMMS 不在 Termux 官方仓库，来自 Debian trixie arm64。首次运行把包清单里的
+# 183 个包装到 ~/.cccodroid/lmms/debroot（下载约 109 MB，解开约 417 MB，
+# 逐个核对 SHA256）。glibc 用工具包的 $PREFIX/glibc。Qt 走 offscreen 平台，
+# 不需要屏幕。
+#
+# 其余参数原样交给 lmms。渲染时用 `-r 工程 -o 输出`；工程里的乐器/样本路径
+# 相对于工程文件，AI 写工程时建议把样本和 .mmp 放在同一目录。
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=lmms
+ROOT="${CCODROID_LMMS_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_LMMS_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+B="$ROOT/debroot"
+LIBDIR="$PREFIX/share/cccodroid/components/$ID"
+LDSO="$PREFIX/glibc/lib/ld-linux-aarch64.so.1"
+[ -x "$LDSO" ] || LDSO="$PREFIX/glibc/glibc/lib/ld-linux-aarch64.so.1"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+if ! ls "$ROOT"/installed-*.json >/dev/null 2>&1; then
+  echo "lmms 首次运行：从 Debian 官方仓库下载 183 个包（约 109 MB，解开约 417 MB），" >&2
+  echo "  逐个核对 SHA256，装到 $B；.deb 留在 $ROOT/debcache，重装不用再下。" >&2
+  python3 "$LIBDIR/debroot.py" --root "$B" --lock "$LIBDIR/debs.json" || {
+    echo "✗ lmms 运行根没装成" >&2; exit 1; }
+fi
+
+[ -x "$B/usr/bin/lmms" ] || { echo "✗ 找不到 $B/usr/bin/lmms —— 运行根不完整，删掉 $ROOT 再试" >&2; exit 1; }
+[ -x "$LDSO" ] || { echo "✗ 找不到 glibc 加载器 $LDSO（工具包缺 glibc？重装工具包）" >&2; exit 1; }
+
+LIB="$B/usr/lib/aarch64-linux-gnu:$B/usr/lib:$B/lib"
+while IFS= read -r d; do
+  case "$d" in *python3*|*lib-dynload*) continue ;; esac
+  ls "$d"/*.so* >/dev/null 2>&1 && LIB="$LIB:$d"
+done < <(find "$B/usr/lib" "$B/lib" -type d 2>/dev/null)
+LIB="$LIB:$PREFIX/glibc/lib"
+
+export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-offscreen}"
+# Debian 把乐器/效果插件装在多架构目录（usr/lib/aarch64-linux-gnu/lmms），
+# 而 lmms 自己只找 ../lib/lmms —— 不指路就一个插件都加载不了，渲染出来全是静音。
+export LMMS_PLUGIN_DIR="$B/usr/lib/aarch64-linux-gnu/lmms"
+export LMMS_DATA_DIR="$B/usr/share/lmms"
+export LADSPA_PATH="$B/usr/lib/ladspa:$B/usr/lib/aarch64-linux-gnu/ladspa${LADSPA_PATH:+:$LADSPA_PATH}"
+export XDG_DATA_DIRS="$B/usr/share:/system/usr/share"
+export FONTCONFIG_PATH="$B/etc/fonts"
+[ -f "$B/etc/fonts/fonts.conf" ] && export FONTCONFIG_FILE="$B/etc/fonts/fonts.conf"
+
+selftest() {
+  local t rc=0 ver vol
+  t="$(mktemp -d "$TMP/lmms-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  # 最小 .mmp：一个 TripleOscillator 音轨 + 四个音符（C E G C），120 BPM
+  cat > "$t/min.mmp" <<'MMP'
+<?xml version="1.0"?>
+<!DOCTYPE lmms-project>
+<lmms-project type="song" version="1.0" creator="LMMS" creatorversion="1.2.2">
+  <head timesig_numerator="4" timesig_denominator="4" bpm="120" mastervol="100" masterpitch="0"/>
+  <song>
+    <trackcontainer visible="1" width="600" height="300" type="song" x="6" y="5" maximized="0" minimized="0">
+      <track type="0" muted="0" name="Lead" solo="0">
+        <instrumenttrack pitch="0" fxch="0" basenote="57" usemasterpitch="1" pitchrange="1" vol="100" pan="0">
+          <instrument name="tripleoscillator">
+            <tripleoscillator wavetype0="0" wavetype1="0" wavetype2="0" vol0="200" vol1="0" vol2="0"
+              coarse0="0" coarse1="0" coarse2="0" finer0="0" finer1="0" finer2="0"
+              finel0="0" finel1="0" finel2="0" phoffset0="0" phoffset1="0" phoffset2="0"
+              stphdetun0="0" stphdetun1="0" stphdetun2="0" modalgo1="0" modalgo2="0" modalgo3="0"
+              pan0="0" pan1="0" pan2="0" userwavefile0="" userwavefile1="" userwavefile2=""/>
+          </instrument>
+          <eldata ftype="0" fres="0.5" fcut="14000" fwet="0">
+            <elvol att="0" dec="0.5" sustain="0.5" rel="0.1" amt="0" lspd="0.1" lamt="0" lshp="0" ctlenvamt="0" pdel="0" lpdel="0" hold="0.5" x100="0" syncmode="0" latt="0" userwavefile="" lspd_numerator="1" lspd_denominator="1"/>
+            <elcut att="0" dec="0.5" sustain="0.5" rel="0.1" amt="0" lspd="0.1" lamt="0" lshp="0" ctlenvamt="0" pdel="0" lpdel="0" hold="0.5" x100="0" syncmode="0" latt="0" userwavefile="" lspd_numerator="1" lspd_denominator="1"/>
+            <elres att="0" dec="0.5" sustain="0.5" rel="0.1" amt="0" lspd="0.1" lamt="0" lshp="0" ctlenvamt="0" pdel="0" lpdel="0" hold="0.5" x100="0" syncmode="0" latt="0" userwavefile="" lspd_numerator="1" lspd_denominator="1"/>
+          </eldata>
+          <chordcreator chord="0" chordrange="1" chord-enabled="0"/>
+          <arpeggiator arp="0" arptime_numerator="4" arptime_denominator="4" arprange="1" arpmode="0" arptime="100" arpdir="0" arpgate="100" syncmode="0" arp-enabled="0"/>
+          <midiport outputchannel="1" outputcontroller="0" basevelocity="127" outputprogram="1" fixedinputvelocity="-1" fixedoutputvelocity="-1" fixedoutputnote="-1" inputchannel="0" inputcontroller="0" readable="0" writable="0"/>
+          <fxchain numofeffects="0" enabled="0"/>
+        </instrumenttrack>
+        <pattern len="192" muted="0" name="Lead" steps="16" pos="0" type="1">
+          <note len="48" key="60" vol="100" pos="0" pan="0"/>
+          <note len="48" key="64" vol="100" pos="48" pan="0"/>
+          <note len="48" key="67" vol="100" pos="96" pan="0"/>
+          <note len="48" key="72" vol="100" pos="144" pan="0"/>
+        </pattern>
+      </track>
+    </trackcontainer>
+    <fxmixer visible="1" width="561" height="332" x="5" y="310" maximized="0" minimized="0">
+      <fxchannel num="0" muted="0" volume="1" name="Master" soloed="0"><fxchain numofeffects="0" enabled="0"/></fxchannel>
+    </fxmixer>
+    <timeline lp0pos="0" lp1pos="192" lpstate="0"/>
+  </song>
+</lmms-project>
+MMP
+  if ! "$0" -r "$t/min.mmp" -o "$t/out.wav" >"$t/log" 2>&1; then
+    echo "✗ LMMS 渲染失败："; tail -12 "$t/log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.wav" ] && [ "$(head -c 4 "$t/out.wav")" = "RIFF" ]; then
+    echo "✓ 渲染出 WAV：$(stat -c%s "$t/out.wav") 字节"
+    if command -v ffmpeg >/dev/null 2>&1; then
+      vol=$(ffmpeg -hide_banner -i "$t/out.wav" -af volumedetect -f null - 2>&1 | sed -n 's/.*mean_volume: \([-0-9.]*\) dB.*/\1/p' | head -1)
+      if [ -n "$vol" ] && awk "BEGIN{exit !($vol > -60)}"; then
+        echo "✓ 有实际声音：mean_volume ${vol} dB"
+      else
+        echo "✗ WAV 是静音（mean_volume ${vol:-?} dB）"; rc=1
+      fi
+    fi
+  else
+    echo "✗ 没有生成合法 WAV"; tail -12 "$t/log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  ver=$("$0" --version 2>/dev/null | sed -n '1p')
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== lmms=OK wav=OK 版本=$ver"
+  else echo "===== 总结 ===== lmms=FAIL"; fi
+  return $rc
+}
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help)
+    sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'
+    echo; echo "（--help 显示的是本包装脚本的说明；LMMS 自己的选项见 lmms --help，会照常透传。）"
+    exit 0 ;;
+esac
+
+unset LD_PRELOAD LD_AUDIT LD_DEBUG 2>/dev/null
+# LMMS 拒绝以 root 运行（CI 的 termux-docker 就是 root），它自己的开关是 --allowroot。
+# 手机上正常是应用 uid，不受影响；容器里不加这一条会直接 "LMMS cannot be run as root."。
+EXTRA=()
+[ "$(id -u 2>/dev/null)" = 0 ] && EXTRA=(--allowroot)
+exec "$LDSO" --library-path "$LIB" "$B/usr/bin/lmms" "${EXTRA[@]}" "$@"

@@ -1,0 +1,9 @@
+GIMP 组件 — 第三方软件与许可
+
+GIMP 3.2.8
+  上游：https://www.gimp.org
+  许可：GPL-3.0-or-later
+  来源：Termux x11 仓库，随组件打包
+
+Python-Fu（GIMP 的 python-eval 插件）与 PyGObject 由 GIMP 包及它的依赖提供，
+许可分别见包内 copyright；组件只带一个 gimp-batch 包装脚本。

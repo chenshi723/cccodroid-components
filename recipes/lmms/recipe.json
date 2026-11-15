@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "id": "lmms",
+  "kind": "glibc",
+  "revision": 1,
+  "version": "1.2.2",
+  "name": {
+    "zh": "LMMS 1.2.2（写 .mmp 工程 → 渲染 WAV）",
+    "en": "LMMS 1.2.2 (.mmp project to WAV)"
+  },
+  "desc": {
+    "zh": "把一首曲子写成 XML 工程（.mmp），用 LMMS 的合成器、采样器、鼓机和效果器渲染成 WAV/OGG/MP3。工程里可以放 TripleOscillator/Monstro 等内置乐器、AudioFileProcessor 采样、自动化包络和 FX 链；命令行渲染不需要图形界面。Termux 官方仓库没有 LMMS，这是 Debian trixie 的 lmms 1.2.2 无头运行：首次运行从 Debian 官方仓库取 183 个包（下载约 109 MB，解开约 417 MB，逐个核对 SHA256）装到应用私有目录，glibc 用工具包自带的。包装脚本把 Debian 的多架构插件目录指给 LMMS（不指的话乐器一个都加载不了，渲染出来全是静音），Qt 走 offscreen，不需要屏幕。",
+    "en": "Write a piece as an XML project (.mmp) and render it to WAV/OGG/MP3 with LMMS's synths, samplers, drum machine and effects. Projects can use built-in instruments such as TripleOscillator/Monstro, AudioFileProcessor samples, automation envelopes and FX chains; command-line rendering needs no GUI. LMMS is not in the official Termux repository, so this is a headless run of Debian trixie's lmms 1.2.2: on first use it fetches 183 packages from the official Debian archive (about 109 MB download / 417 MB unpacked, each verified against its SHA256) into the app's private storage, using the toolkit's glibc. The wrapper points LMMS at Debian's multiarch plugin directory (without it no instrument plugin loads and every render comes out silent) and runs Qt offscreen — no screen required."
+  },
+  "roots": [
+    "glibc"
+  ],
+  "bin": [
+    "lmms"
+  ],
+  "selftest": "lmms --selftest",
+  "needs": {
+    "shizuku": false,
+    "display": false,
+    "gpu": false
+  },
+  "category": "media",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://lmms.io",
+  "maintainers": [
+    "greyoak111"
+  ],
+  "files": {
+    "usr/bin/lmms": {
+      "src": "bin/lmms",
+      "mode": "755"
+    },
+    "usr/share/cccodroid/components/lmms/debroot.py": {
+      "src": "lib/debroot.py",
+      "mode": "644"
+    },
+    "usr/share/cccodroid/components/lmms/debs.json": {
+      "src": "lib/debs.json",
+      "mode": "644"
+    }
+  },
+  "notes": "Debian trixie 的 lmms 1.2.2+dfsg1-6（Termux 官方仓库没有）。183 个包、下载约 109 MB、解开约 417 MB，清单和 SHA256 来自 deb.debian.org 的 trixie/main/binary-arm64 Packages（2026-11-16 取），安装时只按清单下载、不解析索引，镜像 deb.debian.org → ftp.debian.org → 清华 → 中科大 回退。关键适配：①插件目录——Debian 把 LMMS 插件装在 usr/lib/aarch64-linux-gnu/lmms，而 LMMS 只找二进制旁边的 ../lib/lmms；不设 LMMS_PLUGIN_DIR 时 --version 正常、渲染也「成功」，但乐器插件一个都不加载，WAV 全零（实测 mean_volume -91 dB），包装脚本显式指到多架构目录后才出声音（-4.1 dB）。②Qt 走 QT_QPA_PLATFORM=offscreen，不需要 X 或 Xvfb。③LD_PRELOAD 里的 termux-exec 是 bionic 库，glibc 加载器看到会报 version 'LIBC' not found，exec 前必须清掉。另外设 LMMS_DATA_DIR 指到 debroot 的 share/lmms（项目模板、预设、STK 波形），LADSPA_PATH 指到 Debian 的 ladspa 目录。LMMS 拒绝以 root 运行（CI 的 termux-docker 是 root），包装脚本检测到 uid 0 时自动加 `--allowroot`；手机上正常是应用 uid，不受影响。selftest 用内联的最小 .mmp（一个 TripleOscillator 音轨、C-E-G-C 四个音符）真渲染 WAV，用 ffmpeg volumedetect 确认不是静音；不联网（首次安装除外）、只写 $TMPDIR。"
+}

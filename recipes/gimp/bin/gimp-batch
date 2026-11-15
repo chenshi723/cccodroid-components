@@ -1,0 +1,93 @@
+#!{{PREFIX}}/bin/bash
+# gimp-batch — 无头跑 GIMP 3 的 Python-Fu 批处理
+#
+#   gimp-batch script.py [GIMP 的其它参数…]
+#   gimp-batch - < script.py
+#   gimp-batch --selftest
+#
+# 等价于：
+#   gimp -i -d -f -c --quit --batch-interpreter=python-fu-eval -b - < script.py
+#
+# 说明：
+#   · -i 无界面、-d 不加载画笔/渐变、-f 不加载字体、--quit 批处理跑完退出 ——
+#     少了 --quit，GIMP 会留在后台等信号，Claude 的 Bash 命令会一直卡着。
+#   · 脚本里用 `from gi.repository import Gimp, Gegl, Gio`（模块名是 Gimp，不是 gimp）。
+#   · 不要在自己的脚本里调 Gimp.quit()：批处理命令会变成「没有返回值」而报错；
+#     退出交给 --quit。
+#   · GIMP 的配置和缓存写到组件私有目录（$HOME/.cccodroid/gimp/home），不碰用户配置。
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=gimp
+ROOT="${CCODROID_GIMP_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_GIMP_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+GIMP="$PREFIX/bin/gimp"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" "$ROOT/cache" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+run_script() {   # $1 = 脚本文件
+  "$GIMP" -i -d -f -c --quit --batch-interpreter=python-fu-eval -b - < "$1"
+}
+
+selftest() {
+  local t rc=0 ver
+  t="$(mktemp -d "$TMP/gimp-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  [ -x "$GIMP" ] || { echo "✗ 找不到 $GIMP —— gimp 组件没装好？"; rm -rf "$t"; return 1; }
+  cat > "$t/test.py" <<PY
+import gi
+gi.require_version('Gimp', '3.0')
+gi.require_version('Gegl', '0.4')
+from gi.repository import Gimp, Gegl, Gio
+img = Gimp.Image.new(128, 96, Gimp.ImageBaseType.RGB)
+layer = Gimp.Layer.new(img, "bg", 128, 96, Gimp.ImageType.RGBA_IMAGE, 100.0, Gimp.LayerMode.NORMAL)
+img.insert_layer(layer, None, 0)
+Gimp.context_set_foreground(Gegl.Color.new("#3380e6"))
+layer.edit_fill(Gimp.FillType.FOREGROUND)
+ok = Gimp.file_save(Gimp.RunMode.NONINTERACTIVE, img, Gio.File.new_for_path("$t/out.png"), None)
+print("GIMP_SAVED", ok)
+PY
+  if ! run_script "$t/test.py" >"$t/log" 2>&1; then
+    echo "✗ GIMP 批处理失败："; tail -12 "$t/log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.png" ] && [ "$(head -c 8 "$t/out.png" | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a" ]; then
+    echo "✓ Python-Fu 生成 PNG：$(stat -c%s "$t/out.png") 字节"
+  else
+    echo "✗ 没有生成合法 PNG"; tail -12 "$t/log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  if ! grep -q 'GIMP_SAVED True' "$t/log"; then
+    echo "✗ 脚本里 Gimp.file_save 没返回 True"; rc=1
+  fi
+  ver=$("$GIMP" --version 2>/dev/null | sed -n 's/^GNU Image Manipulation Program version //p' | head -1)
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== gimp=OK python-fu=OK png=OK 版本=$ver"
+  else echo "===== 总结 ===== gimp=FAIL"; fi
+  return $rc
+}
+
+usage() { sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//'; }
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help) usage; exit 0 ;;
+  "") usage >&2; exit 2 ;;
+esac
+
+IN="$1"; shift
+if [ "$IN" = "-" ]; then
+  SCRIPT="$(mktemp "$TMP/gimp-batch.XXXXXX")" || exit 1
+  cat > "$SCRIPT"
+else
+  [ -f "$IN" ] || { echo "gimp-batch: 找不到脚本：$IN" >&2; exit 1; }
+  SCRIPT="$IN"
+fi
+
+"$GIMP" -i -d -f -c --quit --batch-interpreter=python-fu-eval -b - "$@" < "$SCRIPT"
+rc=$?
+[ "$IN" = "-" ] && rm -f "$SCRIPT"
+exit $rc

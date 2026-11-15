@@ -1,0 +1,12 @@
+LMMS 组件 — 第三方软件与许可
+
+LMMS 1.2.2
+  上游：https://lmms.io / https://github.com/LMMS/lmms
+  许可：GPL-2.0-or-later（见 Debian 包内 /usr/share/doc/lmms/copyright）
+  来源：Debian trixie arm64 官方仓库（deb.debian.org），首次运行时下载
+  组件里不含 LMMS 二进制，只带包清单（lib/debs.json）与安装脚本。
+
+Debian 运行根里的依赖包（Qt 5、SDL、ALSA/PulseAudio 客户端库、ffmpeg 库、
+libsndfile、LADSPA 插件等）各自保留上游许可与版权声明；每个 .deb 解出来的
+/usr/share/doc/<包>/copyright 就是该包的许可原文，随安装一起落到
+$HOME/.cccodroid/lmms/debroot/usr/share/doc/ 下。

@@ -1,0 +1,26 @@
+MLT / melt 组件 — 第三方软件与许可
+
+MLT 7.42.0（含 melt）
+  上游：https://www.mltframework.org
+  许可：LGPL-2.1-or-later
+  来源：Termux x11 仓库，随组件打包
+
+Xvfb（xorg-server-xvfb）
+  上游：https://xorg.freedesktop.org
+  许可：MIT / X11 系列
+  来源：Termux x11 仓库，随组件打包；只在渲染期间起一个假显示
+
+libicu 79.1（随组件分发，装在 $PREFIX/lib/cccodroid/icu79）
+  上游：https://icu.unicode.org
+  许可：Unicode License v3（LICENSE 随库放在 usr/lib/cccodroid/icu79/LICENSE）
+  来源：Termux 官方 main 仓库
+        packages.termux.dev/apt/termux-main/pool/main/libi/libicu/libicu_79.1_aarch64.deb
+        （sha256 83c980a010e957738e3567127801d66a1b9bd7e404a4fda98788048ee57d606c）
+  提取：data.tar 里的 libicuuc / libicui18n / libicudata / libicuio / libicutu
+        的 79.1 实体文件与 .so.79 软链；只把二进制 RUNPATH 里的
+        /data/data/com.termux/ 等长替换成 /data/data/cc.codroid/，代码未改。
+  打包资产：github.com/greyoak111/termux-icu79 的 v79.1 Release
+        （sha256 854f0dec…eb75，build.sh 可逐字节复现）。
+  不覆盖工具包里的 ICU 78；底座升到 79 后包装脚本自动改用底座的。
+
+MLT 闭包里的 Qt6、ffmpeg 库等各自保留上游许可与版权声明，随组件安装。

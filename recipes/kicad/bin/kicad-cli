@@ -1,0 +1,133 @@
+#!{{PREFIX}}/bin/bash
+# kicad-cli — 无头跑 KiCad（.kicad_pcb → Gerber / 钻孔 / SVG / 3D 等）
+#
+#   kicad-cli pcb export gerbers -o outdir/ board.kicad_pcb
+#   kicad-cli pcb export drill -o outdir/ board.kicad_pcb
+#   kicad-cli pcb export svg -o board.svg board.kicad_pcb
+#   kicad-cli --selftest
+#
+# KiCad 不在 Termux 官方仓库，来自 Debian trixie arm64（只装 kicad 主包和依赖，
+# 不带体积巨大的符号库/封装库/3D 模型库）。首次运行把包清单里的 264 个包装到
+# ~/.cccodroid/kicad/debroot（下载约 181 MB，解开约 817 MB，逐个核对 SHA256）。
+# glibc 用工具包的 $PREFIX/glibc。
+#
+# 为什么多一步「复制 + patchelf」：KiCad 用 /proc/self/exe 的目录找 _pcbnew.kiface，
+# 经 glibc 加载器启动时它看到的是 ld-linux 所在目录（$PREFIX/glibc/lib），
+# 报 Failed to load kiface。把 kicad-cli 复制一份、把解释器改成工具包的 glibc
+# 加载器后直接执行，/proc/self/exe 就是 debroot/usr/bin 里的副本，旁边的
+# _pcbnew.kiface 软链正好能找到。另外 KiCad 的数据目录编译死在 /usr/share/kicad，
+# 用官方支持的 KICAD_STOCK_DATA_HOME 指到 debroot。
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=kicad
+ROOT="${CCODROID_KICAD_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_KICAD_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+B="$ROOT/debroot"
+LIBDIR="$PREFIX/share/cccodroid/components/$ID"
+LDSO="$PREFIX/glibc/lib/ld-linux-aarch64.so.1"
+[ -x "$LDSO" ] || LDSO="$PREFIX/glibc/glibc/lib/ld-linux-aarch64.so.1"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+if ! ls "$ROOT"/installed-*.json >/dev/null 2>&1; then
+  echo "kicad-cli 首次运行：从 Debian 官方仓库下载 264 个包（约 181 MB，解开约 817 MB），" >&2
+  echo "  逐个核对 SHA256，装到 $B；.deb 留在 $ROOT/debcache，重装不用再下。" >&2
+  echo "  （不含符号库/封装库/3D 模型库；需要时另行下载，见技能文档。）" >&2
+  python3 "$LIBDIR/debroot.py" --root "$B" --lock "$LIBDIR/debs.json" || {
+    echo "✗ KiCad 运行根没装成" >&2; exit 1; }
+fi
+
+SRC="$B/usr/bin/kicad-cli"
+RUN="$B/usr/bin/kicad-cli-cccmd"
+[ -x "$SRC" ] || { echo "✗ 找不到 $SRC —— 运行根不完整，删掉 $ROOT 再试" >&2; exit 1; }
+[ -x "$LDSO" ] || { echo "✗ 找不到 glibc 加载器 $LDSO（工具包缺 glibc？重装工具包）" >&2; exit 1; }
+[ -e "$B/usr/share/kicad/schemas" ] || [ -e "$B/usr/share/kicad" ] || {
+  echo "✗ 找不到 $B/usr/share/kicad —— 运行根不完整，删掉 $ROOT 再试" >&2; exit 1; }
+
+if [ ! -x "$RUN" ] || [ "$SRC" -nt "$RUN" ]; then
+  command -v patchelf >/dev/null 2>&1 || {
+    echo "✗ 需要 patchelf 改 kicad-cli 入口的解释器（工具包里的调试工具）；先 pkg install patchelf" >&2
+    exit 1; }
+  cp "$SRC" "$RUN" || { echo "✗ 复制 kicad-cli 入口失败" >&2; exit 1; }
+  patchelf --set-interpreter "$LDSO" "$RUN" || { echo "✗ patchelf 失败" >&2; exit 1; }
+  chmod 755 "$RUN"
+fi
+
+LIB="$B/usr/lib/aarch64-linux-gnu:$B/usr/lib:$B/lib:$B/usr/lib/kicad"
+while IFS= read -r d; do
+  case "$d" in *python3*|*lib-dynload*) continue ;; esac
+  ls "$d"/*.so* >/dev/null 2>&1 && LIB="$LIB:$d"
+done < <(find "$B/usr/lib" "$B/lib" -type d 2>/dev/null)
+LIB="$LIB:$PREFIX/glibc/lib"
+[ -f "$B/etc/fonts/fonts.conf" ] && export FONTCONFIG_FILE="$B/etc/fonts/fonts.conf"
+
+selftest() {
+  local t rc=0 ver
+  t="$(mktemp -d "$TMP/kicad-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  cat > "$t/board.kicad_pcb" <<'PCB'
+(kicad_pcb (version 20240108) (generator pcbnew)
+  (general (thickness 1.6))
+  (paper "A4")
+  (layers (0 "F.Cu" signal) (31 "B.Cu" signal) (44 "Edge.Cuts" user))
+  (setup (pad_to_mask_clearance 0))
+  (gr_rect (start 10 10) (end 60 40)
+    (stroke (width 0.1) (type solid)) (fill none) (layer "Edge.Cuts"))
+  (footprint "Test:Test" (layer "F.Cu") (at 30 25)
+    (fp_rect (start -5 -5) (end 5 5)
+      (stroke (width 0.1) (type solid)) (fill none) (layer "F.CrtYd"))
+    (pad "1" thru_hole circle (at 0 0) (size 2 2) (drill 1) (layers "*.Cu" "*.Mask"))
+  )
+)
+PCB
+  mkdir -p "$t/gerbers" "$t/drills"
+  if ! "$0" pcb export gerbers -o "$t/gerbers" "$t/board.kicad_pcb" >"$t/log" 2>&1; then
+    echo "✗ 导出 Gerber 失败："; tail -12 "$t/log" | sed 's/^/    /'; rc=1
+  fi
+  local f ok=1
+  for f in board-F_Cu.gtl board-B_Cu.gbl board-Edge_Cuts.gm1 board-job.gbrjob; do
+    [ -s "$t/gerbers/$f" ] || { echo "✗ 缺少 $f"; ok=0; rc=1; }
+  done
+  if [ $ok -eq 1 ]; then
+    echo "✓ 导出 Gerber：$(ls "$t/gerbers" | wc -l) 个文件 · F_Cu $(stat -c%s "$t/gerbers/board-F_Cu.gtl") 字节"
+  fi
+  if ! "$0" pcb export drill -o "$t/drills/" "$t/board.kicad_pcb" >"$t/log2" 2>&1; then
+    echo "✗ 导出钻孔失败："; tail -12 "$t/log2" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/drills/board.drl" ] && [ "$(head -1 "$t/drills/board.drl")" = "M48" ]; then
+    echo "✓ 导出钻孔：board.drl $(stat -c%s "$t/drills/board.drl") 字节"
+  else
+    echo "✗ 没有生成合法钻孔文件"; tail -8 "$t/log2" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  ver=$("$0" --version 2>/dev/null | tail -1)
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== kicad-cli=OK gerber=OK drill=OK 版本=$ver"
+  else echo "===== 总结 ===== kicad-cli=FAIL"; fi
+  return $rc
+}
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help)
+    sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
+    echo
+    echo "（--help 显示的是本包装脚本的说明；kicad-cli 自己的子命令见 kicad-cli --help，会照常透传。）"
+    exit 0 ;;
+  "") sed -n '3,7p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
+esac
+
+# KiCad 是 glibc 程序：这些变量只在 exec 时给它，不 export ——
+# 否则包装脚本自己用的 bionic 工具也会去找 glibc 的 libc。
+unset LD_PRELOAD LD_AUDIT LD_DEBUG 2>/dev/null
+exec env -u LD_PRELOAD LD_LIBRARY_PATH="$LIB" \
+  KICAD_STOCK_DATA_HOME="$B/usr/share/kicad" \
+  KICAD_CONFIG_HOME="$ROOT/home/.config/kicad" \
+  KICAD_CACHE_HOME="$ROOT/cache/kicad" \
+  XDG_DATA_DIRS="$B/usr/share:/system/usr/share" \
+  "$RUN" "$@"

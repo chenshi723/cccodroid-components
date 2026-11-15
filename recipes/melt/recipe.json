@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "melt",
+  "kind": "termux",
+  "revision": 1,
+  "version": "7.42.0",
+  "name": {
+    "zh": "MLT / melt 7.42（.mlt XML → 视频）",
+    "en": "MLT / melt 7.42 (.mlt XML to video)"
+  },
+  "desc": {
+    "zh": "AI 写 .mlt XML 工程，melt 渲染成 MP4/WebM/WAV：多轨、图片序列、文字、转场、滤镜、关键帧，底层是 Kdenlive 同款 MLT 引擎（不带 KDE 全家）。适合把一组图片/视频片段/字幕合成成片，或用 qimage/qtext 做程序化动画。组件带 melt-run 包装命令；x11 这版 MLT/Qt 按 ICU 79 构建而工具包是 78，所以组件自带一份从 Termux 官方 libicu 79.1 包提取的 ICU 库（来源与 SHA256 见 NOTICE）；Qt 模块要求 X11，包装命令自动起一个 Xvfb，渲染完关掉。",
+    "en": "The AI writes an .mlt XML project and melt renders it to MP4/WebM/WAV: multiple tracks, image sequences, text, transitions, filters and keyframes on the same MLT engine Kdenlive uses (without the KDE stack). Good for assembling clips, stills and titles into a finished video, or for procedural animation with qimage/qtext. Ships a melt-run wrapper; this x11 build of MLT/Qt is linked against ICU 79 while the toolkit ships ICU 78, so the component bundles ICU 79.1 extracted from the official Termux package (source and SHA256 in NOTICE), and starts a temporary Xvfb because the Qt modules need X11 — shut down after rendering."
+  },
+  "roots": [
+    "mlt",
+    "xorg-server-xvfb"
+  ],
+  "repos": [
+    "x11"
+  ],
+  "bin": [
+    "melt",
+    "melt-run"
+  ],
+  "selftest": "melt-run --selftest",
+  "needs": {
+    "shizuku": false,
+    "display": false,
+    "gpu": false
+  },
+  "category": "media",
+  "license": "LGPL-2.1-or-later",
+  "homepage": "https://www.mltframework.org",
+  "maintainers": [
+    "greyoak111"
+  ],
+  "files": {
+    "usr/bin/melt-run": {
+      "src": "bin/melt-run",
+      "mode": "755"
+    }
+  },
+  "fetch": {
+    "usr/lib/cccodroid/icu79/": {
+      "url": "https://github.com/greyoak111/termux-icu79/releases/download/v79.1/icu79-79.1-aarch64.tar.xz",
+      "sha256": "854f0dec5acbb93cdfa1b3f04cf9a6e3edf8da0311e2b1140bb39fa7f385eb75",
+      "why": "x11 的 MLT/Qt 按 ICU 79.1 构建，底座 devkit-2026.10.28 是 78.3；devkit 按包名跳过底座已有的 libicu，所以把 Termux 官方 libicu_79.1_aarch64.deb 里的 .so 单独带进组件（来源与 SHA256 见 NOTICE，RUNPATH 已等长改写）",
+      "extract": {
+        "format": "tar.xz"
+      }
+    }
+  },
+  "notes": "Termux x11 仓库的 mlt 7.42.0-2（比 Debian trixie 的 7.30.0 新），带 melt、libmlt 和全部模块；底座已有的 ffmpeg/Qt/glib 等不重复打，实打包新增 77 个包、下载 64.9 MB、解开 414.0 MB，加内置 ICU 79 后 tar 411.9 MB → gz 115.8 MB、18814 个文件；另含 xorg-server-xvfb。首次运行脚本：at-spi2-core、desktop-file-utils、gtk-update-icon-cache、gtk3、lv2、mlt、python-lxml、shared-mime-info、xdg-utils（devkit 自动生成）。三个适配：①ICU：底座 libicu 78.3，x11 二进制要 79.1；devkit 按包名跳过底座已有的 libicu，所以 fetch 一个从 Termux 官方 libicu_79.1_aarch64.deb（10.3 MB，sha256 83c980…d606c）提取并重打包的 ICU 79.1（libicuuc/libicui18n/libicudata/libicuio/libicutu + .so.79 软链 + Unicode License v3），解到 usr/lib/cccodroid/icu79（资产 sha256 854f0dec…eb75，来源、转换步骤与可复现脚本见 greyoak111/termux-icu79 与 NOTICE）；二进制只把 RUNPATH 的 /data/data/com.termux/ 等长改成 /data/data/cc.codroid/，代码未动。melt-run 运行时优先加载它，底座升到 79 后自动用底座的；不联网。②Xvfb：MLT 的 Qt 模块（qimage/qtext/qtblend）要求 X11/Wayland，包装脚本在 $TMPDIR 找空闲显示号起 Xvfb，EXIT trap 关掉；color/avformat 等非 Qt producer 不需要，但统一走 melt-run 更省心。③libmltplacebo.so 在本机仍会 dlopen 失败（cannot locate symbol pl_log_create_360，底座 libplacebo 和 mlt 构建不一致），只影响 placebo 滤镜，color/qimage/avformat 都不受影响；skill 里写明了。selftest 用底座 ImageMagick 造一张 160×90 PNG，写一个 qimage producer 的 .mlt，经 melt-run 渲染 30 帧 H.264 MP4，再用 ffprobe 核对 codec=h264；只写 $TMPDIR。"
+}
