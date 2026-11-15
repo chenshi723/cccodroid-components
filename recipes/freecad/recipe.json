@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "freecad",
+  "kind": "glibc",
+  "revision": 1,
+  "version": "1.0.0",
+  "name": { "zh": "FreeCAD 1.0（freecadcmd：Python 建模 → STEP / STL）", "en": "FreeCAD 1.0 (freecadcmd: Python modelling to STEP / STL)" },
+  "desc": {
+    "zh": "用 Python 写零件：FreeCAD 的 Part / PartDesign / Mesh / Draft 模块都能在命令行里调，造盒子、拉伸、倒角、布尔运算、装配，导出 STEP / IGES / STL / OBJ，也能读入现成模型改。没有图形界面（freecadcmd 是无头入口），参数和几何全都写在脚本里，改一行重新生成。Termux 官方仓库没有 FreeCAD，这是 Debian trixie 的 freecad 1.0.0 无头运行：首次运行从 Debian 官方仓库取 338 个包（下载约 367 MB，解开约 1.6 GB，逐个核对 SHA256）装到应用私有目录，glibc 用工具包自带的。包装脚本处理了 FreeCAD 用 /proc/self/exe 定位自身目录的问题（经 glibc 加载器启动会找错地方），并把 Python 扩展目录补回 sys.path。",
+    "en": "Write parts in Python: FreeCAD's Part / PartDesign / Mesh / Draft modules all work from the command line — build boxes, extrude, fillet, boolean, assemble, export STEP / IGES / STL / OBJ, or load an existing model and modify it. There is no GUI (freecadcmd is the headless entry point); geometry and parameters live in the script, so edit a line and regenerate. FreeCAD is not in the official Termux repository, so this is a headless run of Debian trixie's freecad 1.0.0: on first use it fetches 338 packages from the official Debian archive (about 367 MB download / 1.6 GB unpacked, each verified against its SHA256) into the app's private storage, using the toolkit's glibc. The wrapper works around FreeCAD locating itself via /proc/self/exe (which points at the glibc loader when started that way) and restores the Python extension directory to sys.path."
+  },
+  "roots": ["glibc"],
+  "bin": ["freecadcmd"],
+  "selftest": "freecadcmd --selftest",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "cad",
+  "license": "LGPL-2.1-or-later",
+  "homepage": "https://www.freecad.org",
+  "maintainers": ["greyoak111"],
+  "files": {
+    "usr/bin/freecadcmd": { "src": "bin/freecadcmd", "mode": "755" },
+    "usr/share/cccodroid/components/freecad/debroot.py": { "src": "lib/debroot.py", "mode": "644" },
+    "usr/share/cccodroid/components/freecad/debs.json": { "src": "lib/debs.json", "mode": "644" }
+  },
+  "notes": "Debian trixie 的 freecad 1.0.0+dfsg-8+deb13u3（Termux 官方仓库没有）。338 个包、下载约 367 MB、解开约 1.6 GB，清单和 SHA256 来自 deb.debian.org 的 trixie/main/binary-arm64 Packages（2026-11-16 取），安装时只按清单下载、不解析索引，镜像 deb.debian.org → ftp.debian.org → 清华 → 中科大 回退。两个必须做的适配：①FreeCAD 用 /proc/self/exe 往上两级定位自己的根目录；经 glibc 加载器启动时 /proc/self/exe 是 ld-linux，它会去 $PREFIX/glibc/Mod 找模块并报 No modules found。包装脚本首次运行把 freecadcmd-python3 复制成 debroot/usr/lib/freecad/bin/freecadcmd-cccmd，用 patchelf 把 PT_INTERP 改成工具包的 glibc 加载器再直接执行，/proc/self/exe 就指回 debroot 里的副本（工具包自带 patchelf；缺了会明确报错）。②Debian 的 Part.so / FreeCAD.so 等 Python 扩展在 usr/lib/freecad-python3/lib，而 FreeCAD 只把 AppHomePath+lib（即 usr/lib/freecad/lib）加进 sys.path；包装脚本补一个 lib → ../freecad-python3/lib 的软链。另外：PYTHONHOME 指向 debroot 的 Python 3.13；LD_LIBRARY_PATH / PYTHONHOME 只在 exec FreeCAD 时传入，不 export，否则包装脚本自己用的 bionic mktemp/stat 会误加载 glibc 的 libc 而报 bad ELF magic。Qt 走 offscreen（freecadcmd 用不到 GUI）。selftest 用 Part.makeBox(12,8,5) 生成实体，导出 STEP 与 STL，核对 ISO-10303-21 头、STL 大小和体积 480；不联网（首次安装除外）、只写 $TMPDIR。"
+}

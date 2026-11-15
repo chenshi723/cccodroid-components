@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "kicad",
+  "kind": "glibc",
+  "revision": 1,
+  "version": "9.0.2",
+  "name": { "zh": "KiCad 9.0（kicad-cli：PCB → Gerber / 钻孔 / SVG / DRC）", "en": "KiCad 9.0 (kicad-cli: PCB to Gerber / drill / SVG / DRC)" },
+  "desc": {
+    "zh": "把 .kicad_pcb / .kicad_sch 工程变成工厂文件：Gerber、Excellon 钻孔、SVG/PDF/DXF 图纸、STEP 装配、网表、BOM，也能跑 ERC/DRC。全部走 kicad-cli，无头、不需要图形界面。AI 可以直接手写板子文件让 kicad-cli 出图，或检查现成工程的设计规则。Termux 官方仓库没有 KiCad，这是 Debian trixie 的 kicad 9.0.2 无头运行：首次运行从 Debian 官方仓库取 264 个包（下载约 181 MB，解开约 817 MB，逐个核对 SHA256）装到应用私有目录，glibc 用工具包自带的。只装主程序和依赖，不带体积巨大的符号库 / 封装库 / 3D 模型库（需要时另下，技能文档里写了怎么指）。包装脚本处理了 KiCad 用 /proc/self/exe 找 kiface 的问题，并把它编译死的 /usr/share/kicad 数据目录指到 debroot。",
+    "en": "Turn .kicad_pcb / .kicad_sch projects into fabrication files: Gerber, Excellon drill, SVG/PDF/DXF plots, STEP assemblies, netlists and BOMs, plus ERC/DRC. Everything runs through kicad-cli, headless, with no GUI. The AI can hand-write a board file and have kicad-cli plot it, or check an existing project against design rules. KiCad is not in the official Termux repository, so this is a headless run of Debian trixie's kicad 9.0.2: on first use it fetches 264 packages from the official Debian archive (about 181 MB download / 817 MB unpacked, each verified against its SHA256) into the app's private storage, using the toolkit's glibc. Only the main program and its dependencies are installed — not the bulky symbol / footprint / 3D-model libraries (the skill explains how to point at them if needed). The wrapper works around KiCad finding kifaces via /proc/self/exe and redirects its compiled-in /usr/share/kicad data directory into the private root."
+  },
+  "roots": ["glibc"],
+  "bin": ["kicad-cli"],
+  "selftest": "kicad-cli --selftest",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "eda",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://www.kicad.org",
+  "maintainers": ["greyoak111"],
+  "files": {
+    "usr/bin/kicad-cli": { "src": "bin/kicad-cli", "mode": "755" },
+    "usr/share/cccodroid/components/kicad/debroot.py": { "src": "lib/debroot.py", "mode": "644" },
+    "usr/share/cccodroid/components/kicad/debs.json": { "src": "lib/debs.json", "mode": "644" }
+  },
+  "notes": "Debian trixie 的 kicad 9.0.2+dfsg-1（Termux 官方仓库没有）。只以 kicad 主包为根解析闭包：264 个包、下载约 181 MB、解开约 817 MB，清单和 SHA256 来自 deb.debian.org 的 trixie/main/binary-arm64 Packages（2026-11-16 取），安装时只按清单下载、不解析索引，镜像 deb.debian.org → ftp.debian.org → 清华 → 中科大 回退。kicad-symbols / kicad-footprints / kicad-packages3d 体积大且不是出 Gerber 的必需件，没有收进清单。两个必须做的适配：①KiCad 用 /proc/self/exe 的目录找 _pcbnew.kiface 等插件；经 glibc 加载器启动时 /proc/self/exe 是 ld-linux，它会去 $PREFIX/glibc/lib 找，报 Failed to load kiface。包装脚本首次运行把 kicad-cli 复制成 debroot/usr/bin/kicad-cli-cccmd，用 patchelf 把 PT_INTERP 改成工具包的 glibc 加载器再直接执行；副本旁边就是 Debian 放的 _pcbnew.kiface 软链，正好命中。②数据目录编译死在 /usr/share/kicad（schemas/api.v1.schema.json 等），包装脚本用 KiCad 官方支持的 KICAD_STOCK_DATA_HOME 指到 debroot/usr/share/kicad。另外 LD_LIBRARY_PATH 只在 exec 时传入、不 export，否则包装脚本自己用的 bionic mktemp/stat 会误加载 glibc 的 libc；不需要 proot。selftest 手写一块带一个通孔焊盘的最小 .kicad_pcb，导出 Gerber 与 Excellon 钻孔，核对 F_Cu/B_Cu/Edge_Cuts/gbrjob 四个文件和钻孔 M48 头；不联网（首次安装除外）、只写 $TMPDIR。"
+}

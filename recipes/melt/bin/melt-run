@@ -1,0 +1,132 @@
+#!{{PREFIX}}/bin/bash
+# melt-run — 用 MLT 的 melt 渲染 .mlt XML 工程（AI 写工程 → 视频）
+#
+#   melt-run project.mlt -consumer avformat:out.mp4 vcodec=libx264 an=1
+#   melt-run --selftest
+#
+# 为什么不直接用 melt：
+#   1. 工具包的 ICU 是 78，x11 仓库这版 MLT/Qt 按 ICU 79 构建；不补的话
+#      libmltqt6.so / libmltglaxnimate-qt6.so 全都 dlopen 失败，qimage / qtext /
+#      qtblend 这些常用 producer 就用不了（color / avformat 不受影响）。
+#      首次运行从 Termux 官方仓库取 libicu 79.1（约 10 MB，核对 SHA256）到组件
+#      私有目录，运行时优先加载；底座升级后自动跳过。
+#   2. MLT 的 Qt 模块要求 X11/Wayland；这里自动起一个 Xvfb，渲染完关掉，
+#      不需要用户有屏幕。
+#
+# 其余参数原样交给 melt。常用 consumer：
+#   -consumer avformat:out.mp4 vcodec=libx264 crf=23 an=1
+#   -consumer avformat:out.webm vcodec=libvpx-vp9
+#   -consumer avformat:out.wav acodec=pcm_s16le
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=melt
+ROOT="${CCODROID_MELT_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_MELT_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+LIBDIR="$PREFIX/share/cccodroid/components/$ID"
+BIN="$PREFIX/bin/melt"
+XVFB="$PREFIX/bin/Xvfb"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" "$ROOT/cache" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+XPID=""
+cleanup() { [ -n "$XPID" ] && kill "$XPID" 2>/dev/null; wait "$XPID" 2>/dev/null; }
+trap cleanup EXIT HUP INT TERM
+
+icu_ready() {
+  if [ -e "$PREFIX/lib/libicuuc.so.79" ]; then
+    return 0
+  fi
+  if [ ! -e "$ROOT/libicu/libicuuc.so.79" ]; then
+    python3 "$LIBDIR/fetch-icu.py" "$ROOT/libicu" || return 1
+  fi
+  export LD_LIBRARY_PATH="$ROOT/libicu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+}
+
+start_xvfb() {
+  [ -x "$XVFB" ] || { echo "✗ 找不到 $XVFB —— 组件缺 xorg-server-xvfb？" >&2; return 1; }
+  local n i
+  for n in $(seq 90 130); do
+    [ -e "$TMP/.X$n-lock" ] && continue
+    "$XVFB" ":$n" -screen 0 1280x800x24 -nolisten tcp >"$ROOT/xvfb.log" 2>&1 &
+    XPID=$!
+    for i in $(seq 1 50); do
+      kill -0 "$XPID" 2>/dev/null || break
+      [ -S "$TMP/.X11-unix/X$n" ] && { export DISPLAY=":$n"; return 0; }
+      sleep 0.1
+    done
+    if kill -0 "$XPID" 2>/dev/null; then export DISPLAY=":$n"; return 0; fi
+    XPID=""
+  done
+  echo "✗ 起不了 Xvfb（90–130 都被占用？）；最近一次日志：" >&2
+  tail -5 "$ROOT/xvfb.log" 2>/dev/null | sed 's/^/    /' >&2
+  return 1
+}
+
+selftest() {
+  local t rc=0 ver codec
+  t="$(mktemp -d "$TMP/melt-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  [ -x "$BIN" ] || { echo "✗ 找不到 $BIN —— melt 组件没装好？"; rm -rf "$t"; return 1; }
+  if command -v magick >/dev/null 2>&1; then
+    magick -size 160x90 gradient:red-blue "$t/in.png" >/dev/null 2>&1
+  elif command -v convert >/dev/null 2>&1; then
+    convert -size 160x90 gradient:red-blue "$t/in.png" >/dev/null 2>&1
+  fi
+  [ -s "$t/in.png" ] || { echo "✗ 造不出测试 PNG（底座缺 ImageMagick？）"; rm -rf "$t"; return 1; }
+
+  cat > "$t/test.mlt" <<MLT
+<?xml version="1.0" standalone="no"?>
+<mlt LC_NUMERIC="C" version="7.0.0" title="cccodroid selftest" producer="main_bin">
+  <profile description="SD 160x90 30 fps" width="160" height="90" progressive="1"
+           sample_aspect_num="1" sample_aspect_den="1" display_aspect_num="16"
+           display_aspect_den="9" frame_rate_num="30" frame_rate_den="1" colorspace="709"/>
+  <producer id="p0" in="0" out="29">
+    <property name="resource">$t/in.png</property>
+    <property name="mlt_service">qimage</property>
+    <property name="ttl">30</property>
+    <property name="aspect_ratio">1</property>
+  </producer>
+  <playlist id="pl0"><entry producer="p0" in="0" out="29"/></playlist>
+  <tractor id="t0" in="0" out="29"><track producer="pl0"/></tractor>
+</mlt>
+MLT
+
+  icu_ready || { echo "✗ Qt 模块需要的 ICU 79 没准备好"; rm -rf "$t"; return 1; }
+  if ! "$0" "$t/test.mlt" -consumer "avformat:$t/out.mp4" vcodec=libx264 an=1 >"$t/log" 2>&1; then
+    echo "✗ melt 渲染失败："; tail -12 "$t/log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.mp4" ]; then
+    codec=""
+    if command -v ffprobe >/dev/null 2>&1; then
+      codec=$(ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of default=nw=1:nk=1 "$t/out.mp4" 2>/dev/null | head -1)
+    fi
+    echo "✓ 渲染出 MP4：$(stat -c%s "$t/out.mp4") 字节${codec:+ · 视频编码 $codec}"
+    [ -n "$codec" ] && [ "$codec" != "h264" ] && { echo "✗ 视频编码不是 h264"; rc=1; }
+  else
+    echo "✗ 没有生成 MP4"; tail -12 "$t/log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  ver=$("$BIN" -version 2>/dev/null | sed -n 's/^melt \([0-9][0-9.]*\).*/\1/p' | head -1)
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== melt=OK qimage=OK mp4=OK 版本=$ver"
+  else echo "===== 总结 ===== melt=FAIL"; fi
+  return $rc
+}
+
+usage() { sed -n '2,22p' "$0" | sed 's/^# \{0,1\}//'; }
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help) usage; exit 0 ;;
+  "") usage >&2; exit 2 ;;
+esac
+
+icu_ready || { echo "✗ ICU 79 没准备好（首次需要约 10 MB 下载）" >&2; exit 1; }
+start_xvfb || exit 1
+"$BIN" "$@"
+exit $?

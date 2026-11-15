@@ -1,0 +1,124 @@
+#!{{PREFIX}}/bin/bash
+# freecadcmd — 无头跑 FreeCAD（Python 建模 → STEP / STL / 图纸）
+#
+#   freecadcmd script.py            执行 Python 脚本（import FreeCAD, Part, ...）
+#   freecadcmd --selftest
+#
+# FreeCAD 不在 Termux 官方仓库，来自 Debian trixie arm64（freecad + freecad-python3）。
+# 首次运行把包清单里的 338 个包装到 ~/.cccodroid/freecad/debroot（下载约 367 MB，
+# 解开约 1.6 GB，逐个核对 SHA256）。glibc 用工具包的 $PREFIX/glibc。
+#
+# 为什么多一步「复制 + patchelf」：FreeCAD 用 /proc/self/exe 判断自己的根目录。
+# 经 glibc 加载器启动时 /proc/self/exe 指向 ld-linux，它会去 $PREFIX/glibc/Mod 找
+# 模块，报 "No modules found"。把入口复制一份、把解释器改成工具包的 glibc 加载器
+# 后直接执行，/proc/self/exe 就是这份副本，根目录回到 debroot/usr/lib/freecad。
+# 另外补一个 usr/lib/freecad/lib → ../freecad-python3/lib 的软链，FreeCAD 的
+# Part/Mesh 等 Python 扩展就在那里。
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=freecad
+ROOT="${CCODROID_FREECAD_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_FREECAD_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+B="$ROOT/debroot"
+LIBDIR="$PREFIX/share/cccodroid/components/$ID"
+LDSO="$PREFIX/glibc/lib/ld-linux-aarch64.so.1"
+[ -x "$LDSO" ] || LDSO="$PREFIX/glibc/glibc/lib/ld-linux-aarch64.so.1"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+if ! ls "$ROOT"/installed-*.json >/dev/null 2>&1; then
+  echo "freecadcmd 首次运行：从 Debian 官方仓库下载 338 个包（约 367 MB，解开约 1.6 GB），" >&2
+  echo "  逐个核对 SHA256，装到 $B；.deb 留在 $ROOT/debcache，重装不用再下。请留够空间。" >&2
+  python3 "$LIBDIR/debroot.py" --root "$B" --lock "$LIBDIR/debs.json" || {
+    echo "✗ FreeCAD 运行根没装成" >&2; exit 1; }
+fi
+
+SRC="$B/usr/lib/freecad/bin/freecadcmd-python3"
+RUN="$B/usr/lib/freecad/bin/freecadcmd-cccmd"
+[ -x "$SRC" ] || { echo "✗ 找不到 $SRC —— 运行根不完整，删掉 $ROOT 再试" >&2; exit 1; }
+[ -x "$LDSO" ] || { echo "✗ 找不到 glibc 加载器 $LDSO（工具包缺 glibc？重装工具包）" >&2; exit 1; }
+
+# FreeCAD 从 usr/lib/freecad/ 找 Mod、lib、bin；Debian 的扩展模块在多架构目录里。
+FCR="$B/usr/lib/freecad"
+[ -e "$FCR/lib" ] || ln -s ../freecad-python3/lib "$FCR/lib" 2>/dev/null
+if [ ! -x "$RUN" ] || [ "$SRC" -nt "$RUN" ]; then
+  command -v patchelf >/dev/null 2>&1 || {
+    echo "✗ 需要 patchelf 改 FreeCAD 入口的解释器（工具包里的调试工具）；先 pkg install patchelf" >&2
+    exit 1; }
+  cp "$SRC" "$RUN" || { echo "✗ 复制 FreeCAD 入口失败" >&2; exit 1; }
+  patchelf --set-interpreter "$LDSO" "$RUN" || { echo "✗ patchelf 失败" >&2; exit 1; }
+  chmod 755 "$RUN"
+fi
+
+LIB="$B/usr/lib/aarch64-linux-gnu:$B/usr/lib:$B/lib"
+while IFS= read -r d; do
+  case "$d" in *python3*|*lib-dynload*) continue ;; esac
+  ls "$d"/*.so* >/dev/null 2>&1 && LIB="$LIB:$d"
+done < <(find "$B/usr/lib" "$B/lib" -type d 2>/dev/null)
+# 上面的扫描跳过名字带 python3 的目录（那里是 Python 扩展，不该进加载器路径），
+# 但 FreeCAD 的 libFreeCADApp.so 等恰好也在 freecad-python3/lib —— 单独加回来。
+LIB="$LIB:$B/usr/lib/freecad-python3/lib:$PREFIX/glibc/lib"
+[ -f "$B/etc/fonts/fonts.conf" ] && export FONTCONFIG_FILE="$B/etc/fonts/fonts.conf"
+
+selftest() {
+  local t rc=0 ver
+  t="$(mktemp -d "$TMP/freecad-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  cat > "$t/box.py" <<'PY'
+import os
+import FreeCAD, Part
+out = os.environ["CCFC_OUT"]
+box = Part.makeBox(12, 8, 5)
+box.exportStep(out + "/box.step")
+box.exportStl(out + "/box.stl")
+print("FC_OK", ".".join(FreeCAD.Version()[0:3]), box.Volume)
+PY
+  if ! CCFC_OUT="$t" "$0" "$t/box.py" >"$t/log" 2>&1; then
+    echo "✗ 建模 / 导出失败："; tail -12 "$t/log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/box.step" ] && [ "$(head -c 14 "$t/box.step")" = "ISO-10303-21;" ]; then
+    echo "✓ 导出 STEP：$(stat -c%s "$t/box.step") 字节 · $(grep -o 'FC_OK.*' "$t/log" | tail -1)"
+  else
+    echo "✗ 没有生成合法 STEP"; tail -12 "$t/log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/box.stl" ] && [ "$(stat -c%s "$t/box.stl")" -gt 100 ]; then
+    echo "✓ 导出 STL：$(stat -c%s "$t/box.stl") 字节"
+  else
+    echo "✗ 没有生成 STL"; rc=1
+  fi
+  if [ $rc -eq 0 ] && ! grep -q 'FC_OK.*480' "$t/log"; then
+    echo "✗ 体积不是 480（12×8×5）: $(grep -o 'FC_OK.*' "$t/log" | tail -1)"; rc=1
+  fi
+  ver=$("$0" --version 2>/dev/null | sed -n 's/^FreeCAD \([0-9][0-9.]*\).*/\1/p' | head -1)
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== freecadcmd=OK step=OK stl=OK 版本=$ver"
+  else echo "===== 总结 ===== freecadcmd=FAIL"; fi
+  return $rc
+}
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help)
+    sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'
+    echo
+    echo "（--help 显示的是本包装脚本的说明；FreeCADCmd 自己的选项见 freecadcmd --help，会照常透传。）"
+    exit 0 ;;
+  "") sed -n '3,4p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2 ;;
+esac
+
+# FreeCAD 是 glibc 程序：LD_LIBRARY_PATH / PYTHONHOME 只在 exec 时给它，
+# 不 export —— 否则包装脚本自己调用的 bionic 工具（mktemp、stat…）也会去找 glibc 的 libc。
+unset LD_PRELOAD LD_AUDIT LD_DEBUG 2>/dev/null
+exec env -u LD_PRELOAD LD_LIBRARY_PATH="$LIB" \
+  PYTHONHOME="$B/usr" PYTHONPATH="$B/usr/lib/python3/dist-packages" \
+  FREECAD_USER_HOME="$ROOT/home" \
+  QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-offscreen}" \
+  FONTCONFIG_PATH="$B/etc/fonts" \
+  XDG_DATA_DIRS="$B/usr/share:/system/usr/share:/system/fonts" \
+  "$RUN" "$@"

@@ -1,0 +1,15 @@
+FreeCAD 组件 — 第三方软件与许可
+
+FreeCAD 1.0.0
+  上游：https://www.freecad.org / https://github.com/FreeCAD/FreeCAD
+  许可：LGPL-2.1-or-later（见 Debian 包内 /usr/share/doc/freecad/copyright）
+  来源：Debian trixie arm64 官方仓库（deb.debian.org），首次运行时下载
+  组件里不含 FreeCAD 二进制，只带包清单（lib/debs.json）与安装脚本。
+
+Debian 运行根里的依赖包（OpenCASCADE、Coin3D、Qt 5、Boost、Python 3.13、
+Pivy 等）各自保留上游许可与版权声明；每个 .deb 解出来的
+/usr/share/doc/<包>/copyright 就是该包的许可原文，随安装一起落到
+$HOME/.cccodroid/freecad/debroot/usr/share/doc/ 下。
+
+patchelf（Docker 容器 / 工具包里的调试工具）只用于修改入口二进制的
+PT_INTERP 指向，不随本组件分发。
