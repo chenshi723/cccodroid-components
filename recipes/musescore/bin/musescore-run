@@ -1,0 +1,163 @@
+#!{{PREFIX}}/bin/bash
+# musescore-run — 无头跑 MuseScore 4（MusicXML / MSCX → PDF / PNG / MIDI）
+#
+#   musescore-run -o out.pdf in.musicxml
+#   musescore-run -o out.png in.mscx
+#   musescore-run -o out.mid in.musicxml
+#   musescore-run --selftest
+#
+# 为什么需要包装：
+#   1. 工具包的 ICU 是 78，x11 仓库这版 MuseScore/Qt 按 ICU 79 构建，直接跑会报
+#      libicuuc.so.79 not found。首次运行从 Termux 官方仓库取 libicu 79.1（约 10 MB，
+#      核对 SHA256）到组件私有目录，运行时优先加载；底座升级后自动跳过。
+#   2. MuseScore 4 启动时要连 X 显示（即使只导出文件）；这里自动起一个 Xvfb，
+#      导出完就关掉，不需要用户有屏幕，也不需要 termux-x11。
+#   3. MuseScore 的 PNG/SVG 导出会在文件名后加页码（out.png → out-1.png）。单页时
+#      包装脚本帮它改回你给的名字；多页时保留 out-1.png、out-2.png…，并在 stderr 说明。
+#
+# 其余参数原样交给 musescore。
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=musescore
+ROOT="${CCODROID_MUSESCORE_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_MUSESCORE_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+LIBDIR="$PREFIX/share/cccodroid/components/$ID"
+BIN="$PREFIX/bin/musescore"
+XVFB="$PREFIX/bin/Xvfb"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" "$ROOT/cache" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+XPID=""
+cleanup() { [ -n "$XPID" ] && kill "$XPID" 2>/dev/null; wait "$XPID" 2>/dev/null; }
+trap cleanup EXIT HUP INT TERM
+
+icu_ready() {
+  if [ -e "$PREFIX/lib/libicuuc.so.79" ]; then
+    return 0
+  fi
+  if [ ! -e "$ROOT/libicu/libicuuc.so.79" ]; then
+    python3 "$LIBDIR/fetch-icu.py" "$ROOT/libicu" || return 1
+  fi
+  export LD_LIBRARY_PATH="$ROOT/libicu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+}
+
+# 起一个空闲显示号的 Xvfb；Xvfb 的锁文件落在 $TMPDIR（Termux 版 Xvfb 认 TMPDIR）
+start_xvfb() {
+  [ -x "$XVFB" ] || { echo "✗ 找不到 $XVFB —— 组件缺 xorg-server-xvfb？" >&2; return 1; }
+  local n i
+  for n in $(seq 90 130); do
+    [ -e "$TMP/.X$n-lock" ] && continue
+    "$XVFB" ":$n" -screen 0 1280x800x24 -nolisten tcp >"$ROOT/xvfb.log" 2>&1 &
+    XPID=$!
+    for i in $(seq 1 50); do
+      kill -0 "$XPID" 2>/dev/null || break
+      [ -S "$TMP/.X11-unix/X$n" ] && { export DISPLAY=":$n"; return 0; }
+      sleep 0.1
+    done
+    if kill -0 "$XPID" 2>/dev/null; then export DISPLAY=":$n"; return 0; fi
+    XPID=""
+  done
+  echo "✗ 起不了 Xvfb（90–130 都被占用？）；最近一次日志：" >&2
+  tail -5 "$ROOT/xvfb.log" 2>/dev/null | sed 's/^/    /' >&2
+  return 1
+}
+
+# 单页 PNG/SVG 改回用户给的名字；多页保留页码并说明
+fix_pages() {
+  local out="$1" base ext f n
+  case "$out" in
+    *.png|*.PNG|*.svg|*.SVG) ;;
+    *) return 0 ;;
+  esac
+  base="${out%.*}"; ext="${out##*.}"
+  if [ -f "$out" ]; then return 0; fi
+  [ -f "${base}-1.${ext}" ] || return 0
+  n=0
+  for f in "${base}"-[0-9]*."${ext}"; do [ -f "$f" ] && n=$((n+1)); done
+  if [ "$n" -eq 1 ]; then
+    mv -f "${base}-1.${ext}" "$out"
+  else
+    echo "musescore-run: 导出 ${n} 页，文件名是 ${base}-1.${ext} … ${base}-${n}.${ext}" >&2
+  fi
+}
+
+selftest() {
+  local t rc=0 ver
+  t="$(mktemp -d "$TMP/musescore-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  cat > "$t/t.musicxml" <<'XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="3.1">
+ <part-list><score-part id="P1"><part-name>Music</part-name></score-part></part-list>
+ <part id="P1">
+  <measure number="1">
+   <attributes><divisions>1</divisions><key><fifths>0</fifths></key><time><beats>4</beats><beat-type>4</beat-type></time><clef><sign>G</sign><line>2</line></clef></attributes>
+   <note><pitch><step>C</step><octave>4</octave></pitch><duration>4</duration><type>whole</type></note>
+  </measure>
+ </part>
+</score-partwise>
+XML
+  icu_ready || { echo "✗ ICU 79 没准备好"; rm -rf "$t"; return 1; }
+  if ! "$0" -o "$t/out.pdf" "$t/t.musicxml" >"$t/pdf.log" 2>&1; then
+    echo "✗ PDF 导出失败："; tail -10 "$t/pdf.log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.pdf" ] && [ "$(head -c 5 "$t/out.pdf")" = "%PDF-" ]; then
+    echo "✓ PDF：$(stat -c%s "$t/out.pdf") 字节"
+  else
+    echo "✗ 没有生成合法 PDF"; tail -10 "$t/pdf.log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  if ! "$0" -o "$t/out.mid" "$t/t.musicxml" >"$t/mid.log" 2>&1; then
+    echo "✗ MIDI 导出失败："; tail -10 "$t/mid.log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.mid" ] && [ "$(head -c 4 "$t/out.mid")" = "MThd" ]; then
+    echo "✓ MIDI：$(stat -c%s "$t/out.mid") 字节"
+  else
+    echo "✗ 没有生成合法 MIDI"; tail -10 "$t/mid.log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  if ! "$0" -o "$t/out.png" "$t/t.musicxml" >"$t/png.log" 2>&1; then
+    echo "✗ PNG 导出失败："; tail -10 "$t/png.log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.png" ] && [ "$(head -c 8 "$t/out.png" | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a" ]; then
+    echo "✓ PNG：$(stat -c%s "$t/out.png") 字节（单页已改回 out.png）"
+  else
+    echo "✗ 没有生成合法 PNG（看是不是只有 out-1.png）"; tail -10 "$t/png.log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  ver=$("$0" --version 2>/dev/null | head -1)
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== musescore=OK pdf=OK midi=OK png=OK 版本=$ver"
+  else echo "===== 总结 ===== musescore=FAIL"; fi
+  return $rc
+}
+
+usage() {
+  sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help) usage; exit 0 ;;
+esac
+
+[ -x "$BIN" ] || { echo "✗ 找不到 $BIN —— musescore 组件没装好？" >&2; exit 1; }
+icu_ready || { echo "✗ ICU 79 没准备好（首次需要约 10 MB 下载）" >&2; exit 1; }
+start_xvfb || exit 1
+
+# 记下 -o 后面的输出路径，执行完用它处理页码后缀
+OUT=""
+prev=""
+for a in "$@"; do
+  [ "$prev" = "-o" ] && OUT="$a"
+  prev="$a"
+done
+
+"$BIN" "$@"
+rc=$?
+[ -n "$OUT" ] && fix_pages "$OUT"
+exit $rc

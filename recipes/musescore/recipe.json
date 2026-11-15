@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "id": "musescore",
+  "kind": "termux",
+  "revision": 1,
+  "name": { "zh": "MuseScore 4.7（制谱 / MusicXML → PDF · PNG · MIDI）", "en": "MuseScore 4.7 (music notation to PDF / PNG / MIDI)" },
+  "desc": {
+    "zh": "所见即所得的制谱软件，无头跑：AI 写 MusicXML 或 MuseScore 的 .mscx 文本工程，MuseScore 排版成 PDF / PNG / SVG，也能导出 MIDI 给 music 组件渲染成音频。和 lilypond 互补 —— LilyPond 是纯文本雕刻，MuseScore 是 GUI 制谱器的渲染引擎，对 MusicXML 的兼容和版式更接近商业软件。组件带 musescore-run 包装命令：工具包的 ICU 是 78，x11 这版 MuseScore/Qt 按 ICU 79 构建，包装命令首次运行从 Termux 官方仓库取 libicu 79.1（约 10 MB，核对 SHA256）到组件私有目录；导出时自动起一个 Xvfb 显示，导完关掉，不需要用户有屏幕。",
+    "en": "A WYSIWYG notation editor, run headless: the AI writes MusicXML or MuseScore's plain-text .mscx project, and MuseScore engraves PDF / PNG / SVG and exports MIDI for the music component to render to audio. Complements lilypond — LilyPond is pure-text engraving, MuseScore is the rendering engine of a GUI notation app, with MusicXML compatibility and layout closer to commercial software. Ships a musescore-run wrapper: the toolkit's ICU is 78 while this x11 build of MuseScore/Qt is linked against ICU 79, so the wrapper fetches libicu 79.1 from the official Termux repository on first use (about 10 MB, SHA256 verified) into the component's private directory, and starts a temporary Xvfb display for the export, shutting it down afterwards — no screen required."
+  },
+  "roots": ["musescore", "xorg-server-xvfb"],
+  "repos": ["x11"],
+  "bin": ["musescore-run"],
+  "selftest": "musescore-run --selftest",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "media",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://musescore.org",
+  "maintainers": ["greyoak111"],
+  "files": {
+    "usr/bin/musescore-run": { "src": "bin/musescore-run", "mode": "755" },
+    "usr/share/cccodroid/components/musescore/fetch-icu.py": { "src": "lib/fetch-icu.py", "mode": "644" }
+  },
+  "notes": "Termux x11 仓库的 musescore（计划写 4.7.6，仓库 2026-11-16 已经是 4.7.7；配方不写 version，发布版本跟 roots[0] 走）。闭包 106 个包、下载约 148 MB、解开约 828 MB，底座已有的包不重复打；另加 xorg-server-xvfb（约 1.8 MB 新包）。三个必须做的适配：①ICU：底座 libicu 78.3，x11 二进制要 79.1，musescore-run 首次运行从 Termux 官方仓库取 libicu_79.1_aarch64.deb（10.3 MB，sha256 83c980…d606c）到 ~/.cccodroid/musescore/libicu，只解 libicu*.so.79*，LD_LIBRARY_PATH 优先；底座升到 79 自动跳过。②显示：MuseScore 4 即使只导出文件也要连 X（QT_QPA_PLATFORM=offscreen 被它自己的平台选择逻辑忽略，实测仍去加载 xcb），包装脚本在 $TMPDIR 里找空闲显示号起 Xvfb，EXIT trap 关掉，不需要 termux-x11。③命名：PNG/SVG 导出会在文件名后加页码（out.png → out-1.png），单页时包装脚本改回用户给的名字，多页保留页码并在 stderr 说明。selftest 用一段最小 MusicXML 真导出 PDF / MIDI / PNG，检查 %PDF-、MThd、PNG 魔数，不联网（首次取 ICU 除外）、只写 $TMPDIR。"
+}

@@ -1,0 +1,19 @@
+MuseScore 组件 — 第三方软件与许可
+
+MuseScore 4.7.x
+  上游：https://musescore.org
+  许可：GPL-3.0-or-later
+  来源：Termux x11 仓库，随组件打包
+
+Xvfb（xorg-server-xvfb）
+  上游：https://xorg.freedesktop.org
+  许可：MIT / X11 系列（见 Debian/Termux 包的 copyright）
+  来源：Termux x11 仓库，随组件打包；只在导出期间起一个假显示
+
+libicu 79.1（首次运行下载到组件私有目录）
+  上游：https://icu.unicode.org
+  许可：Unicode License v3
+  来源：Termux 官方 main 仓库的 libicu_79.1_aarch64.deb；只解 libicu*.so.79*
+        到 $HOME/.cccodroid/musescore/libicu。
+
+MuseScore 闭包里的 Qt6、音频/字体库等各自保留上游许可与版权声明，随组件安装。
