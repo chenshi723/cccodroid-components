@@ -98,9 +98,21 @@ async function install(id) {
     c = await item(id);
     if (!c || (!c.progress && !["downloading", "verifying", "installing"].includes(c.state))) break;
   }
+  // 收尾竞态：安装任务刚清掉、ok 记录还没写完的那一下，compState 会短暂报 damaged
+  // （2026-11-16 全量验证时 melt 就死在这：记录最终是 ok，轮询却提前判失败）。
+  for (let i = 0; c && c.state === "damaged" && i < 5; i++) { await sleep(2000); c = await item(id); }
   return { ok: !!c && ["ok", "update"].includes(c.state), message: c ? c.error || c.state : "不见了", secs: ((Date.now() - t0) / 1000) | 0 };
 }
-const remove = (id) => api("/api/components/remove", { id });
+// 卸载是幂等的（再卸一次装好的组件也是 ok）：keep-alive 竞态（UND_ERR_SOCKET / EPIPE）
+// 把 POST 打断时重试是安全的。api() 本身对这类错误不重试，这里包一层。
+const remove = async (id) => {
+  let last;
+  for (let i = 0; i < 8; i++) {
+    try { return await api("/api/components/remove", { id }); }
+    catch (e) { last = e; await sleep(1500); }
+  }
+  throw last;
+};
 // 工具包模块（requires 里的 module:<id>）：走模块接口装，不是组件。装上就留着 —— 模块是工具包的一部分，别的组件、pkg 也可能用它
 async function installModule(id) {
   const r = await api("/api/devkit/modules/install", { id });
@@ -217,7 +229,12 @@ if (!KEEP && ir.ok) {
   log(`\n③ 卸 ${ID}`);
   const r = await remove(ID);
   ok(r.ok, "卸载" + (r.ok ? "" : "：" + r.message));
-  const left = (r1.files || []).filter((f) => { try { fs.lstatSync(path.join(PREFIX, f.replace(/^usr\//, ""))); return true; } catch { return false; } });
+  // 文档软链不算残留：app 卸载时按底座归属有意保留（底座仍认领 share/doc 下的文件），
+  // 也有的组件记录里带着指向 LICENSES 的软链（2026-11-16 真机验证时 gimp 因此误报 37 个残留）
+  const left = (r1.files || []).filter((f) => {
+    if (/^(?:glibc\/)?share\/doc\//.test(f)) return false;
+    try { fs.lstatSync(path.join(PREFIX, f.replace(/^usr\//, ""))); return true; } catch { return false; }
+  });
   ok(left.length === 0, left.length ? `卸载后还剩 ${left.length} 个它的文件（${left.slice(0, 3).join("；")}）` : "它放进去的文件都清掉了");
   if (r1.skill) ok(!fs.existsSync(path.join(HOME, ".claude", "skills", r1.skill)), `skill ${r1.skill} 删掉了`);
   // 组件自己攒的运行数据（~/.cccodroid/<id>/：下载缓存、解开的运行环境）卸载不删，是有意的。不算失败，但报出来，
