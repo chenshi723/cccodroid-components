@@ -39,11 +39,10 @@ fi
 [ -x "$LDSO" ] || { echo "✗ 找不到 glibc 加载器 $LDSO（工具包缺 glibc？重装工具包）" >&2; exit 1; }
 
 LIB="$B/usr/lib/aarch64-linux-gnu:$B/usr/lib:$B/lib"
-for d in "$B"/usr/lib/* "$B"/lib/*; do
-  [ -d "$d" ] || continue
+while IFS= read -r d; do   # 递归找：Debian 有 libpulsecommon 这类放在子目录里的库
   case "$d" in *python3*|*lib-dynload*) continue ;; esac
   ls "$d"/*.so* >/dev/null 2>&1 && LIB="$LIB:$d"
-done
+done < <(find "$B/usr/lib" "$B/lib" -type d 2>/dev/null)
 LIB="$LIB:$PREFIX/glibc/lib"
 
 # FontForge 的 Python 是 Debian 自带的 3.13（嵌在 libfontforge 里），

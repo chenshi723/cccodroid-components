@@ -43,11 +43,10 @@ fi
 
 # ── 库搜索路径：Debian 的库 + Termux 的 glibc；绝不能混进 bionic 的 $PREFIX/lib ──
 LIB="$B/usr/lib/aarch64-linux-gnu:$B/usr/lib:$B/lib"
-for d in "$B"/usr/lib/* "$B"/lib/*; do
-  [ -d "$d" ] || continue
+while IFS= read -r d; do   # 递归找：Debian 有 libpulsecommon 这类放在子目录里的库
   case "$d" in *python3*|*lib-dynload*) continue ;; esac
   ls "$d"/*.so* >/dev/null 2>&1 && LIB="$LIB:$d"
-done
+done < <(find "$B/usr/lib" "$B/lib" -type d 2>/dev/null)
 LIB="$LIB:$PREFIX/glibc/lib"
 
 # Csound 的 opcode 插件和 raw wave 目录都是编译期写死的 /usr/lib、/usr/share
