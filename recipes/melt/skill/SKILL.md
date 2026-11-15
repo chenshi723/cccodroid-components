@@ -17,16 +17,16 @@ melt-run --selftest
 
 ```
 melt-run（$PREFIX/bin 下的包装脚本）
-  → 首次运行：从 Termux 官方仓库取 libicu 79.1（约 10 MB，SHA256 核对）
-      解到 $HOME/.cccodroid/melt/libicu，只放 libicu*.so.79*
-  → LD_LIBRARY_PATH 优先指向该目录（底座已有 79 时跳过）
+  → 组件安装时已带好 ICU 79：$PREFIX/lib/cccodroid/icu79
+      （从 Termux 官方 libicu 79.1 包提取；来源与 SHA256 见 NOTICE）
+  → LD_LIBRARY_PATH 优先指向该目录（底座已有 79 时改用底座的）
   → 在 $TMPDIR 里找空闲显示号，起 $PREFIX/bin/Xvfb :N
   → $PREFIX/bin/melt（x11 仓库 7.42.0，Qt6 模块 + ffmpeg/avformat）
   → 关掉 Xvfb
 ```
 
 - melt / MLT / Qt 模块由**本组件**提供（x11 仓库）；ffmpeg 的库由底座提供
-  （avformat consumer 走它）。ICU 79 是首次运行下载到私有目录的一份。
+  （avformat consumer 走它）。ICU 79 也随组件安装，运行时不联网。
 - 缺 ICU 79 时 Qt producer 会 **dlopen 失败**（`libmltqt6.so` 加载不了），
   color / avformat 仍能跑 —— 看着像「qimage 没反应」，实际是 ICU。包装脚本会明确报。
 - `libmltplacebo.so` 在本机还会报 `cannot locate symbol "pl_log_create_360"`：
@@ -106,5 +106,4 @@ melt-run project.mlt -consumer avformat:out.wav acodec=pcm_s16le
 
 ## 首次运行
 
-第一次执行 `melt-run` 会从 Termux 官方仓库下载约 10 MB 的 libicu 79.1。
-**先告诉用户**下载多大、从哪下、装到哪，得到同意再跑；之后不再联网。
+组件安装时已把 ICU 79 一起装好，第一次执行 `melt-run` 不联网。

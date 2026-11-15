@@ -4,22 +4,42 @@
   "kind": "termux",
   "revision": 1,
   "version": "3.2.8",
-  "name": { "zh": "GIMP 3.2（无头批处理 / Python-Fu）", "en": "GIMP 3.2 (headless batch & Python-Fu)" },
+  "name": {
+    "zh": "GIMP 3.2（无头批处理 / Python-Fu）",
+    "en": "GIMP 3.2 (headless batch & Python-Fu)"
+  },
   "desc": {
     "zh": "GIMP 3 的无头批处理：AI 写 Python-Fu 脚本，读一张图、裁切/改尺寸/调色/加文字/合成图层，导出 PNG/JPEG/TIFF。图像编辑器里的「重活」交给它，底座 ImageMagick 做不了的复杂图层和选区操作都能做。带 gimp-batch 包装命令：把脚本喂给 GIMP 的批处理解释器，自动加 -i -d -f --quit，跑完就退，不会像直接调 gimp 那样留在后台。没有图形界面，也不需要。",
     "en": "GIMP 3's headless batch mode: the AI writes a Python-Fu script that opens an image, crops / resizes / colour-corrects / adds text / composites layers and exports PNG/JPEG/TIFF. It handles the heavier image-editing work that the base ImageMagick cannot do — real layers, selections and GIMP filters. Ships gimp-batch, which feeds a script to GIMP's batch interpreter with -i -d -f --quit so the process exits instead of lingering in the background. No GUI, and none needed."
   },
-  "roots": ["gimp"],
-  "repos": ["x11"],
-  "bin": ["gimp", "gimp-batch"],
+  "roots": [
+    "gimp",
+    "cfitsio"
+  ],
+  "repos": [
+    "x11"
+  ],
+  "bin": [
+    "gimp",
+    "gimp-batch"
+  ],
   "selftest": "gimp-batch --selftest",
-  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "needs": {
+    "shizuku": false,
+    "display": false,
+    "gpu": false
+  },
   "category": "media",
   "license": "GPL-3.0-or-later",
   "homepage": "https://www.gimp.org",
-  "maintainers": ["greyoak111"],
+  "maintainers": [
+    "greyoak111"
+  ],
   "files": {
-    "usr/bin/gimp-batch": { "src": "bin/gimp-batch", "mode": "755" }
+    "usr/bin/gimp-batch": {
+      "src": "bin/gimp-batch",
+      "mode": "755"
+    }
   },
-  "notes": "Termux x11 仓库的 gimp 3.2.8（比 Debian trixie 的 3.0.4 新）；底座已有的 GTK3/glib/ffmpeg 等不重复打，实打包新增 67 个包、下载 38.1 MB、解开 226.1 MB，tar 206.6 MB → gz 59.4 MB、8920 个文件。首次运行脚本：at-spi2-core、desktop-file-utils、gtk-update-icon-cache、gtk3、libnss、pycairo、pygobject、shared-mime-info（devkit 自动生成）。GIMP 3 的批处理解释器是 Python 3（python-fu-eval），脚本里模块名是 `Gimp`（大写，GI 命名空间），不是 GIMP 2 的 `gimp`/`pdb`；`Gimp.file_save(run_mode, image, Gio.File, options)` 负责导出，扩展名决定格式。三个实测过的坑：①不在命令行加 --quit 时 GIMP 批处理跑完会留在后台等信号，Bash 命令一直不返回；gimp-batch 固定加 --quit。②脚本里调 Gimp.quit() 会让 python-fu-eval 报「Procedure returned no return values」并把退出码弄坏；退出交给 --quit，脚本里不要调。③Gegl.RGBA 在 Python 里没有暴露，设颜色用 `Gegl.Color.new(\"#3380e6\")`。selftest 用 Python-Fu 新建 128×96 RGB 图、填充、导出 PNG，检查 PNG 魔数和 Gimp.file_save 返回 True，不联网、只写 $TMPDIR。"
+  "notes": "Termux x11 仓库的 gimp 3.2.8（比 Debian trixie 的 3.0.4 新）；底座已有的 GTK3/glib/ffmpeg 等不重复打，实打包新增 68 个包、下载 38.5 MB、解开 227.9 MB，tar 208.3 MB → gz 60.0 MB、8932 个文件。另把 cfitsio 4.7.0 加进 roots：x11 的 gimp 带了 file-fits 插件并链 libcfitsio.so.10，但 gimp 包的依赖里没写它，不进闭包的话 audit 会报库找不到（插件在运行时才 dlopen，平时不崩，但 FITS 打不开）。首次运行脚本：at-spi2-core、desktop-file-utils、gtk-update-icon-cache、gtk3、libnss、pycairo、pygobject、shared-mime-info（devkit 自动生成）。GIMP 3 的批处理解释器是 Python 3（python-fu-eval），脚本里模块名是 `Gimp`（大写，GI 命名空间），不是 GIMP 2 的 `gimp`/`pdb`；`Gimp.file_save(run_mode, image, Gio.File, options)` 负责导出，扩展名决定格式。三个实测过的坑：①不在命令行加 --quit 时 GIMP 批处理跑完会留在后台等信号，Bash 命令一直不返回；gimp-batch 固定加 --quit。②脚本里调 Gimp.quit() 会让 python-fu-eval 报「Procedure returned no return values」并把退出码弄坏；退出交给 --quit，脚本里不要调。③Gegl.RGBA 在 Python 里没有暴露，设颜色用 `Gegl.Color.new(\"#3380e6\")`。selftest 用 Python-Fu 新建 128×96 RGB 图、填充、导出 PNG，检查 PNG 魔数和 Gimp.file_save 返回 True，不联网、只写 $TMPDIR。"
 }
