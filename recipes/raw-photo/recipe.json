@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "id": "raw-photo",
+  "kind": "termux",
+  "revision": 1,
+  "name": { "zh": "RAW 照片处理（darktable + RawTherapee）", "en": "RAW photo pipeline (darktable + RawTherapee)" },
+  "desc": {
+    "zh": "两个无头 RAW 引擎，配 photo-min（元数据/滤镜/描线/条码）用：darktable-cli 把 RAW（或 TIFF/JPEG）按默认或指定 XMP 参数导出 JPEG/TIFF/PNG，RawTherapee 的 rawtherapee-cli 做批量转换、改尺寸、调白平衡/曝光/锐化。适合整理相机照片、批量出片、把一组 RAW 统一转成可分享的 JPEG。组件带 raw-photo 包装命令：工具包的 ICU 是 78，x11 仓库这版 darktable 按 ICU 79 构建，包装命令会在首次运行时从 Termux 官方仓库取一份 libicu 79.1（约 10 MB，核对 SHA256）到组件私有目录，底座升级后自动跳过。",
+    "en": "Two headless RAW engines, alongside photo-min (metadata / filters / tracing / barcodes): darktable-cli exports RAW (or TIFF/JPEG) to JPEG/TIFF/PNG with default or supplied XMP settings, and RawTherapee's rawtherapee-cli does batch conversion, resizing, white balance, exposure and sharpening. Useful for organising camera photos, bulk exports and turning a folder of RAW files into shareable JPEGs. Ships a raw-photo wrapper: the toolkit's ICU is 78 while this x11 build of darktable is linked against ICU 79, so the wrapper fetches libicu 79.1 from the official Termux repository on first use (about 10 MB, SHA256 verified) into the component's private directory and skips it once the toolkit catches up."
+  },
+  "roots": ["darktable", "rawtherapee"],
+  "repos": ["x11"],
+  "bin": ["raw-photo"],
+  "selftest": "raw-photo --selftest",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "media",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://www.darktable.org",
+  "maintainers": ["greyoak111"],
+  "files": {
+    "usr/bin/raw-photo": { "src": "bin/raw-photo", "mode": "755" },
+    "usr/share/cccodroid/components/raw-photo/fetch-icu.py": { "src": "lib/fetch-icu.py", "mode": "644" }
+  },
+  "notes": "Termux x11 仓库的 darktable 5.6.2-2 + rawtherapee 5.13-1（都比 Debian trixie 的 5.0.1 / 5.11 新），两个闭包合起来约 150 个包、下载约 150 MB、解开约 900 MB（具体数字以 CI dry build 的闭包统计为准）。共用很多包，所以合成一个组件而不是两个；只想要一个引擎的用户会多装另一个 —— 计划允许「一个组件或两个」，这里按一个做。关键坑同 inkscape：x11 的二进制造于 ICU 79.1，底座 devkit-2026.10.28 只有 78.3，devkit 按包名跳过底座已有的包，所以组件不带新 ICU；raw-photo 的 darktable 子命令首次运行从 Termux 官方仓库取 libicu_79.1_aarch64.deb（10.3 MB，sha256 83c980…d606c）到 ~/.cccodroid/raw-photo/libicu，只解 libicu*.so.79*，运行时 LD_LIBRARY_PATH 优先。rawtherapee-cli 不依赖 ICU 79，直连也能跑，但统一走 raw-photo 更省心。selftest 用底座 ImageMagick 造一张 96×64 渐变 TIFF（darktable 和 RawTherapee 都接受非 RAW 输入），分别导出 JPEG 并检查 FFD8FF 魔数，不联网（首次取 ICU 除外）、只写 $TMPDIR。"
+}

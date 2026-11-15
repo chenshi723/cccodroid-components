@@ -1,0 +1,102 @@
+#!{{PREFIX}}/bin/bash
+# raw-photo — RAW / 照片批处理（darktable-cli + rawtherapee-cli）
+#
+#   raw-photo darktable  <输入> <输出> [其它参数…]      # darktable-cli
+#   raw-photo rawtherapee -o <输出目录或文件> -c <输入>  # rawtherapee-cli
+#   raw-photo --selftest
+#
+# 两个引擎都能无头跑：darktable 出 JPEG/TIFF/PNG（支持 RAW 与普通 TIFF/JPEG 输入），
+# RawTherapee 的 rawtherapee-cli 做批量转换。
+#
+# 为什么不直接调 darktable-cli：工具包的 ICU 是 78，x11 仓库的 darktable 按 ICU 79
+# 构建，直接跑会报 libicui18n.so.79 not found。本脚本在底座还没有 79 时，从 Termux
+# 官方仓库取一份 libicu 79.1 到组件私有目录（约 10 MB，核对 SHA256），运行时优先加载；
+# 底座以后升级到 79 就自动跳过。rawtherapee-cli 不依赖 ICU 79，不需要这一步。
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=raw-photo
+ROOT="${CCODROID_RAW_PHOTO_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_RAW_PHOTO_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+LIBDIR="$PREFIX/share/cccodroid/components/$ID"
+DT="$PREFIX/bin/darktable-cli"
+RT="$PREFIX/bin/rawtherapee-cli"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+icu_ready() {
+  if [ -e "$PREFIX/lib/libicuuc.so.79" ]; then
+    return 0
+  fi
+  if [ ! -e "$ROOT/libicu/libicuuc.so.79" ]; then
+    python3 "$LIBDIR/fetch-icu.py" "$ROOT/libicu" || return 1
+  fi
+  export LD_LIBRARY_PATH="$ROOT/libicu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+}
+
+selftest() {
+  local t rc=0 dver rver
+  t="$(mktemp -d "$TMP/raw-photo-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  # 造一张普通 TIFF：darktable / RawTherapee 都接受非 RAW 输入
+  if command -v magick >/dev/null 2>&1; then
+    magick -size 96x64 gradient:red-blue "$t/in.tif" >/dev/null 2>&1
+  elif command -v convert >/dev/null 2>&1; then
+    convert -size 96x64 gradient:red-blue "$t/in.tif" >/dev/null 2>&1
+  fi
+  if [ ! -s "$t/in.tif" ]; then
+    echo "✗ 造不出测试 TIFF（底座缺 ImageMagick？）"; rm -rf "$t"; return 1
+  fi
+  [ -x "$DT" ] || { echo "✗ 找不到 $DT —— raw-photo 组件没装好？"; rm -rf "$t"; return 1; }
+  [ -x "$RT" ] || { echo "✗ 找不到 $RT —— raw-photo 组件没装好？"; rm -rf "$t"; return 1; }
+
+  icu_ready || { echo "✗ darktable 需要的 ICU 79 没准备好"; rm -rf "$t"; return 1; }
+  if ! "$DT" "$t/in.tif" "$t/dt.jpg" >"$t/dt.log" 2>&1; then
+    echo "✗ darktable 导出失败："; tail -12 "$t/dt.log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/dt.jpg" ] && [ "$(head -c 3 "$t/dt.jpg" | od -An -tx1 | tr -d ' \n')" = "ffd8ff" ]; then
+    echo "✓ darktable → JPEG：$(stat -c%s "$t/dt.jpg") 字节"
+  else
+    echo "✗ darktable 没有生成合法 JPEG"; tail -12 "$t/dt.log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+
+  mkdir -p "$t/rtout"
+  if ! "$RT" -o "$t/rtout" -c "$t/in.tif" >"$t/rt.log" 2>&1; then
+    echo "✗ RawTherapee 导出失败："; tail -12 "$t/rt.log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/rtout/in.jpg" ] && [ "$(head -c 3 "$t/rtout/in.jpg" | od -An -tx1 | tr -d ' \n')" = "ffd8ff" ]; then
+    echo "✓ RawTherapee → JPEG：$(stat -c%s "$t/rtout/in.jpg") 字节"
+  else
+    echo "✗ RawTherapee 没有生成合法 JPEG"; tail -12 "$t/rt.log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+
+  dver=$("$DT" --version 2>/dev/null | sed -n '1p')
+  rver=$("$RT" -h 2>&1 | sed -n 's/^RawTherapee, version \([^,]*\).*/\1/p' | head -1)
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== darktable=OK rawtherapee=OK jpeg=OK darktable版本=$dver rt版本=$rver"
+  else echo "===== 总结 ===== raw-photo=FAIL"; fi
+  return $rc
+}
+
+usage() {
+  sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help) usage; exit 0 ;;
+  darktable)
+    shift
+    icu_ready || { echo "✗ ICU 79 没准备好（首次需要约 10 MB 下载）" >&2; exit 1; }
+    exec "$DT" "$@" ;;
+  rawtherapee)
+    shift
+    exec "$RT" "$@" ;;
+  "") usage >&2; exit 2 ;;
+  *) echo "raw-photo: 第一个参数要是 darktable 或 rawtherapee（--help 看用法）" >&2; exit 2 ;;
+esac

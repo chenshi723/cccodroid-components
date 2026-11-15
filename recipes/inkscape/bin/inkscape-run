@@ -1,0 +1,91 @@
+#!{{PREFIX}}/bin/bash
+# inkscape-run — 无头跑 Inkscape 1.4（SVG → PNG / PDF / SVG 精修）
+#
+#   inkscape-run <inkscape 的普通参数…>
+#   inkscape-run --selftest
+#
+# 为什么不直接用 inkscape：工具包的 ICU 是 78，x11 仓库这版 Inkscape（以及它依赖的
+# gspell/GTK 那一串）按 ICU 79 构建，直接跑会报
+#     CANNOT LINK EXECUTABLE "inkscape": library "libicuuc.so.79" not found
+# 本脚本在底座还没有 ICU 79 时，从 Termux 官方仓库取一份 libicu 79.1 到组件私有目录
+# （约 10 MB，核对 SHA256），运行时优先加载；底座以后升级到 79 就自动跳过。
+#
+# 其余参数原样交给 Inkscape，例如：
+#   inkscape-run --export-type=png --export-filename=out.png in.svg
+#   inkscape-run --export-type=pdf --export-filename=out.pdf in.svg
+#   inkscape-run --export-filename=out.png --export-width=1024 in.svg
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=inkscape
+ROOT="${CCODROID_INKSCAPE_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_INKSCAPE_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+LIBDIR="$PREFIX/share/cccodroid/components/$ID"
+BIN="$PREFIX/bin/inkscape"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+# ── ICU 79：底座的 78 不够用；取到组件目录，优先加载 ─────────────────
+icu_ready() {
+  if [ -e "$PREFIX/lib/libicuuc.so.79" ]; then
+    return 0
+  fi
+  if [ ! -e "$ROOT/libicu/libicuuc.so.79" ]; then
+    python3 "$LIBDIR/fetch-icu.py" "$ROOT/libicu" || return 1
+  fi
+  export LD_LIBRARY_PATH="$ROOT/libicu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+}
+
+[ -x "$BIN" ] || { echo "✗ 找不到 $BIN —— inkscape 组件没装好？" >&2; exit 1; }
+
+selftest() {
+  local t rc=0 ver
+  t="$(mktemp -d "$TMP/inkscape-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  icu_ready || { echo "✗ ICU 79 没准备好"; return 1; }
+  cat > "$t/in.svg" <<'SVG'
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="120" viewBox="0 0 200 120">
+  <rect x="8" y="8" width="184" height="104" rx="12" fill="#2563eb"/>
+  <circle cx="70" cy="60" r="34" fill="#f59e0b"/>
+  <path d="M120 88 L150 32 L180 88 Z" fill="#10b981"/>
+  <text x="18" y="105" font-size="14" fill="#ffffff">cccodroid</text>
+</svg>
+SVG
+  if ! "$BIN" --export-type=png --export-filename="$t/out.png" "$t/in.svg" >"$t/log" 2>&1; then
+    echo "✗ PNG 导出失败："; tail -10 "$t/log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.png" ] && [ "$(head -c 8 "$t/out.png" | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a" ]; then
+    echo "✓ PNG 导出：$(stat -c%s "$t/out.png") 字节"
+  else
+    echo "✗ 没有生成合法 PNG"; tail -10 "$t/log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  if ! "$BIN" --export-type=pdf --export-filename="$t/out.pdf" "$t/in.svg" >"$t/log2" 2>&1; then
+    echo "✗ PDF 导出失败："; tail -10 "$t/log2" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.pdf" ] && [ "$(head -c 5 "$t/out.pdf")" = "%PDF-" ]; then
+    echo "✓ PDF 导出：$(stat -c%s "$t/out.pdf") 字节"
+  else
+    echo "✗ 没有生成合法 PDF"; tail -10 "$t/log2" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  ver=$("$BIN" --version 2>/dev/null | sed -n '1p')
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== inkscape=OK png=OK pdf=OK 版本=$ver"
+  else echo "===== 总结 ===== inkscape=FAIL"; fi
+  return $rc
+}
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help)
+    sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//'
+    exit 0 ;;
+esac
+
+icu_ready || { echo "✗ ICU 79 没准备好（首次需要约 10 MB 下载）" >&2; exit 1; }
+# Inkscape 是 bionic 程序，LD_PRELOAD 里的 termux-exec 照常保留（它本来就是给 bionic 用的）
+exec "$BIN" "$@"

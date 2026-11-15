@@ -1,0 +1,109 @@
+#!{{PREFIX}}/bin/bash
+# fontforge — 无头跑 FontForge（造字 / 改字 / 批量转字体）
+#
+#   fontforge -script script.pe            FontForge 自己的脚本语言
+#   fontforge -lang=py -script script.py   Python（PYTHONHOME 已指向 debroot 的 Python 3.13）
+#   fontforge -lang=ff -c 'Open("in.sfd"); Generate("out.ttf")'
+#   fontforge --selftest
+#
+# FontForge 不在 Termux 官方仓库，来自 Debian trixie arm64（fontforge-nox，无 GTK 的
+# 无头版）。首次运行把包清单里的 48 个包装到 ~/.cccodroid/fontforge/debroot
+# （下载约 20 MB，解开约 72 MB，逐个核对 SHA256）。glibc 用工具包的 $PREFIX/glibc。
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=fontforge
+ROOT="${CCODROID_FONTFORGE_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_FONTFORGE_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+B="$ROOT/debroot"
+LIBDIR="$PREFIX/share/cccodroid/components/$ID"
+LDSO="$PREFIX/glibc/lib/ld-linux-aarch64.so.1"
+[ -x "$LDSO" ] || LDSO="$PREFIX/glibc/glibc/lib/ld-linux-aarch64.so.1"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+if ! ls "$ROOT"/installed-*.json >/dev/null 2>&1; then
+  echo "fontforge 首次运行：从 Debian 官方仓库下载 48 个包（约 20 MB，解开约 72 MB），" >&2
+  echo "  逐个核对 SHA256，装到 $B；.deb 留在 $ROOT/debcache，重装不用再下。" >&2
+  python3 "$LIBDIR/debroot.py" --root "$B" --lock "$LIBDIR/debs.json" || {
+    echo "✗ fontforge 运行根没装成" >&2; exit 1; }
+fi
+
+[ -x "$B/usr/bin/fontforge" ] || { echo "✗ 找不到 $B/usr/bin/fontforge —— 运行根不完整，删掉 $ROOT 再试" >&2; exit 1; }
+[ -x "$LDSO" ] || { echo "✗ 找不到 glibc 加载器 $LDSO（工具包缺 glibc？重装工具包）" >&2; exit 1; }
+
+LIB="$B/usr/lib/aarch64-linux-gnu:$B/usr/lib:$B/lib"
+for d in "$B"/usr/lib/* "$B"/lib/*; do
+  [ -d "$d" ] || continue
+  case "$d" in *python3*|*lib-dynload*) continue ;; esac
+  ls "$d"/*.so* >/dev/null 2>&1 && LIB="$LIB:$d"
+done
+LIB="$LIB:$PREFIX/glibc/lib"
+
+# FontForge 的 Python 是 Debian 自带的 3.13（嵌在 libfontforge 里），
+# 不给 PYTHONHOME 会报 Fatal Python error: Failed to import encodings module
+export PYTHONHOME="$B/usr"
+export PYTHONPATH="$B/usr/lib/python3/dist-packages"
+export FONTCONFIG_PATH="$B/etc/fonts"
+[ -f "$B/etc/fonts/fonts.conf" ] && export FONTCONFIG_FILE="$B/etc/fonts/fonts.conf"
+export XDG_DATA_DIRS="$B/usr/share:/system/usr/share:/system/fonts"
+
+selftest() {
+  local t rc=0 ver
+  t="$(mktemp -d "$TMP/fontforge-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  cat > "$t/make.py" <<'PY'
+import fontforge
+f = fontforge.font()
+f.fontname = "cccodroid-selftest"
+f.familyname = "cccodroid"
+f.fullname = "cccodroid selftest"
+f.em = 1000
+g = f.createChar(65, "A")
+g.width = 500
+pen = g.glyphPen()
+pen.moveTo((100, 0)); pen.lineTo((250, 700)); pen.lineTo((400, 0)); pen.closePath()
+pen = None
+f.generate("%s/out.ttf")
+print("FONT_GLYPHS", sum(1 for _ in f.glyphs()))
+PY
+  sed -i "s|%s/out.ttf|$t/out.ttf|" "$t/make.py"
+  if ! "$0" -lang=py -script "$t/make.py" >"$t/log" 2>&1; then
+    echo "✗ 生成字体失败："; tail -12 "$t/log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.ttf" ] && [ "$(head -c 4 "$t/out.ttf" | od -An -tx1 | tr -d ' \n')" = "00010000" ]; then
+    echo "✓ 生成 TrueType：$(stat -c%s "$t/out.ttf") 字节 · $(grep -o 'FONT_GLYPHS [0-9]*' "$t/log" | tail -1)"
+  else
+    echo "✗ 没有生成合法 TTF"; tail -12 "$t/log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  if [ $rc -eq 0 ]; then
+    if ! "$0" -lang=ff -c "Open(\"$t/out.ttf\"); Print(\"REOPEN_GLYPHS \", CharCnt()); Quit(0)" >"$t/log2" 2>&1 \
+       || ! grep -q 'REOPEN_GLYPHS' "$t/log2"; then
+      echo "✗ 生成的字体重开失败："; tail -10 "$t/log2" | sed 's/^/    /'; rc=1
+    else
+      echo "✓ 重开读回：$(grep -o 'REOPEN_GLYPHS *[0-9]*' "$t/log2" | tail -1)"
+    fi
+  fi
+  ver=$("$0" -version 2>&1 | sed -n "s/^ *Version: //p" | head -1)
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== fontforge=OK ttf=OK 版本=$ver"
+  else echo "===== 总结 ===== fontforge=FAIL"; fi
+  return $rc
+}
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help)
+    sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'
+    echo
+    echo "（--help 显示的是本包装脚本的说明；FontForge 自己的选项见 fontforge -help，会照常透传。）"
+    exit 0 ;;
+esac
+
+unset LD_PRELOAD LD_AUDIT LD_DEBUG 2>/dev/null
+exec "$LDSO" --library-path "$LIB" "$B/usr/bin/fontforge" "$@"

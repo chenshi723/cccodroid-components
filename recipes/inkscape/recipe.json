@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "id": "inkscape",
+  "kind": "termux",
+  "revision": 1,
+  "name": { "zh": "Inkscape 1.4（SVG 精修 / 导出）", "en": "Inkscape 1.4 (SVG editing & export)" },
+  "desc": {
+    "zh": "把 SVG 精修成成品：无头导出 PNG / PDF / SVG，支持按尺寸、按 DPI、只导出选中对象；和 diagrams 组件互补 —— graphviz / PlantUML 出结构，Inkscape 调细节、加渐变和文字。没有窗口，命令行驱动。组件带 inkscape-run 包装命令：工具包的 ICU 是 78，x11 仓库这版 Inkscape 按 ICU 79 构建，包装命令会在首次运行时从 Termux 官方仓库取一份 libicu 79.1（约 10 MB，核对 SHA256）到组件私有目录，底座升级后自动跳过。",
+    "en": "Turns SVGs into finished artwork: headless export to PNG / PDF / SVG, by size, by DPI, or selection only. Complements the diagrams component — graphviz / PlantUML for structure, Inkscape for gradients, text and detail. No window, command-line driven. Ships an inkscape-run wrapper: the toolkit's ICU is 78 while this x11 build of Inkscape is linked against ICU 79, so the wrapper fetches libicu 79.1 from the official Termux repository on first use (about 10 MB, SHA256 verified) into the component's private directory and skips it once the toolkit catches up."
+  },
+  "roots": ["inkscape"],
+  "repos": ["x11"],
+  "bin": ["inkscape-run"],
+  "selftest": "inkscape-run --selftest",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "media",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://inkscape.org",
+  "maintainers": ["greyoak111"],
+  "files": {
+    "usr/bin/inkscape-run": { "src": "bin/inkscape-run", "mode": "755" },
+    "usr/share/cccodroid/components/inkscape/fetch-icu.py": { "src": "lib/fetch-icu.py", "mode": "644" }
+  },
+  "notes": "Termux x11 仓库的 inkscape 1.4.4-4（比 Debian trixie 的 1.4 新），闭包 135 个包、下载约 107 MB、解开约 612 MB；底座已有的包不再重复打。关键坑：这批 x11 二进制按 ICU 79.1 构建，而底座 devkit-2026.10.28 的 libicu 是 78.3；devkit 按「底座已有的包」整包跳过，所以组件里不会带新 ICU，直接跑 inkscape 会报 libicuuc.so.79 not found（实测 gspell、GTK 都中）。包装脚本 inkscape-run 在底座没有 79 时从 Termux 官方仓库取 libicu_79.1_aarch64.deb（10.3 MB，sha256 83c980…d606c）到 ~/.cccodroid/inkscape/libicu，只解 libicu*.so.79*，运行时 LD_LIBRARY_PATH 优先；底座升到 79 后自动跳过。不写 $PREFIX、不改底座文件。selftest 真导出一张 200×120 SVG 的 PNG 和 PDF，检查 PNG 魔数和 %PDF-，不联网（首次取 ICU 除外）、只写 $TMPDIR。"
+}

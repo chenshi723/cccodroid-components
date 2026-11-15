@@ -1,0 +1,19 @@
+RAW 照片处理组件 — 第三方软件与许可
+
+darktable 5.6.2
+  上游：https://www.darktable.org
+  许可：GPL-3.0-or-later
+  来源：Termux x11 仓库，随组件打包
+
+RawTherapee 5.13
+  上游：https://rawtherapee.com
+  许可：GPL-3.0-or-later
+  来源：Termux x11 仓库，随组件打包
+
+libicu 79.1（首次运行 raw-photo darktable 时下载到组件私有目录）
+  上游：https://icu.unicode.org
+  许可：Unicode License v3
+  来源：Termux 官方 main 仓库的 libicu_79.1_aarch64.deb；只解 libicu*.so.79*
+        到 $HOME/.cccodroid/raw-photo/libicu。
+
+两个引擎闭包里的其它包各自保留上游许可与版权声明，随组件安装。

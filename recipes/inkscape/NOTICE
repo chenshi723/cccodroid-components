@@ -1,0 +1,16 @@
+Inkscape 组件 — 第三方软件与许可
+
+Inkscape 1.4.4
+  上游：https://inkscape.org
+  许可：GPL-2.0-or-later
+  来源：Termux x11 仓库（packages.termux.dev/apt/termux-x11），随组件打包
+
+libicu 79.1（首次运行时下载到组件私有目录）
+  上游：https://icu.unicode.org
+  许可：Unicode License v3（ICU 的 LICENSE 文件）
+  来源：Termux 官方 main 仓库的 libicu_79.1_aarch64.deb；只解 libicu*.so.79*
+        到 $HOME/.cccodroid/inkscape/libicu，不改工具包里的 ICU 78。
+
+Inkscape 闭包里的其它包（GTK、Pango、Cairo、gspell 等）各自保留上游许可，
+安装后位于 $PREFIX/share/doc/ 或包内 copyright 文件；组件配方与 skill 只写
+实际使用的入口，不改变这些包的许可条款。

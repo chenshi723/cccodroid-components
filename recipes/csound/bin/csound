@@ -1,0 +1,112 @@
+#!{{PREFIX}}/bin/bash
+# csound — 用 Csound 6.18 把文本乐谱（.csd）渲染成 WAV（cccodroid 的 csound 组件）
+#
+#   csound [csound 的普通参数…]
+#   csound --selftest
+#
+# Csound 本体不在 Termux 官方仓库，来自 Debian trixie arm64；首次运行会把包清单里
+# 的 34 个 Debian 包装到 ~/.cccodroid/csound/debroot（下载约 15 MB，解开约 35 MB，
+# 逐个核对 debs.json 里的 SHA256）。glibc 运行时用工具包自带的 $PREFIX/glibc。
+#
+# 其余参数原样交给 csound，例如：
+#   csound -o out.wav score.csd
+#   csound -odac score.csd          # 实时播放（手机没有声卡路由，通常不用）
+set -u
+
+PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
+[ -n "$PREFIX" ] || PREFIX="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+ID=csound
+ROOT="${CCODROID_CSOUND_DATA:-$HOME/.cccodroid/$ID}"
+export CCODROID_CSOUND_DATA="$ROOT"   # 子进程再进本脚本（比如 --selftest）时根目录不变
+B="$ROOT/debroot"
+LIBDIR="$PREFIX/share/cccodroid/components/$ID"
+LDSO="$PREFIX/glibc/lib/ld-linux-aarch64.so.1"
+[ -x "$LDSO" ] || LDSO="$PREFIX/glibc/glibc/lib/ld-linux-aarch64.so.1"
+
+TMP="${TMPDIR:-}"
+if [ -z "$TMP" ] || [ ! -d "$TMP" ]; then TMP="$PREFIX/tmp"; fi
+mkdir -p "$TMP" "$ROOT/home" 2>/dev/null
+export TMPDIR="$TMP" HOME="$ROOT/home"
+export XDG_CACHE_HOME="$ROOT/cache" XDG_DATA_HOME="$ROOT/cache/data" XDG_CONFIG_HOME="$ROOT/cache/config"
+mkdir -p "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" 2>/dev/null
+
+# ── 首次运行：装 Debian 运行根 ───────────────────────────────────────
+if ! ls "$ROOT"/installed-*.json >/dev/null 2>&1; then
+  echo "csound 首次运行：从 Debian 官方仓库下载 34 个包（约 15 MB，解开约 35 MB），" >&2
+  echo "  逐个核对 SHA256，装到 $B；.deb 留在 $ROOT/debcache，重装不用再下。" >&2
+  python3 "$LIBDIR/debroot.py" --root "$B" --lock "$LIBDIR/debs.json" || {
+    echo "✗ csound 运行根没装成" >&2; exit 1; }
+fi
+
+[ -x "$B/usr/bin/csound" ] || { echo "✗ 找不到 $B/usr/bin/csound —— 运行根不完整，删掉 $ROOT 再试" >&2; exit 1; }
+[ -x "$LDSO" ] || { echo "✗ 找不到 glibc 加载器 $LDSO（工具包缺 glibc？重装工具包）" >&2; exit 1; }
+
+# ── 库搜索路径：Debian 的库 + Termux 的 glibc；绝不能混进 bionic 的 $PREFIX/lib ──
+LIB="$B/usr/lib/aarch64-linux-gnu:$B/usr/lib:$B/lib"
+for d in "$B"/usr/lib/* "$B"/lib/*; do
+  [ -d "$d" ] || continue
+  case "$d" in *python3*|*lib-dynload*) continue ;; esac
+  ls "$d"/*.so* >/dev/null 2>&1 && LIB="$LIB:$d"
+done
+LIB="$LIB:$PREFIX/glibc/lib"
+
+# Csound 的 opcode 插件和 raw wave 目录都是编译期写死的 /usr/lib、/usr/share
+export OPCODE6DIR64="$B/usr/lib/aarch64-linux-gnu/csound/plugins64-6.0"
+[ -d "$B/usr/share/csound" ] && export RAWWAVE_PATH="$B/usr/share/csound"
+export CSOUND_HOME="$B/usr/share/csound"
+export FONTCONFIG_PATH="$B/etc/fonts"
+[ -f "$B/etc/fonts/fonts.conf" ] && export FONTCONFIG_FILE="$B/etc/fonts/fonts.conf"
+
+selftest() {
+  local t rc=0 ver
+  t="$(mktemp -d "$TMP/csound-selftest.XXXXXX")" || { echo "✗ 建不了临时目录"; return 1; }
+  cat > "$t/t.csd" <<'CSD'
+<CsoundSynthesizer>
+<CsOptions>
+-odac
+</CsOptions>
+<CsInstruments>
+sr = 44100
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+instr 1
+  a1 oscil 0.3, 440, 1
+  outs a1, a1
+endin
+</CsInstruments>
+<CsScore>
+f 1 0 4096 10 1
+i 1 0 1
+</CsScore>
+</CsoundSynthesizer>
+CSD
+  # -odac 在无音频设备时会往 null 设备走；自检显式改成写文件
+  sed -i 's/^<CsOptions>.*$/<CsOptions>/; s/^-odac$//' "$t/t.csd"
+  if ! "$0" -o "$t/out.wav" "$t/t.csd" >"$t/log" 2>&1; then
+    echo "✗ csound 渲染失败："; tail -12 "$t/log" | sed 's/^/    /'; rc=1
+  fi
+  if [ -s "$t/out.wav" ] && [ "$(head -c 4 "$t/out.wav")" = "RIFF" ]; then
+    echo "✓ 渲染出 WAV：$(stat -c%s "$t/out.wav") 字节 · $(head -c 4 "$t/out.wav")"
+  else
+    echo "✗ 没有生成合法 WAV"; tail -12 "$t/log" 2>/dev/null | sed 's/^/    /'; rc=1
+  fi
+  ver=$("$0" --version 2>&1 | sed -n 's/.*version \([0-9][0-9.]*\).*/\1/p' | head -1)
+  rm -rf "$t"
+  if [ $rc -eq 0 ]; then echo "===== 总结 ===== csound=OK wav=OK 版本=$ver"
+  else echo "===== 总结 ===== csound=FAIL"; fi
+  return $rc
+}
+
+case "${1:-}" in
+  --selftest) selftest; exit $? ;;
+  -h|--help)
+    sed -n '2,17p' "$0" | sed 's/^# \{0,1\}//'
+    echo
+    echo "（--help 显示的是本包装脚本的说明；Csound 自己的选项见 csound --help，会照常透传。）"
+    exit 0 ;;
+esac
+
+# LD_PRELOAD 里的 termux-exec 是 bionic 库，glibc 加载器一看到就报 version 'LIBC' not found
+unset LD_PRELOAD LD_AUDIT LD_DEBUG
+exec "$LDSO" --library-path "$LIB" "$B/usr/bin/csound" "$@"

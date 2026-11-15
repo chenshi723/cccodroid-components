@@ -1,0 +1,279 @@
+{
+ "suite": "trixie",
+ "arch": "arm64",
+ "source": "https://deb.debian.org/debian/dists/trixie/main/binary-arm64/Packages.gz",
+ "packages": [
+  {
+   "name": "csound",
+   "version": "1:6.18.1+dfsg-4",
+   "filename": "pool/main/c/csound/csound_6.18.1+dfsg-4_arm64.deb",
+   "sha256": "d787b8d2d03190b8fd8f6d836dd97e06dd65cf27ebc011c069e65dee1e67fbbe",
+   "size": 49096,
+   "installed": 363520
+  },
+  {
+   "name": "libcsound64-6.0",
+   "version": "1:6.18.1+dfsg-4",
+   "filename": "pool/main/c/csound/libcsound64-6.0_6.18.1+dfsg-4_arm64.deb",
+   "sha256": "65e35b045aad9135613d46b0e2ed1974b6765a2abf7b642b28d942ea3ae490cf",
+   "size": 1227024,
+   "installed": 5269504
+  },
+  {
+   "name": "libgcc-s1",
+   "version": "14.2.0-19",
+   "filename": "pool/main/g/gcc-14/libgcc-s1_14.2.0-19_arm64.deb",
+   "sha256": "1108bc87879833d6d9a145f22a4a15cddb34e065b4b5f4b97bee586adbac2851",
+   "size": 54104,
+   "installed": 151552
+  },
+  {
+   "name": "libstdc++6",
+   "version": "14.2.0-19",
+   "filename": "pool/main/g/gcc-14/libstdc++6_14.2.0-19_arm64.deb",
+   "sha256": "6669b0c52a2e7c6af9adfdabce3ff6e286065cdfbc7b85280862b5f799daebee",
+   "size": 637536,
+   "installed": 3094528
+  },
+  {
+   "name": "csound-data",
+   "version": "1:6.18.1+dfsg-4",
+   "filename": "pool/main/c/csound/csound-data_6.18.1+dfsg-4_all.deb",
+   "sha256": "2fb0619dfe9b2edcb839381c4798a0ad57c3656556466e25eef9de9e2e767aa5",
+   "size": 1455672,
+   "installed": 2267136
+  },
+  {
+   "name": "libasound2t64",
+   "version": "1.2.14-1+deb13u1",
+   "filename": "pool/main/a/alsa-lib/libasound2t64_1.2.14-1+deb13u1_arm64.deb",
+   "sha256": "9c808d819ccddc37c793dd3186c2ecd858b2feb2474cebb883f70386e7890d39",
+   "size": 341632,
+   "installed": 1299456
+  },
+  {
+   "name": "libjack-jackd2-0",
+   "version": "1.9.22~dfsg-4",
+   "filename": "pool/main/j/jackd2/libjack-jackd2-0_1.9.22~dfsg-4_arm64.deb",
+   "sha256": "c6bd35ff8a539a24957b95bae936aeed868a7865ff7227c0ec8dcccd69cebbda",
+   "size": 265068,
+   "installed": 1307648
+  },
+  {
+   "name": "liblo7",
+   "version": "0.32-2",
+   "filename": "pool/main/libl/liblo/liblo7_0.32-2_arm64.deb",
+   "sha256": "7f91bc0449298c2ed866d60ac10e410e8dd9e9f82b02ee64aed62127a81c40f2",
+   "size": 42448,
+   "installed": 164864
+  },
+  {
+   "name": "libportaudio2",
+   "version": "19.6.0-1.2+b3",
+   "filename": "pool/main/p/portaudio19/libportaudio2_19.6.0-1.2+b3_arm64.deb",
+   "sha256": "5e42aa05c151d5ab764f8784abe2b4e9ecbfd1d0f0db3b2745ce551d53cbbdd6",
+   "size": 58836,
+   "installed": 221184
+  },
+  {
+   "name": "libportmidi0",
+   "version": "1:217-6.1+b4",
+   "filename": "pool/main/p/portmidi/libportmidi0_217-6.1+b4_arm64.deb",
+   "sha256": "4d6f82e2146a8e6fe6e2de53be95c4e2abac02eaebe60e1ab53d2d4625d1350f",
+   "size": 21216,
+   "installed": 158720
+  },
+  {
+   "name": "libpulse0",
+   "version": "17.0+dfsg1-2+b1",
+   "filename": "pool/main/p/pulseaudio/libpulse0_17.0+dfsg1-2+b1_arm64.deb",
+   "sha256": "2de5610e3affe69cfb11110f890375261b47c9e0fc1a81eef7ecc4d6d2dc9a6d",
+   "size": 236376,
+   "installed": 1135616
+  },
+  {
+   "name": "libsndfile1",
+   "version": "1.2.2-2+deb13u1",
+   "filename": "pool/main/libs/libsndfile/libsndfile1_1.2.2-2+deb13u1_arm64.deb",
+   "sha256": "6c94f17e1f02778f98b96bb9ae19ff30085662e96685898a018c26bfd4bfc3f2",
+   "size": 185528,
+   "installed": 629760
+  },
+  {
+   "name": "gcc-14-base",
+   "version": "14.2.0-19",
+   "filename": "pool/main/g/gcc-14/gcc-14-base_14.2.0-19_arm64.deb",
+   "sha256": "34ee90679b018c0e64234747a4c4c0ae6b7f63541115037465a8627c2dfbc594",
+   "size": 49444,
+   "installed": 114688
+  },
+  {
+   "name": "csound-soundfont",
+   "version": "1:6.18.1+dfsg-4",
+   "filename": "pool/main/c/csound/csound-soundfont_6.18.1+dfsg-4_all.deb",
+   "sha256": "0b204c9d19500fc2039eb9af1c4240c362e41174e6fe8899045c9dc1f957e43e",
+   "size": 3734480,
+   "installed": 4227072
+  },
+  {
+   "name": "libasound2-data",
+   "version": "1.2.14-1+deb13u1",
+   "filename": "pool/main/a/alsa-lib/libasound2-data_1.2.14-1+deb13u1_all.deb",
+   "sha256": "04688afdff3769c0f685541daed7b2f6f0cb946799ddf1d5847ddf11fe245559",
+   "size": 21188,
+   "installed": 201728
+  },
+  {
+   "name": "libdb5.3t64",
+   "version": "5.3.28+dfsg2-9",
+   "filename": "pool/main/d/db5.3/libdb5.3t64_5.3.28+dfsg2-9_arm64.deb",
+   "sha256": "bfef56508d69fd3f940668f6abd0a466a362cabf63c4cc1c787cc58d28f6e92f",
+   "size": 629132,
+   "installed": 1817600
+  },
+  {
+   "name": "libopus0",
+   "version": "1.5.2-2",
+   "filename": "pool/main/o/opus/libopus0_1.5.2-2_arm64.deb",
+   "sha256": "1d980e8a4717074805a98dbe07671cb3bee068c25709315f3de836980c629836",
+   "size": 2812952,
+   "installed": 3504128
+  },
+  {
+   "name": "libsamplerate0",
+   "version": "0.2.2-4+b2",
+   "filename": "pool/main/libs/libsamplerate/libsamplerate0_0.2.2-4+b2_arm64.deb",
+   "sha256": "5d9fad694b249d48d8457e1242ab60e04db6a30d7d56f80c6ae463ff122147ec",
+   "size": 944716,
+   "installed": 1542144
+  },
+  {
+   "name": "libasyncns0",
+   "version": "0.8-6+b5",
+   "filename": "pool/main/liba/libasyncns/libasyncns0_0.8-6+b5_arm64.deb",
+   "sha256": "818bbcaa7ada536a1bdd5b1c26b77608606403f5c15557691e83d0b4433b89ef",
+   "size": 11672,
+   "installed": 84992
+  },
+  {
+   "name": "libdbus-1-3",
+   "version": "1.16.2-2",
+   "filename": "pool/main/d/dbus/libdbus-1-3_1.16.2-2_arm64.deb",
+   "sha256": "ca6bb5f2047ad58d274cb7d14216035a07d8e5aae6f6a0122c4f6293c9c39515",
+   "size": 169068,
+   "installed": 500736
+  },
+  {
+   "name": "libsystemd0",
+   "version": "257.13-1~deb13u1",
+   "filename": "pool/main/s/systemd/libsystemd0_257.13-1~deb13u1_arm64.deb",
+   "sha256": "d2f63c408549c29eaefb6f4c948393edce99f45ee8e43c991391bef63fb7d54b",
+   "size": 422500,
+   "installed": 1306624
+  },
+  {
+   "name": "libx11-6",
+   "version": "2:1.8.12-1",
+   "filename": "pool/main/libx/libx11/libx11-6_1.8.12-1_arm64.deb",
+   "sha256": "646f2d3f2165c8eebceb7f4aaca31e97a818bb11a045964833a9f764b738bac2",
+   "size": 794952,
+   "installed": 1729536
+  },
+  {
+   "name": "libx11-xcb1",
+   "version": "2:1.8.12-1",
+   "filename": "pool/main/libx/libx11/libx11-xcb1_1.8.12-1_arm64.deb",
+   "sha256": "1eafaa4295e129d6a81e742ab8da43194daa6b916199923c8cef8ad358985894",
+   "size": 247336,
+   "installed": 366592
+  },
+  {
+   "name": "libxcb1",
+   "version": "1.17.0-2+b1",
+   "filename": "pool/main/libx/libxcb/libxcb1_1.17.0-2+b1_arm64.deb",
+   "sha256": "d0178198e80ed4cacdececabe2c112ec88c7a9258cc11a55b8e267ab14a90d82",
+   "size": 143168,
+   "installed": 336896
+  },
+  {
+   "name": "libflac14",
+   "version": "1.5.0+ds-2",
+   "filename": "pool/main/f/flac/libflac14_1.5.0+ds-2_arm64.deb",
+   "sha256": "11800827306e56fcbd1a65ea67d9d13126fc02bf87fdfecd35e0f48a145b3c59",
+   "size": 179768,
+   "installed": 457728
+  },
+  {
+   "name": "libmp3lame0",
+   "version": "3.100-6+b3",
+   "filename": "pool/main/l/lame/libmp3lame0_3.100-6+b3_arm64.deb",
+   "sha256": "ed3563722129ffa4def03b7af0b589fa20eef972bdcc4599202ddb1ac654c58e",
+   "size": 354760,
+   "installed": 585728
+  },
+  {
+   "name": "libmpg123-0t64",
+   "version": "1.32.10-1+deb13u1",
+   "filename": "pool/main/m/mpg123/libmpg123-0t64_1.32.10-1+deb13u1_arm64.deb",
+   "sha256": "d284df39ff3b64f1cdf274352613c52534c55eed82c3a2ff0fc7ba154acd7bf0",
+   "size": 143208,
+   "installed": 357376
+  },
+  {
+   "name": "libogg0",
+   "version": "1.3.5-3+b2",
+   "filename": "pool/main/libo/libogg/libogg0_1.3.5-3+b2_arm64.deb",
+   "sha256": "d59a83ab352bf0c16ce9513fdf264f87214813ca8c628c652801ef476ece8286",
+   "size": 23580,
+   "installed": 92160
+  },
+  {
+   "name": "libvorbis0a",
+   "version": "1.3.7-3",
+   "filename": "pool/main/libv/libvorbis/libvorbis0a_1.3.7-3_arm64.deb",
+   "sha256": "6e8e64ebe692dd2d019af7f914f2e3b81bf13d4b1ce2516fb4248a0310ef7cf6",
+   "size": 83772,
+   "installed": 225280
+  },
+  {
+   "name": "libvorbisenc2",
+   "version": "1.3.7-3",
+   "filename": "pool/main/libv/libvorbis/libvorbisenc2_1.3.7-3_arm64.deb",
+   "sha256": "4a477b3ae19ba50a288f036c8176d61cd9f3836ba65472f88b95e3f6b3bf2dd3",
+   "size": 75532,
+   "installed": 743424
+  },
+  {
+   "name": "libcap2",
+   "version": "1:2.75-10+deb13u1+b3",
+   "filename": "pool/main/libc/libcap2/libcap2_2.75-10+deb13u1+b3_arm64.deb",
+   "sha256": "863aa5b9cdf6f80010b48982d4639126b09a89eeef2c0c5c7be226297c811581",
+   "size": 28568,
+   "installed": 163840
+  },
+  {
+   "name": "libx11-data",
+   "version": "2:1.8.12-1",
+   "filename": "pool/main/libx/libx11/libx11-data_1.8.12-1_all.deb",
+   "sha256": "c54f87069888f80ba4da586da6147d74c7598ccdd8b90906dbc4271fa414c738",
+   "size": 343072,
+   "installed": 1613824
+  },
+  {
+   "name": "libxau6",
+   "version": "1:1.0.11-1",
+   "filename": "pool/main/libx/libxau/libxau6_1.0.11-1_arm64.deb",
+   "sha256": "ac1061728670f4626adaa1288953a0e6fb801c9cae72ee1c3231e63e2609d23a",
+   "size": 20576,
+   "installed": 96256
+  },
+  {
+   "name": "libxdmcp6",
+   "version": "1:1.1.5-1",
+   "filename": "pool/main/libx/libxdmcp/libxdmcp6_1.1.5-1_arm64.deb",
+   "sha256": "e10bbb0802181992ecf091e9425171850eee16068729c109214ba4924f81fb52",
+   "size": 27752,
+   "installed": 101376
+  }
+ ]
+}
