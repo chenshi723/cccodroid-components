@@ -96,6 +96,8 @@ LMMS 工程就是 XML；手写时用**未压缩的 `.mmp`**（`.mmpz` 是 gzip�
 
 ## 常见坑
 
+- **`LMMS cannot be run as root.`**：LMMS 1.2 的硬检查；包装脚本在 uid 0 时自动加
+  `--allowroot`（CI 容器用）。手机上正常是应用 uid，不会碰到。
 - **渲染成功但全静音**：99% 是插件目录没指对（直接调 debroot 里的 lmms），或
   音轨/pattern `muted="1"`，或引用的采样文件不存在。用包装命令，先 `--selftest`。
 - 输出文件名建议直接带 `.wav`/`.ogg`/`.mp3`，LMMS 按扩展名选编码器；不认识的

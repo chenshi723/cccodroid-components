@@ -134,4 +134,8 @@ case "${1:-}" in
 esac
 
 unset LD_PRELOAD LD_AUDIT LD_DEBUG 2>/dev/null
-exec "$LDSO" --library-path "$LIB" "$B/usr/bin/lmms" "$@"
+# LMMS 拒绝以 root 运行（CI 的 termux-docker 就是 root），它自己的开关是 --allowroot。
+# 手机上正常是应用 uid，不受影响；容器里不加这一条会直接 "LMMS cannot be run as root."。
+EXTRA=()
+[ "$(id -u 2>/dev/null)" = 0 ] && EXTRA=(--allowroot)
+exec "$LDSO" --library-path "$LIB" "$B/usr/bin/lmms" "${EXTRA[@]}" "$@"
