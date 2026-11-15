@@ -117,6 +117,23 @@ async function main() {
       console.log(`PASS ${model} stream=${stream}; text + effort preserved`);
     }
     assert.equal(seen.length, 3);
+    // OpenAI 兼容端点：裸模型名按唯一声明上游路由，不再一律 404（cccodroid 主仓 #217）
+    const openai = async (model) => {
+      const response = await fetch(`http://127.0.0.1:${port}/v1/chat/completions`, {
+        method: "POST", signal: AbortSignal.timeout(5000), headers: { "content-type": "application/json", "x-api-key": "local-test-only" },
+        body: JSON.stringify({ model, max_tokens: 16, stream: false, messages: [{ role: "user", content: "local selftest" }] })
+      });
+      return [response.status, await response.text()];
+    };
+    let [st, text] = await openai("json");
+    assert.equal(st, 200, text);
+    assert.match(text, /LOCAL_OK/);
+    assert.equal(seen.at(-1).model, "json");
+    [st, text] = await openai("nope");
+    assert.equal(st, 404, text);
+    assert.match(text, /not found/i);
+    passed += 2;
+    console.log("PASS openai bare model routed / unknown stays 404");
     // 上游不认推理参数：第一次 400 后去掉重发并记住，第二次直接不带（#84）
     for (const round of [1, 2]) {
       const before = seen.length;
