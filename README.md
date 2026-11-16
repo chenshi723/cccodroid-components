@@ -20,6 +20,14 @@ cccodroid reads this repository since 0.1.10. Preset components such as the brow
 | `blender` | Headless Blender 4.3: Python-scripted compositing, motion graphics and video output; 3D rendering on the Adreno GPU (Vulkan 1.4) | Media | Downloads the engine on first use: about 267 MB from Debian plus an 11 MB patched Mesa for the GPU (the setup follows [blender-cli-android](https://github.com/greyoak111/blender-cli-android)) | GPL-2.0-or-later |
 | `lilypond` | LilyPond: music notation from plain text — publication-grade PDF, plus PNG, SVG and MIDI | Media | | GPL-3.0-or-later |
 | `music` | Music production toolchain: MIDI to audio (fluidsynth), SuperCollider synthesis, sox mastering, aubio analysis | Media | Bundles a GM soundfont (31 MB) | LGPL-2.1-or-later AND GPL-3.0-or-later AND GPL-2.0-only AND LicenseRef-GeneralUser-GS-2.0 |
+| `csound` | Csound: algorithmic composition and sound synthesis from text scores (.csd), rendered to WAV | Media | | LGPL-2.1-or-later |
+| `musescore` | MuseScore: music notation typesetting to PDF / PNG / SVG / MIDI | Media | | GPL-3.0-or-later |
+| `lmms` | LMMS: render .mmp projects to audio | Media | | GPL-2.0-or-later |
+| `melt` | MLT (melt): render .mlt XML projects to video and audio | Media | | LGPL-2.1-or-later |
+| `gimp` | GIMP 3.2: headless image editing and batch processing (Python-Fu) | Media | | GPL-3.0-or-later |
+| `inkscape` | Inkscape: SVG drawing and conversion | Media | | GPL-2.0-or-later |
+| `raw-photo` | RAW photo pipeline: darktable and RawTherapee | Media | | GPL-3.0-or-later |
+| `fontforge` | FontForge: type design and font conversion (TTF / OTF / WOFF) from scripts | Media | | GPL-3.0-or-later AND BSD-3-Clause |
 | `libreoffice` | Headless LibreOffice: convert documents, export PDF | Office | | MPL-2.0 AND LGPL-3.0 |
 | `pandoc` | Pandoc: convert between Markdown, Word, HTML, EPUB and PDF; PDF via the bundled typst | Office | | GPL-2.0-or-later |
 | `pdf-tools` | PDF toolbox: merge, split, rotate, encrypt/decrypt, shrink, extract text, render to images (qpdf, poppler, mutool) | Office | | Apache-2.0 AND GPL-2.0-or-later AND AGPL-3.0-or-later |
@@ -27,27 +35,30 @@ cccodroid reads this repository since 0.1.10. Preset components such as the brow
 | `latex` | LaTeX (Tectonic): .tex to PDF with ctex / xeCJK Chinese and beamer | Office | First compile downloads and caches TeX resources | MIT |
 | `llama-cpp` | llama.cpp: local LLM inference | AI | Bring your own model (.gguf) | MIT |
 | `openscad` | OpenSCAD: script-based 3D modelling, STL and other exports, with the MCAD library | 3D & CAD | | GPL-2.0-only |
+| `freecad` | FreeCAD 1.0: freecadcmd, Python-scripted modelling to STEP / STL | 3D & CAD | | LGPL-2.1-or-later |
 | `octave` | GNU Octave: MATLAB-compatible numerical computing with headless plots (bundles gnuplot) | Science | | GPL-3.0-or-later AND gnuplot |
 | `sci-python` | Scientific Python: numpy, scipy, matplotlib, Pillow, pyarrow, all prebuilt | Science | | BSD-3-Clause AND PSF-2.0 AND MIT-CMU AND Apache-2.0 |
 | `ngspice` | ngspice: circuit simulation | EDA | | BSD-3-Clause AND LGPL-2.1-only |
 | `gnucap` | gnucap: circuit simulation | EDA | | GPL-3.0-or-later |
 | `iverilog` | Icarus Verilog: Verilog simulation, waveforms rendered to images | EDA | | GPL-2.0-or-later |
 | `yosys` | Yosys: Verilog synthesis | EDA | | ISC |
+| `kicad` | KiCad: kicad-cli, PCB to Gerber / drill files / SVG / DRC | EDA | | GPL-3.0-or-later |
 | `gpu-driver` | Gives command-line programs access to the Adreno GPU: Turnip (Vulkan) + zink (OpenGL / GLES) | GPU | Snapdragon only | MIT |
-| `gpu-driver-glibc` | The same for glibc (Linux arm64) programs, with the `lgpu-run` launcher | GPU | Snapdragon only | MIT |
+| `gpu-driver-glibc` | Turnip (Vulkan, Mesa 26.2.7 — Adreno 8xx included) for glibc (Linux arm64) programs, with the `lgpu-run` launcher | GPU | Snapdragon only; OpenGL via zink needs your own glibc Mesa | MIT |
 | `gpu-driver-mali` | Gives command-line programs the Mali GPU: the vendor Vulkan / GLES driver via the system loader, no root | GPU | Mali only (Dimensity etc.); Termux programs only, no OpenCL | Apache-2.0 |
 | `clvk-glibc` | OpenCL (clvk, on top of Vulkan) for glibc programs | GPU | Snapdragon only; needs `gpu-driver-glibc` | Apache-2.0 |
 | `gpu-bench` | GPU info and benchmarks (clinfo / vkmark / clpeak) | GPU | Snapdragon only; needs `gpu-driver` | CC0-1.0 AND GPL-3.0-or-later AND GPL-2.0-or-later |
 | `cloudflare` | Cloudflare CLI (wrangler): deploy Workers and Pages, manage R2 / KV / D1, run `wrangler dev` locally | Net | Log in with `cf-login` by pasting a token | (MIT OR Apache-2.0) AND Apache-2.0 |
 | `rclone` | rclone: sync and back up local folders, WebDAV, S3, Google Drive and more | Net | | MIT |
+| `snowluma` | QQ bot (native SnowLuma): OneBot v11 + allow-list bridge, same mechanism as `qq-bot` | Net | Downloads SnowLuma at setup from archive mirrors | Apache-2.0 (scripts); SnowLuma source-available non-commercial (runtime) |
 
-Every component in the table has been verified on a real device with the current toolchain (devkit-2026.10.28). Some were tested directly; others inherited a verification from an earlier toolchain (see "Device verification" below). The records are in [`verified.json`](verified.json).
+Every published component has been verified on a real device with the current toolchain (devkit-2026.10.28). Some were tested directly; others inherited a verification from an earlier toolchain (see "Device verification" below). The records are in [`verified.json`](verified.json).
 
 The app won't offer "Snapdragon only" components on devices with other chips. For components with dependencies, the app asks you to install those first and won't let you remove them while something still depends on them.
 
-## Published but not yet verified on a device
+## More components
 
-The app labels these "not verified on a device". Read the description before installing.
+Also published and verified for the current toolchain. Read the description before installing.
 
 - `openai-bridge` (preview): turns an OpenAI Chat Completions API you're allowed to use into a local Anthropic Messages endpoint, which you then enter under Settings → Provider & model → Custom endpoints. Requests go to the remote service you configure and may cost money; the bridge only listens on the loopback address. After installing, run `openai-bridge configure` in the terminal; before removing it in the app, run `openai-bridge uninstall --yes`. About 107 MiB. Source: [chenshi723/cccodroid-openai-bridge](https://github.com/chenshi723/cccodroid-openai-bridge).
 - `bilibili-mcp` (MCP): lets Claude read Bilibili — video info, chapters, comments, subtitles, search, favorites. Read-only. Registered as the MCP server `bilibili` on install (cccodroid 0.6.16+). Subtitles, search and favorites need a login: run `bilibili-mcp setup` in the terminal. Upstream: [XZXZZX-Ai/bilibili-mcp](https://github.com/XZXZZX-Ai/bilibili-mcp) (Apache-2.0).
