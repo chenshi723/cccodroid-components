@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "openscad",
   "kind": "termux",
-  "revision": 2,
+  "revision": 3,
   "version": "2021.01",
   "name": { "zh": "OpenSCAD（脚本建模）", "en": "OpenSCAD (script modelling)" },
   "desc": {
@@ -19,6 +19,16 @@
   "maintainers": ["greyoak111"],
   "files": {
     "usr/bin/scad-export": { "src": "bin/scad-export", "mode": "755" }
+  },
+  "fetch": {
+    "usr/lib/cccodroid/boost-arg/": {
+      "url": "https://github.com/greyoak111/termux-openscad-compat/releases/download/v1.92.0/openscad-compat-1.92.0-aarch64.tar.xz",
+      "sha256": "3c533b03d98c9fe0135f1bdb3a975b682f037a61aa6368682c8ad370e40d4624",
+      "why": "x11 这版 openscad 按 boost <1.92 构建，而底座 devkit 的 boost 升到 1.92 后把 program_options::arg 挪进了 detail::，直接跑报 cannot locate symbol _ZN5boost15program_options3argE（devkit 按包名跳过底座已有的 boost，带不进新符号）；资产里是 Termux 官方 boost_1:1.92.0 deb 的 libboost_program_options.so（SONAME 改成 libboost_po_192.so）加一个只定义旧 arg 符号的 24 字节垫片（来源与 SHA256 见 NOTICE），scad-export 运行时先探测底座能不能用，不能用才把目录加进 LD_LIBRARY_PATH；底座恢复旧符号后自动不用垫片。直接跑 openscad（不经 scad-export）需要自己带这个 LD_LIBRARY_PATH",
+      "extract": {
+        "format": "tar.xz"
+      }
+    }
   },
   "notes": "版本：上游源码 2021.01（Termux 包 2021.01-7）。注意 openscad --version 打的是 2026.07.19 —— OpenSCAD 在没有 .git 的源码包里用构建日期当版本号，不是另一个上游版本，别当成版本不符。包装脚本 scad-export 存在的理由：包里的 MCAD 库装在 $PREFIX/share/openscad/libraries，但 openscad 自己不找那里，不设 OPENSCADPATH 时 use <MCAD/…> 一律失败。另外 Termux 这版是 -DNULLGL=ON 的无头构建，导 PNG 会段错误（139），包装脚本会提前拦住。"
 }

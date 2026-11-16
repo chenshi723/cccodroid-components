@@ -23,6 +23,10 @@ scad-export --selftest
 scad-export 模型.scad [输出]（bash 包装，$PREFIX/bin/scad-export）
   ├─ 输出是 .png → 当场拦下（这版是无头构建，导 PNG 会段错误）
   ├─ OPENSCADPATH=$PREFIX/share/openscad/libraries   ← 让 use <MCAD/…> 找得到
+  ├─ boost 垫片探测：底座 boost 1.92 把 program_options::arg 挪进了 detail::，这版 openscad
+  │  直接跑报 cannot locate symbol _ZN5boost15program_options3argE —— 探测失败才把
+  │  $PREFIX/lib/cccodroid/boost-arg（24 字节垫片 + 改名副本，来源与 SHA256 见 NOTICE）
+  │  加进 LD_LIBRARY_PATH；底座恢复旧符号后自动不用垫片
   └─ $PREFIX/bin/openscad -o <输出> 模型.scad   ← Termux 官方包，bionic 原生，NULLGL 无头构建
        → 按扩展名导出 STL / OFF / AMF / CSG / DXF / SVG
 ```
@@ -32,10 +36,12 @@ scad-export 模型.scad [输出]（bash 包装，$PREFIX/bin/scad-export）
 | `openscad` 本体 | 本组件：Termux 官方包 `openscad`（上游 2021.01） | `$PREFIX/bin/openscad` |
 | MCAD 库 | 本组件（随包） | `$PREFIX/share/openscad/libraries/MCAD/` |
 | `scad-export` | 本组件 | `$PREFIX/bin/scad-export` |
+| boost 垫片库 | 本组件：termux-openscad-compat 资产 | `$PREFIX/lib/cccodroid/boost-arg/` |
 
 - 纯 CPU、不用 GPU、没有预览窗口，也出不了渲染图（PNG）。要给用户看形状，导 STL 用应用内查看器，或导 2D 的 SVG。
 - 直接调 `openscad` 时，`use <MCAD/…>` 一律找不到（它不去那个目录找），这不是 MCAD 没装。用 `scad-export`，或自己设 `OPENSCADPATH`。
 - `openscad --version` 打出来的是构建日期（2026.07.19），不是另一个版本。
+- 直接调 `openscad`（不经 `scad-export`）在底座 boost 1.92 下会报 cannot locate symbol `_ZN5boost15program_options3argE`—— 不是组件坏了，是要带上垫片目录：`LD_LIBRARY_PATH=$PREFIX/lib/cccodroid/boost-arg openscad …`。日常用 `scad-export` 就行，它会自己处理。
 
 ## 基本用法
 

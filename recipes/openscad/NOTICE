@@ -1,0 +1,26 @@
+OpenSCAD 组件 — 第三方软件与许可
+
+OpenSCAD
+  上游：https://openscad.org
+  许可：GPL-2.0-only
+  来源：Termux x11 仓库，随组件打包
+
+libboost_program_options 1.92.0 兼容垫片（随组件分发，装在 $PREFIX/lib/cccodroid/boost-arg）
+  上游：https://www.boost.org
+  许可：BSL-1.0（LICENSE 随库放在 usr/lib/cccodroid/boost-arg/LICENSE）
+  来源：Termux 官方 main 仓库
+        packages.termux.dev/apt/termux-main/pool/main/b/boost/boost_1:1.92.0_aarch64.deb
+        （sha256 1cc81ed769453f84944095dab82228af747637e33e5eefdb8738ad2ca6964b24）
+  内容：两个库 ——
+        libboost_po_192.so 是上面 deb 里的 libboost_program_options.so，只把 SONAME
+        改成 libboost_po_192.so（patchelf --set-soname），RUNPATH 里的
+        /data/data/com.termux/ 等长替换成 /data/data/cc.codroid/，代码未改；
+        libboost_program_options.so 是 24 字节垫片，只定义 boost 1.92 挪进 detail::
+        的旧符号 boost::program_options::arg（内容全零的 char[24]，boost 只当标记用），
+        DT_NEEDED 指向 libboost_po_192.so，没有别的代码（shim.c 在资产仓库里）。
+  打包资产：github.com/greyoak111/termux-openscad-compat 的 v1.92.0 Release
+        （sha256 3c533b03d98c9fe0135f1bdb3a975b682f037a61aa6368682c8ad370e40d4624，
+        build.sh 可从官方 deb 逐字节复现）。
+  不覆盖工具包里的 boost；scad-export 运行时探测底座可用时自动不用垫片。
+
+闭包里的其他库各自保留上游许可与版权声明，随组件安装。
