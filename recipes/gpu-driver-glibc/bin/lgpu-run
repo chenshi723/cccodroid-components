@@ -68,16 +68,24 @@ fi
 [ -n "${CCODROID_LGPU_PRELOAD:-}" ] && export LD_PRELOAD="$CCODROID_LGPU_PRELOAD"
 
 # ── Vulkan：Turnip 的 ICD（glibc 侧）─────────────────────────────────
-# 优先级：--icd 指定 > 环境里已有的 VK_ICD_FILENAMES > 组件自带的那份
-ICD_SRC="${ICD_OPT:-${VK_ICD_FILENAMES:-${VK_DRIVER_FILES:-$GROOT/share/vulkan/icd.d/freedreno_icd.aarch64.json}}}"
+# 优先级：--icd 指定 > 环境里已有的 VK_ICD_FILENAMES > 组件自带的 Mesa 26 Turnip
+# （turnip26 资产，Adreno 8xx 全靠它）> termux-glibc 包里的旧版（24.2，老机型兜底）
+NEW_ICD="$CDIR/turnip26/libvulkan_freedreno.so"
+NEW_JSON="$CDIR/turnip26/freedreno_icd.aarch64.json"
+OLD_JSON="$GROOT/share/vulkan/icd.d/freedreno_icd.aarch64.json"
+ICD_SRC="${ICD_OPT:-${VK_ICD_FILENAMES:-${VK_DRIVER_FILES:-}}}"
+if [ -z "$ICD_SRC" ]; then
+  if [ -f "$NEW_ICD" ]; then ICD_SRC="$NEW_JSON"; ICD_LIB="$NEW_ICD"
+  else ICD_SRC="$OLD_JSON"; ICD_LIB="$GROOT/lib/libvulkan_freedreno.so"; fi
+fi
 ICD="$ICD_SRC"
 if [ "$VENDOR" = 0 ] && [ -f "$ICD_SRC" ]; then
-  # 包里写的是绝对路径；对不上（换过根目录）就现场生成一份指对路径的
+  # 包里写的是绝对路径；对不上（换过根目录、或资产 json 指的是构建机路径）就现场生成一份指对位置的
   icd_lib="$(sed -n 's/.*"library_path"[^"]*"\([^"]*\)".*/\1/p' "$ICD_SRC" | head -1)"
   if [ -n "$icd_lib" ] && [ ! -f "$icd_lib" ]; then
     mkdir -p "$DATA/icd"
     ICD="$DATA/icd/freedreno_icd.glibc.json"
-    python3 - "$ICD_SRC" "$ICD" "$GROOT/lib/libvulkan_freedreno.so" <<'PYEOF'
+    python3 - "$ICD_SRC" "$ICD" "${ICD_LIB:-$GROOT/lib/libvulkan_freedreno.so}" <<'PYEOF'
 import json, sys
 src, dst, lib = sys.argv[1:4]
 d = json.load(open(src))
