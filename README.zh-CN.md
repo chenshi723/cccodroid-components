@@ -20,6 +20,14 @@ cccodroid 从 0.1.10 起读这个仓库。浏览器（Chromium）这类预置组
 | `blender` | Blender 4.3 无头版：用 Python 脚本做合成、动效、出片，3D 渲染走 Adreno GPU（Vulkan 1.4） | 图像影音 | 首次使用下载本体：Debian 约 267 MB + GPU 用的补丁版 Mesa 约 11 MB（安装方法沿用 [blender-cli-android](https://github.com/greyoak111/blender-cli-android)） | GPL-2.0-or-later |
 | `lilypond` | LilyPond：用文本写乐谱，排版成出版级 PDF，也能出 PNG / SVG / MIDI | 图像影音 | | GPL-3.0-or-later |
 | `music` | 音乐生产工作流：MIDI → 音频（fluidsynth）、SuperCollider 合成、sox 后期、aubio 分析 | 图像影音 | 内置 GM 音色库（31 MB） | LGPL-2.1-or-later AND GPL-3.0-or-later AND GPL-2.0-only AND LicenseRef-GeneralUser-GS-2.0 |
+| `csound` | Csound：用文本乐谱（.csd）做算法作曲与声音合成，渲染成 WAV | 图像影音 | | LGPL-2.1-or-later |
+| `musescore` | MuseScore：乐谱排版，出 PDF / PNG / SVG / MIDI | 图像影音 | | GPL-3.0-or-later |
+| `lmms` | LMMS：把 .mmp 工程渲染成音频 | 图像影音 | | GPL-2.0-or-later |
+| `melt` | MLT（melt）：把 .mlt XML 工程渲染成视频 / 音频 | 图像影音 | | LGPL-2.1-or-later |
+| `gimp` | GIMP 3.2：无头修图与批处理（Python-Fu） | 图像影音 | | GPL-3.0-or-later |
+| `inkscape` | Inkscape：SVG 绘制与转换 | 图像影音 | | GPL-2.0-or-later |
+| `raw-photo` | RAW 照片冲印流程：darktable + RawTherapee | 图像影音 | | GPL-3.0-or-later |
+| `fontforge` | FontForge：造字与字体转换（TTF / OTF / WOFF），脚本化操作 | 图像影音 | | GPL-3.0-or-later AND BSD-3-Clause |
 | `libreoffice` | LibreOffice 无头版：文档互转、出 PDF | 办公 | | MPL-2.0 AND LGPL-3.0 |
 | `pandoc` | Pandoc：Markdown、Word、HTML、EPUB、PDF 互转，PDF 用底座的 typst 出 | 办公 | | GPL-2.0-or-later |
 | `pdf-tools` | PDF 工具箱：合并、拆分、旋转、加解密、压缩、提文字、转图片（qpdf、poppler、mutool） | 办公 | | Apache-2.0 AND GPL-2.0-or-later AND AGPL-3.0-or-later |
@@ -27,27 +35,30 @@ cccodroid 从 0.1.10 起读这个仓库。浏览器（Chromium）这类预置组
 | `latex` | LaTeX（Tectonic）：.tex 编译成 PDF，支持 ctex / xeCJK 中文和 beamer | 办公 | 首次编译按需下载 TeX 资源并缓存 | MIT |
 | `llama-cpp` | llama.cpp：本地大模型推理 | AI | 模型自备（.gguf） | MIT |
 | `openscad` | OpenSCAD：用脚本建 3D 模型，导出 STL 等格式，带 MCAD 库 | 3D 与建模 | | GPL-2.0-only |
+| `freecad` | FreeCAD 1.0：freecadcmd 无头建模，Python 脚本出 STEP / STL | 3D 与建模 | | LGPL-2.1-or-later |
 | `octave` | GNU Octave：MATLAB 兼容的数值计算，无头出图（带 gnuplot） | 科学计算 | | GPL-3.0-or-later AND gnuplot |
 | `sci-python` | 科学计算 Python：numpy、scipy、matplotlib、Pillow、pyarrow，都是预编译包 | 科学计算 | | BSD-3-Clause AND PSF-2.0 AND MIT-CMU AND Apache-2.0 |
 | `ngspice` | ngspice：电路仿真 | 电子设计 | | BSD-3-Clause AND LGPL-2.1-only |
 | `gnucap` | gnucap：电路仿真 | 电子设计 | | GPL-3.0-or-later |
 | `iverilog` | Icarus Verilog：Verilog 仿真、波形出图 | 电子设计 | | GPL-2.0-or-later |
 | `yosys` | Yosys：Verilog 综合 | 电子设计 | | ISC |
+| `kicad` | KiCad：kicad-cli，PCB 出 Gerber / 钻孔 / SVG / DRC | 电子设计 | | GPL-3.0-or-later |
 | `gpu-driver` | 让命令行程序用上 Adreno GPU：Turnip（Vulkan）+ zink（OpenGL / GLES） | GPU | 仅骁龙 | MIT |
-| `gpu-driver-glibc` | 同上，给 glibc（Linux arm64）程序用，带 `lgpu-run` 启动器 | GPU | 仅骁龙 | MIT |
+| `gpu-driver-glibc` | 给 glibc（Linux arm64）程序用的 Turnip（Vulkan，Mesa 26.2.7，Adreno 8xx 也支持），带 `lgpu-run` 启动器 | GPU | 仅骁龙；OpenGL 走 zink，需要自备 glibc 版 Mesa | MIT |
 | `gpu-driver-mali` | 让命令行程序用上 Mali GPU：借系统加载器接入厂商 Vulkan / GLES，免 root | GPU | 仅 Mali（天玑等）；只支持 Termux 程序，不带 OpenCL | Apache-2.0 |
 | `clvk-glibc` | OpenCL（clvk，跑在 Vulkan 上），给 glibc 程序用 | GPU | 仅骁龙；依赖 `gpu-driver-glibc` | Apache-2.0 |
 | `gpu-bench` | GPU 信息与跑分（clinfo / vkmark / clpeak） | GPU | 仅骁龙；依赖 `gpu-driver` | CC0-1.0 AND GPL-3.0-or-later AND GPL-2.0-or-later |
 | `cloudflare` | Cloudflare 官方命令行（wrangler）：部署 Workers / Pages，管 R2 / KV / D1，本地跑 `wrangler dev` | 网络 | 用 `cf-login` 粘贴令牌登录 | (MIT OR Apache-2.0) AND Apache-2.0 |
 | `rclone` | rclone：本地目录、WebDAV、S3、Google Drive 等云存储的同步与备份 | 网络 | | MIT |
+| `snowluma` | QQ 机器人（原生 SnowLuma）：OneBot v11 + 白名单桥，与 `qq-bot` 同款机制 | 网络 | 首次 setup 从档案镜像下载 SnowLuma | Apache-2.0（脚本）；SnowLuma 源码可用非商业许可（运行时） |
 
-表里的组件都在当前工具包（devkit-2026.10.28）上真机验证过：有的直接验，有的从旧工具包上的验证记录自动继承（见下面「真机验证」）。具体记录在 [`verified.json`](verified.json)。
+所有已上架的组件都在当前工具包（devkit-2026.10.28）上真机验证过：有的直接验，有的从旧工具包上的验证记录自动继承（见下面「真机验证」）。具体记录在 [`verified.json`](verified.json)。
 
 「仅骁龙」的组件，App 在别家芯片的设备上不给装。有依赖的组件，App 会先让你装好依赖，依赖也不能在它之前卸载。
 
-## 已上架、还没真机验证的组件
+## 更多组件
 
-App 里会标「未经真机验证」，装之前先看说明。
+同样已上架、已真机验证。装之前先看说明。
 
 - `openai-bridge`（预览）：把你自己有权使用的 OpenAI Chat Completions API 转成本机的 Anthropic Messages 接口，再到「设置 → 接口与型号 → 自定义接口」里填本机地址。请求会发到你配置的远端，可能收费；服务只监听本机回环地址。装好后在终端运行 `openai-bridge configure` 配置；从 App 卸载前先运行 `openai-bridge uninstall --yes`。包体约 107 MiB。源仓库：[chenshi723/cccodroid-openai-bridge](https://github.com/chenshi723/cccodroid-openai-bridge)。
 - `bilibili-mcp`（MCP）：让 Claude 读 B 站——视频信息、章节、评论、字幕、搜索、收藏夹，只读。装好后自动注册为 MCP 服务 `bilibili`（cccodroid 0.6.16 起）。字幕、搜索、收藏夹要登录：在终端运行 `bilibili-mcp setup`。上游：[XZXZZX-Ai/bilibili-mcp](https://github.com/XZXZZX-Ai/bilibili-mcp)（Apache-2.0）。
