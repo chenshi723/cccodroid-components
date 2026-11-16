@@ -136,6 +136,15 @@
         "checks": "installed from signed index; placed 8683, shared 0; skill gpu-driver-glibc installed; selftest exit 0: ===== 总结 ===== Turnip=OK zink-Mesa=未就位; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "26.2.7-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 258, shared 8427; skill gpu-driver-glibc installed; selftest exit 0: ===== 总结 ===== Turnip=OK zink-Mesa=未就位; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "clvk-glibc": {
@@ -183,6 +192,13 @@
         "date": "2026-10-22",
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 10, shared 0; skill clvk-glibc installed; selftest exit 0: 向量加: PASS（0/4096 个不对）; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
         "checks": "installed from signed index; placed 10, shared 0; skill clvk-glibc installed; selftest exit 0: 向量加: PASS（0/4096 个不对）; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
@@ -884,6 +900,13 @@
         "date": "2026-10-22",
         "device": "LENOVO TB320FC / Android 15",
         "app": "cccodroid 0.3.10-preview",
+        "checks": "installed from signed index; placed 8, shared 0; skill blender installed; selftest exit 0: ===== 总结 ===== 合成=OK 输出=PNG+MP4 帧数=12 版本=4.3.2; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
         "checks": "installed from signed index; placed 8, shared 0; skill blender installed; selftest exit 0: ===== 总结 ===== 合成=OK 输出=PNG+MP4 帧数=12 版本=4.3.2; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
@@ -1589,6 +1612,50 @@
         "device": "HONOR PNM-AN10 / Android 17",
         "app": "cccodroid 0.7.6",
         "checks": "installed from signed index; placed 14, shared 15162; skill musescore installed; selftest exit 0: ===== 总结 ===== musescore=OK pdf=OK midi=OK png=OK 版本=MuseScore4Development 4.7.7; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "android-build": {
+    "1:9.9.1-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 230, shared 498; skill android-build installed; selftest exit 0: ===== 总结 ===== gradle=OK java=OK build=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "csound": {
+    "6.18.1-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 4, shared 2; skill csound installed; selftest exit 0: ===== 总结 ===== csound=OK wav=OK 版本=6.18; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "fontforge": {
+    "20230101-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 4, shared 2; skill fontforge installed; selftest exit 0: ===== 总结 ===== fontforge=OK ttf=OK 版本=20230101; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
+  },
+  "freecad": {
+    "1.0.0-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 4, shared 2; skill freecad installed; selftest exit 0: ===== 总结 ===== freecadcmd=OK step=OK stl=OK 版本=1.0.0; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
