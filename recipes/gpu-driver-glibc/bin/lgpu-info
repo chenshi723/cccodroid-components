@@ -34,6 +34,13 @@ echo
 echo "===== Turnip（glibc 侧，lgpu-run 默认）====="
 VKINFO="$GROOT/bin/vulkaninfo"
 LGRUN="$(dirname "$self")/lgpu-run"
+CDIR="$PREFIX/share/cccodroid/components/gpu-driver-glibc"
+NEW_ICD="$CDIR/turnip26/libvulkan_freedreno.so"
+if [ -f "$NEW_ICD" ]; then
+  echo "ICD        : turnip26（Mesa 26.2.7 资产，$NEW_ICD）"
+else
+  echo "ICD        : termux-glibc 包里的旧版（Mesa 24.2，$GROOT/share/vulkan/icd.d/freedreno_icd.aarch64.json）"
+fi
 if [ -x "$VKINFO" ] && [ -x "$LD" ] && [ -x "$LGRUN" ]; then
   out="$(CCODROID_GLIBC_ROOT="$GROOT" "$LGRUN" "$VKINFO" --summary 2>&1)"
   printf '%s\n' "$out" | sed -n '/^GPU0:/,/^$/p' | head -12
@@ -44,8 +51,7 @@ if [ -x "$VKINFO" ] && [ -x "$LD" ] && [ -x "$LGRUN" ]; then
     echo "(vulkaninfo 没报出 Turnip，末尾几行：)"
     printf '%s\n' "$out" | tail -5 | sed 's/^/   /'
     case "$out" in *"is unsupported"*)
-      echo "(这块 GPU 比本组件的 Turnip（Mesa 24.2）新，它还不认识；bionic 侧的 gpu-driver 用的是新版 Mesa，先用那边，"
-      echo " 或者有更新的 glibc 版 Mesa 时用 lgpu-run --icd 指过去)" ;;
+      echo "(这块 GPU 比用的 Turnip 新，它还不认识；换更新的 Mesa 版 ICD：lgpu-run --icd <json>)" ;;
     esac
   fi
 else

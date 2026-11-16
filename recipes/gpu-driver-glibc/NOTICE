@@ -1,0 +1,22 @@
+GPU 驱动（glibc / Linux arm64）组件 — 第三方软件与许可
+
+Mesa（随组件分发，装在 $PREFIX/share/cccodroid/components/gpu-driver-glibc/turnip26/）
+  上游：https://www.mesa3d.org
+  许可：MIT（部分文件另有自己的许可，见 Mesa 源码树）
+  来源：CI 从 mesa-26.2.7.tar.xz（https://archive.mesa3d.org/，
+        sha256 04294f75d22e9f61cd1e050206bc48b3d39366e788f1803a3368e3d5a872ce18）编出
+        glibc 版 freedreno Vulkan ICD（只开 vulkan-drivers=freedreno，x11 + wayland 平台）。
+        构建配方：github.com/greyoak111/cccodroid-gpu-driver-snapdragon 的
+        .github/workflows/build-turnip.yml（ubuntu-24.04-arm 原生编，符号版本 ≤ glibc 2.39）。
+        打包资产：同仓库的 turnip-* Release（libvulkan_freedreno.so 与
+        freedreno_icd.aarch64.json，SHA256SUMS 随 Release 发布，配方钉 sha256）。
+        代码未改（strip 掉调试符号）。
+
+termux-glibc 仓库的 mesa-vulkan-icd-freedreno-glibc 24.2.6（随组件分发，装在 $PREFIX/glibc/ 下，
+作为旧机型兜底；lgpu-run 默认优先用上面的 26.2.7）
+  上游：https://www.mesa3d.org
+  许可：MIT
+  来源：packages.termux.dev/apt/termux-glibc（Termux 官方 glibc 仓库），devkit 按包名
+        dedup 后随组件打包
+
+闭包里的其他库（Vulkan 加载器、libdrm、libxcb 等）各自保留上游许可与版权声明，随组件安装。

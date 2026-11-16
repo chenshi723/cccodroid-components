@@ -1,6 +1,6 @@
 ---
 name: gpu-driver-glibc
-description: 让 glibc（Linux arm64）程序用上本机 Adreno GPU：Turnip（glibc 侧，Vulkan 1.3）+ 可选 zink。用户要跑 Debian/glibc 的 Vulkan 或 OpenGL 程序（Blender 之类）、或问 glibc 程序能不能用 GPU 时使用。
+description: 让 glibc（Linux arm64）程序用上本机 Adreno GPU：Turnip（glibc 侧，Mesa 26.2.7，Adreno 8xx 也支持）+ 可选 zink。用户要跑 Debian/glibc 的 Vulkan 或 OpenGL 程序（Blender 之类）、或问 glibc 程序能不能用 GPU 时使用。
 ---
 
 # GPU（glibc 侧）
@@ -19,7 +19,8 @@ lgpu-info          # GPU / glibc 运行时 / Turnip / Mesa(zink) / clvk；退出
 ```
 lgpu-run [-z] [-L 目录] <glibc 程序>（bash 包装）
   ├─ 摘掉继承来的 LD_PRELOAD（cccodroid shell 挂的 bionic termux-exec 垫片）
-  ├─ VK_ICD_FILENAMES / VK_DRIVER_FILES → glibc 侧 Turnip 的 ICD
+  ├─ VK_ICD_FILENAMES / VK_DRIVER_FILES → glibc 侧 Turnip 的 ICD（默认优先级：
+  │     --icd 指定 > 环境里已有的 > 组件自带的 Mesa 26.2.7 资产 > termux-glibc 包里的 24.2）
   │     （ICD 里的 library_path 打不开时，改写一份到 ~/.cccodroid/gpu-driver/icd/）
   ├─ -z：GALLIUM_DRIVER=zink、EGL_PLATFORM=surfaceless、__EGL_VENDOR_LIBRARY_FILENAMES
   ├─ TU_DEBUG=sysmem（默认）
@@ -33,7 +34,8 @@ lgpu-run [-z] [-L 目录] <glibc 程序>（bash 包装）
 |---|---|---|
 | `lgpu-run` / `lgpu-info` / `lgpu-cc` | 本组件 | `$PREFIX/bin/` |
 | glibc 运行时与 `ld-linux` | 底座的 glibc | `$PREFIX/glibc/lib/` |
-| Turnip 与 ICD | 本组件：termux-glibc 仓库的 `mesa-vulkan-icd-freedreno-glibc` | `$PREFIX/glibc/lib/libvulkan_freedreno.so`、`$PREFIX/glibc/share/vulkan/icd.d/freedreno_icd.aarch64.json` |
+| Turnip（默认，Adreno 8xx 支持） | 本组件：CI 编的 Mesa 26.2.7 资产（build-turnip） | `$PREFIX/share/cccodroid/components/gpu-driver-glibc/turnip26/` |
+| Turnip（旧版兜底） | 本组件：termux-glibc 仓库的 `mesa-vulkan-icd-freedreno-glibc`（24.2） | `$PREFIX/glibc/lib/libvulkan_freedreno.so`、`$PREFIX/glibc/share/vulkan/icd.d/freedreno_icd.aarch64.json` |
 | Vulkan 加载器、`vulkaninfo`、头文件 | 本组件：`vulkan-icd-loader-glibc` / `vulkan-tools-glibc` / `vulkan-headers-glibc` | `$PREFIX/glibc/` |
 | glibc 版 Mesa（EGL/GL/zink） | **不在本组件里**；Blender 组件的 Debian 根里有一份 | 用 `-L` 指过去 |
 | OpenCL（clvk） | clvk-glibc 组件 | `$PREFIX/glibc/lib/libOpenCL.so` |
@@ -116,9 +118,11 @@ OpenCL C 编成 SPIR-V（市场组件不带）。
 - Android 上没有 `/dev/dri/*`，所以 `EGL_PLATFORM=surfaceless`（`-z` 默认已设）；
   需要窗口的程序仍然跑不了（没有 X11/Wayland 服务端）。
 - 只对高通 Adreno 有效（走 `/dev/kgsl-3d0`）。
-- **这里的 Turnip 是 Mesa 24.2，认不出较新的芯片**：实测 Adreno 840（一加 Ace 7 Pro）报
-  `device (chip_id = …) is unsupported`，clvk 跟着不可用；同一台机器上 bionic 侧的 `gpu-driver`（Mesa 26）正常。
-  遇到这个报错别当成系统限制：有更新的 glibc 版 Mesa 时用 `lgpu-run --icd <它的 icd.json>` 指过去，否则先走 bionic 侧。
+- **Turnip 认不认芯片看版本**：termux-glibc 包里的那份停在 Mesa 24.2，Adreno 8xx（840/830…）
+  报 `device (chip_id = …) is unsupported`；组件自带的 turnip26 资产（Mesa 26.2.7，CI 编，
+  Adreno 8xx 支持）会被 lgpu-run 自动优先采用，老机型仍可退回 24.2。遇到 `is unsupported`
+  时先看 `lgpu-info` 的「ICD」行用的是哪份；芯片更新到 26.2.7 也认不出时，
+  用 `lgpu-run --icd <它的 icd.json>` 指到更新的 Mesa 版 ICD。
 
 ## 需要用户同意
 
