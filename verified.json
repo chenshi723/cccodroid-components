@@ -509,6 +509,15 @@
         "by": "greyoak111",
         "carriedFromBase": "ae9d10a14013"
       }
+    },
+    "26.8.3.1-r3": {
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 6381, shared 1471; skill office-convert installed; selftest exit 0: ===== 总结 ===== 转换=OK 输出=PDF 中文=OK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "llama-cpp": {
@@ -653,6 +662,15 @@
         "checks": "维护者决定沿用：devkit-2026.10.28 只加了 Go / Node.js 两个可选模块（整包不放）、升了 16 个底座包，没动可选组件，沿用 devkit-2026.10.22.3 上的真机验证。原记录：installed from signed index; placed 349, shared 0; skill openscad installed; selftest exit 0: ===== 总结 ===== 导出=OK MCAD=OK 版本=2026.07.19; removed cleanly; devkit base unchanged",
         "by": "greyoak111",
         "carriedFromBase": "ae9d10a14013"
+      }
+    },
+    "2021.01-r3": {
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.6",
+        "checks": "installed from signed index; placed 116, shared 252; skill openscad installed; selftest exit 0: ===== 总结 ===== 导出=OK MCAD=OK 版本=2026.10.27; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
