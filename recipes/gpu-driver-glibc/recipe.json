@@ -25,15 +25,15 @@
   },
   "fetch": {
     "usr/share/cccodroid/components/gpu-driver-glibc/turnip26/libvulkan_freedreno.so": {
-      "url": "PLACEHOLDER_URL",
-      "sha256": "PLACEHOLDER_SHA",
+      "url": "https://github.com/greyoak111/cccodroid-gpu-driver-snapdragon/releases/download/turnip-20261116/libvulkan_freedreno.so",
+      "sha256": "fe64f3fa862b16fa6cf67999dc33f9f7fb7bd5b4c61d93d0017c9df8fb3b1cc1",
       "source": "cccodroid-gpu-driver-snapdragon build-turnip",
       "version": "26.2.7",
-      "why": "termux-glibc 仓库的 mesa-vulkan-icd-freedreno-glibc 停在 Mesa 24.2.6，Adreno 8xx（840/830…）是 Mesa 26.0 才进 Turnip 的（MR 38450），24.2 在这类设备上报 VK_ERROR_INCOMPATIBLE_DRIVER（chip_id 44050A31 is unsupported）。这份是 CI 从 mesa-26.2.7.tar.xz 编出的 glibc 版 freedreno ICD（只开 vulkan-drivers=freedreno，x11+wayland，符号版本 ≤ glibc 2.39），lgpu-run 自动优先用它，老机型仍可退回包里的 24.2"
+      "why": "termux-glibc 仓库的 mesa-vulkan-icd-freedreno-glibc 停在 Mesa 24.2.6，Adreno 8xx（840/830…）是 Mesa 26.0 才进 Turnip 的（MR 38450），24.2 在这类设备上报 VK_ERROR_INCOMPATIBLE_DRIVER（chip_id 44050A31 is unsupported）。这份是 CI 从 mesa-26.2.7.tar.xz 编出的 glibc 版 freedreno ICD（vulkan-drivers=freedreno、freedreno-kmds=kgsl、x11 平台、符号版本 ≤ glibc 2.39；真机 Adreno 840 枚举 Vulkan 1.4.354），lgpu-run 自动优先用它，老机型仍可退回包里的 24.2"
     },
     "usr/share/cccodroid/components/gpu-driver-glibc/turnip26/freedreno_icd.aarch64.json": {
-      "url": "PLACEHOLDER_URL_JSON",
-      "sha256": "PLACEHOLDER_SHA_JSON",
+      "url": "https://github.com/greyoak111/cccodroid-gpu-driver-snapdragon/releases/download/turnip-20261116/freedreno_icd.aarch64.json",
+      "sha256": "49d3a199bbba27661420a542e78167f0a8d119ba31528375436d80858ce69f03",
       "source": "cccodroid-gpu-driver-snapdragon build-turnip",
       "version": "26.2.7",
       "why": "随上一条的 ICD manifest；里面的 library_path 是构建机路径（/usr/lib/aarch64-linux-gnu/…），lgpu-run 发现指不到文件时会现场再生一份指对位置的"
