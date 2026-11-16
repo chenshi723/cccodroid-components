@@ -1659,5 +1659,16 @@
         "by": "greyoak111"
       }
     }
+  },
+  "melt": {
+    "7.42.0-r1": {
+      "3768afcf79a7": {
+        "date": "2026-11-16",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.7",
+        "checks": "installed from signed index; placed 11, shared 19065; skill melt installed; selftest exit 0: ===== 总结 ===== melt=OK qimage=OK mp4=OK 版本=7.42.0; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
+    }
   }
 }
