@@ -22,6 +22,24 @@ PREFIX="${CCODROID_PREFIX:-${PREFIX:-}}"
 
 OPENSCAD="$PREFIX/bin/openscad"
 
+# 这版 openscad 按 boost <1.92 构建，而底座升到 1.92 后 program_options::arg 符号改名，直接跑报
+# cannot locate symbol _ZN5boost15program_options3argE。组件自带一对垫片库（来源与 SHA256 见 NOTICE）：
+# 先探测底座能不能用，不能用就优先加载垫片；底座恢复旧符号（或上游重编 openscad）后自动不用垫片
+BOOST_DIR="$PREFIX/lib/cccodroid/boost-arg"
+if ! "$OPENSCAD" --version >/dev/null 2>&1; then
+  if [ -e "$BOOST_DIR/libboost_program_options.so" ] && [ -e "$BOOST_DIR/libboost_po_192.so" ]; then
+    export LD_LIBRARY_PATH="$BOOST_DIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    "$OPENSCAD" --version >/dev/null 2>&1 || {
+      echo "scad-export: openscad 起不来：" >&2
+      "$OPENSCAD" --version 2>&1 | tail -2 >&2
+      exit 1
+    }
+  else
+    echo "scad-export: openscad 起不来，组件里也没有兼容库 —— 组件没装完整，重装 openscad" >&2
+    exit 1
+  fi
+fi
+
 # 自带的库（MCAD 等）在 $PREFIX/share/openscad/libraries 下，但 openscad 默认不找那里
 LIBS="$PREFIX/share/openscad/libraries"
 [ -n "${CCODROID_SCAD_LIBS:-}" ] && LIBS="$CCODROID_SCAD_LIBS:$LIBS"
