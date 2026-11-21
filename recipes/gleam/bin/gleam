@@ -1,0 +1,4 @@
+#!{{PREFIX}}/bin/sh
+# 静态 musl 编译的 gleam 不依赖动态链接器，直接清掉 bionic LD_PRELOAD 后执行
+unset LD_PRELOAD
+exec "{{PREFIX}}/lib/gleam/gleam" "$@"

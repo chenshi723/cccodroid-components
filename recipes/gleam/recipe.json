@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "gleam",
+  "kind": "termux",
+  "revision": 1,
+  "version": "1.19.2",
+  "name": {
+    "zh": "Gleam 语言（含 Erlang/BEAM 运行时）",
+    "en": "Gleam (with Erlang/BEAM runtime)"
+  },
+  "desc": {
+    "zh": "类型安全的函数式语言 Gleam，支持编译到 Erlang/BEAM（随组件安装）与 JavaScript（使用底座 Node.js）。",
+    "en": "Type-safe functional language Gleam targeting both Erlang/BEAM (bundled) and JavaScript (via base Node.js)."
+  },
+  "roots": ["erlang"],
+  "bin": ["gleam", "erl", "escript"],
+  "selftest": "gleam-selftest",
+  "fetch": {
+    "usr/lib/gleam/": {
+      "url": "https://github.com/gleam-lang/gleam/releases/download/v1.19.2/gleam-v1.19.2-aarch64-unknown-linux-musl.tar.gz",
+      "sha256": "d1d1a9d53f6b317c0563a4806873c8ccace54291ead023373728af379402d4f1",
+      "source": "gleam-lang/gleam",
+      "version": "1.19.2",
+      "why": "Termux 官方仓库未收录 gleam；上游官方发布静态链接的 aarch64-unknown-linux-musl 预编译二进制（Apache-2.0，约 10 MB），可直接原生运行在 Android arm64 上。",
+      "extract": {
+        "format": "tar.gz",
+        "strip": 0,
+        "include": ["gleam"],
+        "exec": ["gleam"]
+      }
+    }
+  },
+  "files": {
+    "usr/bin/gleam": { "src": "bin/gleam", "mode": "755" },
+    "usr/bin/gleam-selftest": { "src": "bin/gleam-selftest", "mode": "755" }
+  },
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "dev",
+  "license": "Apache-2.0",
+  "homepage": "https://gleam.run/",
+  "maintainers": ["greyoak111"],
+  "notes": "语言组件样板（上游 fetch+extract 静态二进制 + Termux 运行时组合型）：gleam 1.19.2 官方静态 musl arm64 二进制（10 MB）+ Termux erlang（45 MB 下载 / 118 MB 装后），不依赖 libicu。selftest 在 $TMPDIR 内离线编译一个零依赖 Gleam 工程并在 BEAM 上实跑验证。"
+}

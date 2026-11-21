@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "id": "zig",
+  "kind": "termux",
+  "revision": 1,
+  "name": {
+    "zh": "Zig 语言与交叉编译器",
+    "en": "Zig toolchain & cross-compiler"
+  },
+  "desc": {
+    "zh": "Zig 编译器与构建系统（zig build / zig test / zig cc / zig c++），自带标准库并支持原生和跨平台 C/C++ 编译。",
+    "en": "Zig compiler and build system (zig build, zig test, zig cc, zig c++) with bundled standard library and native/cross C/C++ compilation."
+  },
+  "roots": ["zig"],
+  "bin": ["zig"],
+  "selftest": "zig-selftest",
+  "files": {
+    "usr/bin/zig-selftest": { "src": "bin/zig-selftest", "mode": "755" }
+  },
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "dev",
+  "license": "MIT",
+  "homepage": "https://ziglang.org/",
+  "maintainers": ["greyoak111"],
+  "notes": "语言组件样板（原生编译型语言 Termux 型）：zig 装后约 398 MB，不依赖 libicu。selftest 在 $TMPDIR 内离线编译并运行最小 Zig 可执行文件与 zig cc C 程序，不污染主目录缓存。"
+}

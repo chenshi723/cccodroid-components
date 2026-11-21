@@ -1,0 +1,28 @@
+#!{{PREFIX}}/bin/sh
+# Zig 离线端到端自检：在 $TMPDIR 内实编并运行最小 Zig 程序与 zig cc C 程序，测完清理。
+set -eu
+WORK=$(mktemp -d "${TMPDIR:-{{PREFIX}}/tmp}/zig-selftest.XXXXXX")
+trap 'rm -rf "$WORK"' EXIT
+export ZIG_GLOBAL_CACHE_DIR="$WORK/gcache"
+export ZIG_LOCAL_CACHE_DIR="$WORK/lcache"
+
+VER=$(zig version)
+cd "$WORK"
+
+cat > main.zig <<'EOF'
+pub fn main() void {
+    const x: i32 = 40 + 2;
+    if (x != 42) unreachable;
+}
+EOF
+zig build-exe main.zig -femit-bin="$WORK/zig-hello"
+"$WORK/zig-hello"
+
+cat > ccheck.c <<'EOF'
+#include <stdio.h>
+int main(void) { printf("zig-cc=OK\n"); return 0; }
+EOF
+zig cc ccheck.c -o "$WORK/cc-hello"
+CCOUT=$("$WORK/cc-hello")
+
+echo "===== 总结 ===== zig=$VER build-exe=OK $CCOUT"
