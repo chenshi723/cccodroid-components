@@ -34,3 +34,4 @@ zig build-exe main.zig                # 编译单文件可执行程序
 
 - Zig 会在项目目录下创建 `.zig-cache/` 与 `zig-out/`，并在 `~/.cache/zig` 缓存编译产物。
 - 若遇到权限或路径问题，确保 `TMPDIR` 指向 `$PREFIX/tmp`。
+- 未安装 C/C++ 编译底座（`$PREFIX/include/stdio.h`）或在无 Android 属性服务的容器环境中，可传 `-target aarch64-linux-musl` 使用 Zig 内置的 musl libc 编译静态可执行文件，绕过 `ApiLevelQueryFailed`。

@@ -9,10 +9,17 @@ export ZIG_LOCAL_CACHE_DIR="$WORK/lcache"
 VER=$(zig version)
 cd "$WORK"
 
-# CI 的 termux-docker 容器里没有 /system/bin/getprop：zig 默认按安卓宿主推断 API 级别会直接失败
-# （unable to resolve target: ApiLevelQueryFailed）。这时改打静态 musl，同样能验证编译与运行；
-# 真机上有 getprop，照常走原生 bionic 路径，验的是真实用法。
-if command -v getprop >/dev/null 2>&1; then TGT=""; else TGT="-target aarch64-linux-musl"; fi
+# CI 的 termux-docker 容器里可能存在 getprop stub，但没有安卓属性服务（ro.build.version.sdk 为空）：
+# zig 默认按安卓宿主推断 API 级别会直接失败（unable to resolve target: ApiLevelQueryFailed）。
+# 检测不到 SDK 版本时改打静态 musl，同样能验证编译与运行；真机上有 SDK 属性，照常走原生 bionic 路径。
+case "$(uname -m)" in
+  aarch64|arm64) ZIG_ARCH=aarch64 ;;
+  armv7*|arm*)   ZIG_ARCH=arm ;;
+  x86_64)        ZIG_ARCH=x86_64 ;;
+  *)             ZIG_ARCH=aarch64 ;;
+esac
+SDK=$(getprop ro.build.version.sdk 2>/dev/null || true)
+if [ -n "$SDK" ]; then TGT=""; else TGT="-target ${ZIG_ARCH}-linux-musl"; fi
 
 cat > main.zig <<'EOF'
 pub fn main() void {
@@ -27,7 +34,12 @@ cat > ccheck.c <<'EOF'
 #include <stdio.h>
 int main(void) { printf("zig-cc=OK\n"); return 0; }
 EOF
-zig cc ccheck.c -o "$WORK/cc-hello" $TGT
+# 纯底座未装 ndk-sysroot 时原生 bionic 缺少 C 头文件；优先用自带 musl（无 SDK 时也绕过 ApiLevelQueryFailed）
+CC_TGT="$TGT"
+if [ -z "$CC_TGT" ] && [ ! -f "{{PREFIX}}/include/stdio.h" ]; then
+  CC_TGT="-target ${ZIG_ARCH}-linux-musl"
+fi
+zig cc ccheck.c -o "$WORK/cc-hello" $CC_TGT
 CCOUT=$("$WORK/cc-hello")
 
 echo "===== 总结 ===== zig=$VER build-exe=OK $CCOUT"
