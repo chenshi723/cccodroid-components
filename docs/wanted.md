@@ -45,7 +45,7 @@
 | `backup` | restic，后端借 `rclone` 组件 | 密码只让用户自己输 |
 | `ml-onnx` | onnxruntime + OpenCV 端上推理 | 先量体积；模型许可证要能再分发 |
 | `video-edit` | MLT（melt）无头剪辑 | 比直接写 ffmpeg 好在哪；体积 |
-| `dotnet` | .NET 8 SDK | `pkg install` 已能装，组件的价值只在 skill |
+| `dotnet` | .NET SDK（`linux-arm64`） | **Termux `main`/`glibc` 仓库里目前没有 `dotnet`（`pkg install` 不可用）**；若做成组件需走 `kind: "glibc"` + `fetch`（`extract`）拉取微软官方 `linux-arm64` 归档，先评估解包体积、ICU 依赖与 `DOTNET_SYSTEM_GLOBALIZATION_INVARIANT` / 许可证 |
 | `docsearch` | 在 PDF 等文档里全文搜索：pdfgrep + ripgrep-all（rga） | rga 是 AGPL-3.0-or-later；和已有的 `pdf-tools`（已含 poppler、qpdf）怎么分工，别重复打包 |
 | `kiwix` | kiwix-tools：本机开离线知识库（维基百科等 ZIM 文件）服务 | 自检需要一个能再分发的小 ZIM；ZIM 本体由用户自己下 |
 | `recoll` | Recoll 全文索引，中文走 CJK n-gram | Termux 包只有 `recollindex`，没有查询命令，要用 recoll-python 写一个查询包装脚本 |
@@ -62,7 +62,7 @@
 | `yt-dlp` | 版权与平台条款问题，不由市场提供；需要的人自己 `pkg install` |
 | `ollama` | 和 `llama-cpp` 组件重复 |
 | proot 完整发行版、wine / box64 | 和原生运行的路线冲突 |
-| 单纯一门编程语言 | `pkg install` 就够 |
+| 单纯一门编程语言（无配套 skill/工作流） | 普通单包 `pkg install` 就够；高频或共享大库的语言由**工具包可选模块**承载（如 `go`、`node`，以及评估/推进中的 `rust`、`python-tools` 与 `autotools`，见 `cccodroid#205` / `#207` / `#209`），不算组件层。只有当仓库缺失需走 `glibc`+`fetch`（如 `.NET`）或自带明确 skill 与端到端自检时，再评估作为组件收录 |
 
 ---
 
@@ -109,7 +109,7 @@ It works: qemu-system-x86-64-headless 11.1.2 with the Alpine virt ISO; serial lo
 | `backup` | restic, with the `rclone` component as a backend | Only the user types passwords |
 | `ml-onnx` | onnxruntime + OpenCV on-device inference | Measure the size first; model licenses must allow redistribution |
 | `video-edit` | MLT (melt) headless editing | What it does better than plain ffmpeg; size |
-| `dotnet` | .NET 8 SDK | `pkg install` already works; a component only adds the skill |
+| `dotnet` | .NET SDK (`linux-arm64`) | **Not available in Termux `main`/`glibc` (`pkg install dotnet` does not exist)**; a component would need `kind: "glibc"` + `fetch` (`extract`) of Microsoft's official `linux-arm64` tarball — evaluate unpacked size, ICU dependency, and license first |
 | `docsearch` | Full-text search inside PDFs and other documents: pdfgrep + ripgrep-all (rga) | rga is AGPL-3.0-or-later; split the work with the existing `pdf-tools` (which already has poppler and qpdf) instead of packaging them twice |
 | `kiwix` | kiwix-tools: serve offline knowledge bases (Wikipedia etc. as ZIM files) locally | The self-test needs a small redistributable ZIM; users download the real ZIMs themselves |
 | `recoll` | Recoll full-text indexing, with CJK n-grams for Chinese | The Termux package only has `recollindex`, no query command; a query wrapper has to be written with recoll-python |
@@ -126,4 +126,4 @@ If long-running services (tunnel, databases) turn out not to survive, the app ne
 | `yt-dlp` | Copyright and platform terms; not offered by the market, `pkg install` it yourself |
 | `ollama` | Duplicates the `llama-cpp` component |
 | Full proot distros, wine / box64 | Conflict with running natively |
-| A bare programming language | `pkg install` is enough |
+| A bare programming language (no skill/workflow) | `pkg install` is enough for plain single packages; high-frequency / heavy shared-library languages live in **devkit optional modules** (`go`, `node`, and `rust` / `python-tools` / `autotools`, see `cccodroid#205` / `#207` / `#209`) rather than the component layer. Only consider a component when Termux lacks it (e.g. `glibc` + `fetch` for `.NET`) or it brings a clear skill + end-to-end selftest |
