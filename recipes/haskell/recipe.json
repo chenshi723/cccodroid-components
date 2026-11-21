@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "haskell",
+  "kind": "termux",
+  "revision": 1,
+  "name": {
+    "zh": "Haskell（GHC）",
+    "en": "Haskell (GHC)"
+  },
+  "desc": {
+    "zh": "GHC 9.12 编译器（ghc / ghci / runghc）与 cabal 包管理器：写纯函数式程序。装后约 2.8 GB，按需下载。",
+    "en": "GHC 9.12 compiler (ghc / ghci / runghc) and the cabal package manager: write pure functional programs. About 2.8 GB installed, downloaded on demand."
+  },
+  "roots": ["ghc", "cabal-install"],
+  "bin": ["ghc", "ghci", "runghc", "cabal"],
+  "selftest": "ghc -ignore-dot-ghci -e 'print (6*7::Int)' 2>&1 | grep -q '^42$' && ghc --version && cabal --version",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "dev",
+  "license": "BSD-3-Clause",
+  "homepage": "https://www.haskell.org/ghc/",
+  "maintainers": ["greyoak111"],
+  "notes": "ghc 装后约 2.8 GB，进不了工具包模块（devkit.mjs 内存打包上限 2 GB，2026-11-21 实测 spawnSync xz ENOBUFS），改走组件通道。CI 在 termux-docker 里 pkg 安装后打包，与 blender / libreoffice 同类大组件同路径。首次编译会现场下载 Haskell 包索引，如需离线生态另议。"
+}
