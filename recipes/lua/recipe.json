@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "lua",
+  "kind": "termux",
+  "revision": 1,
+  "name": {
+    "zh": "Lua 与 LuaJIT",
+    "en": "Lua & LuaJIT"
+  },
+  "desc": {
+    "zh": "轻量脚本语言 Lua 5.4（含字节码编译器 luac5.4）与高性能即时编译运行时 LuaJIT。",
+    "en": "Lightweight scripting language Lua 5.4 (with bytecode compiler luac5.4) and high-performance LuaJIT runtime."
+  },
+  "roots": ["lua54", "luajit"],
+  "bin": ["lua5.4", "luac5.4", "luajit"],
+  "selftest": "lua5.4 -e 'assert(6*7==42); print(\"lua=\".._VERSION)' && luajit -e 'assert(6*7==42); print(\"luajit=\"..jit.version)'",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "dev",
+  "license": "MIT",
+  "homepage": "https://www.lua.org/",
+  "maintainers": ["greyoak111"],
+  "notes": "语言组件样板（轻量多包 Termux 型）：lua54 提供 lua5.4/luac5.4，luajit 提供 luajit，合计装后约 2.3 MB，不依赖 libicu。"
+}

@@ -1,0 +1,29 @@
+#!{{PREFIX}}/bin/sh
+# Gleam 离线端到端自检：在 $TMPDIR 内创建零依赖工程，编译到 BEAM 并用 erl 执行验证
+set -eu
+WORK=$(mktemp -d "${TMPDIR:-{{PREFIX}}/tmp}/gleam-selftest.XXXXXX")
+trap 'rm -rf "$WORK"' EXIT
+
+VER=$(gleam --version)
+mkdir -p "$WORK/src"
+cat > "$WORK/gleam.toml" <<'EOF'
+name = "selftest_app"
+version = "1.0.0"
+target = "erlang"
+EOF
+cat > "$WORK/src/selftest_app.gleam" <<'EOF'
+pub fn answer() -> Int {
+  40 + 2
+}
+EOF
+
+cd "$WORK"
+gleam build --no-print-progress >/dev/null
+OUT=$(erl -noshell -pa "$WORK/build/dev/erlang/selftest_app/ebin" \
+  -eval 'io:format("beam=~p~n", [selftest_app:answer()]), init:stop().')
+case "$OUT" in
+  *beam=42*) ;;
+  *) echo "unexpected output: $OUT" >&2; exit 1 ;;
+esac
+
+echo "===== 总结 ===== gleam=$VER $OUT"

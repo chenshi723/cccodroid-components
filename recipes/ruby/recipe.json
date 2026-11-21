@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "ruby",
+  "kind": "termux",
+  "revision": 1,
+  "name": {
+    "zh": "Ruby 语言（含 gem / bundler）",
+    "en": "Ruby (with gem & bundler)"
+  },
+  "desc": {
+    "zh": "Ruby 运行时及标准开发工具：ruby、irb、gem、bundle、rake，可在手机上运行和开发 Ruby 脚本与工程。",
+    "en": "Ruby runtime and standard tooling (ruby, irb, gem, bundle, rake) for running and developing Ruby scripts and projects on Android."
+  },
+  "roots": ["ruby"],
+  "bin": ["ruby", "irb", "gem", "bundle", "rake"],
+  "selftest": "ruby -rjson -e 'puts \"ruby=\" + RUBY_VERSION + \" ok=\" + JSON.generate({ok: true})'",
+  "needs": { "shizuku": false, "display": false, "gpu": false },
+  "category": "dev",
+  "license": "Ruby OR BSD-2-Clause",
+  "homepage": "https://www.ruby-lang.org/",
+  "maintainers": ["greyoak111"],
+  "notes": "语言组件样板（完整动态语言运行时 Termux 型）：Ruby 4.x，装后约 45 MB，不依赖 libicu。"
+}
