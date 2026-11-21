@@ -191,10 +191,12 @@ description: <一句话：什么时候该用它>
 只有在真机上装过、`selftest` 过了、skill 装上的构建才写进去；`checks` 如实写做了哪些检查。
 没写的构建在 App 里显示"未经真机验证"。
 
-**换底座不用全部重测**：出索引时，同一版本在别的底座上验证过的构建，如果组件自己的包（名字 + sha256）没变、
-它依赖链里由底座提供的包（构建清单的 `baseDeps`）在两个底座里版本都相同、它 requires 的组件在新底座上也算验证过，
-就自动继承那条记录（索引里带 `inherited`：从哪个底座、为什么）。只有真变了的才进待测列表。
+**三级验证体系（换底座不用人工重测全部组件）**：
+
+1. **真机直接验证（`kind: "device"`）**：`verified.json` 里对应 `(组件, 版本, 底座前 12 位)` 的记录。
+2. **ABI 兼容继承（`kind: "inherited"`）**：同一版本在老底座上有真机验证，且组件自己的包（名字 + sha256）没变、它 `baseDeps` 里的底座包在新旧底座之间**没有发生 ABI-MAJOR / SONAME 破坏性变化**（补丁、次版本、CLI 主版本漂移不再一刀切作废继承）、它 `requires` 的其他组件在新底座上也已验证。
+3. **ARM64 容器自动验证（`kind: "ci-arm64"`）**：`build.yml` 在打包完成后会在 `ubuntu-24.04-arm` + `termux/termux-docker:aarch64` 上按分片并行自动实跑真实底座解包 + `first-run.sh` + `selftest`，通过且资产 `gzSha256` 一致的记录写入 `ci-verified.json` 并合并进签名索引。**凡声明了 `needs.gpu` / `needs.display` / `needs.shizuku` 的硬件相关组件，一律禁止走 `ci-arm64`，必须真机验证或严格继承。**
 
 **批量真机验证**：`node tools/verify-device.mjs --pending --app "cccodroid <版本>" --by <GitHub 用户名>`
-把当前工具包下所有还没验证（含继承）的组件按依赖顺序挨个验完，最后打印一份合并好的记录。
+默认只验当前工具包下仍未验证（即硬件组件或 CI 未通过的少数几项）且本机支持的组件；如需把仅由 CI 验过的组件也纳入真机复验，可加 `--include-ci`。
 加 `--pr` 就直接把通过的记录并进 `verified.json` 开 PR（用 gh，要对本仓库有写权限；不用 clone）。
