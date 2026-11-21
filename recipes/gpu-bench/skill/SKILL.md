@@ -30,7 +30,8 @@ gpu-bench（bash 包装，$PREFIX/bin/gpu-bench）
   │    └─ gpu-run --opencl（gpu-driver 组件）把 /vendor/lib64/libOpenCL.so 拷进
   │       ~/.cccodroid/gpu-driver/opencl/ 并挂到 LD_LIBRARY_PATH
   │       → 高通厂商 OpenCL 驱动 → Adreno
-  │       （没有 gpu-run 时退回直接把 /vendor/lib64 挂进 LD_LIBRARY_PATH）
+  │       （没有 gpu-run 时退回挂 /system/lib64:/vendor/lib64：system 在前挡住
+  │        荣耀等厂商 /vendor 里的旧 libc++.so，vendor 供 loader 找 ICD）
   └─ vulkan：vkmark 直接启动
        → $PREFIX/lib 里的 Vulkan 加载器按默认目录 $PREFIX/share/vulkan/icd.d/ 找 ICD
        → gpu-driver 装的 Turnip → /dev/kgsl-3d0 → Adreno

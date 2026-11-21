@@ -43,11 +43,12 @@ done
 
 # 跑一条 OpenCL 命令，走厂商驱动：
 #   gpu-driver 的 `gpu-run --opencl` 把厂商 libOpenCL.so 取到它自己的数据目录再挂
-#   LD_LIBRARY_PATH（不改 $PREFIX 里任何文件，实测过）；没有 gpu-run 时退回直接挂
-#   /vendor/lib64（那边只有 HAL 库和 libOpenCL.so，不会遮蔽我们的库）。
+#   LD_LIBRARY_PATH（不改 $PREFIX 里任何文件）；没有 gpu-run 时退回直接挂 vendor 库。
+#   两条路都必须 /system/lib64 排前面：荣耀等厂商的 /vendor/lib64/libc++.so 缺符号
+#   （std::__hash_memory），liblog.so 需要它，挂整个 vendor 目录会链接失败（实测）。
 ocl() {
   if [ -x "$GPU_RUN" ]; then "$GPU_RUN" --opencl "$@"
-  else LD_LIBRARY_PATH="$VENDOR_LIB${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" "$@"
+  else LD_LIBRARY_PATH="/system/lib64:$VENDOR_LIB${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" "$@"
   fi
 }
 

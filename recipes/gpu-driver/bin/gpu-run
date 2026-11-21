@@ -7,7 +7,10 @@
 #   -z, --zink     OpenGL / GLES 走 Mesa zink（GL→Vulkan 转译），配合 --surfaceless 可离屏渲染
 #   --surfaceless  设 EGL_PLATFORM=surfaceless（没有显示服务器的命令行渲染）
 #   --opencl       用厂商高通 OpenCL：把 /vendor/lib64/libOpenCL.so 拷进组件数据目录，
-#                  用 LD_LIBRARY_PATH 抢先用它 —— 不改动 $PREFIX 里的任何文件
+#                  用 LD_LIBRARY_PATH 抢先用它 —— 不改动 $PREFIX 里的任何文件。
+#                  库路径是「私有目录 : /system/lib64 : /vendor/lib64」：厂商 loader 靠相对
+#                  名称 dlopen 它的 ICD（在 /vendor/lib64），而部分厂商（荣耀）的
+#                  /vendor/lib64/libc++.so 缺符号会遮蔽系统 libc++ —— /system/lib64 排前面挡住它
 #   --vendor       不注入任何东西，用系统自带的厂商驱动（Vulkan 1.1 / GLES）
 #   -m hal         HAL 通道（可选载荷，默认没有；见组件目录下的说明）
 #
@@ -103,7 +106,9 @@ if [ "$OPENCL" = 1 ]; then
     ln -sf libOpenCL.so "$OCL/libOpenCL.so.1"   # 链了 -lOpenCL.so.1 的程序也认
     echo "gpu-run: 已取用厂商 OpenCL -> $OCL/libOpenCL.so" >&2
   fi
-  export LD_LIBRARY_PATH="$OCL${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+  # 私有目录只放 libOpenCL.so；ICD 由 loader 按相对名称去 /vendor/lib64 找，
+  # 所以 vendor 必须留在路径里；/system/lib64 排 vendor 前面（见文件头，荣耀 libc++ 遮蔽）
+  export LD_LIBRARY_PATH="$OCL${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}:/system/lib64:/vendor/lib64"
 fi
 
 if [ -z "${CCODROID_TU_DEBUG+x}" ]; then
