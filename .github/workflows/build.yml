@@ -1,4 +1,4 @@
-# 合进 main 的配方：打包（已发布的跳过）→ 重出签名索引
+# 合进 main 的配方：打包（已发布的跳过）→ arm64 容器自动实跑 selftest → 合并三级验证并重出签名索引
 name: build
 on:
   push:
@@ -7,8 +7,12 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: "只打这一个组件（留空 = 全部）"
+        description: "只打/只验这一个组件（留空 = 全部）"
         required: false
+      skip_ci_verify:
+        description: "跳过 arm64 自动 selftest，直接重签索引"
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -33,7 +37,79 @@ jobs:
       - run: node tools/check-recipes.mjs
       - name: 打包
         run: node tools/ci-build.mjs --devkit app/devkit ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+
+  verify-ci:
+    needs: build
+    if: ${{ !inputs.skip_ci_verify }}
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ["0/4", "1/4", "2/4", "3/4"]
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: arm64 容器实跑 selftest（分片 ${{ matrix.shard }}）
+        run: |
+          SHARD_ID=$(echo "${{ matrix.shard }}" | tr '/' '-')
+          node tools/ci-verify-base.mjs \
+            --shard "${{ matrix.shard }}" \
+            ${{ inputs.only && format('--only {0}', inputs.only) || '' }} \
+            --out "work/ci-shard-${SHARD_ID}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ci-verified-${{ strategy.job-index }}
+          path: work/ci-shard-*.json
+          retention-days: 7
+
+  index:
+    needs: [build, verify-ci]
+    if: ${{ always() && needs.build.result == 'success' && (needs.verify-ci.result == 'success' || needs.verify-ci.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: greyoak111/cccodroid
+          path: app
+          sparse-checkout: devkit
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 收集已有与本轮 CI 自动验证记录
+        run: |
+          mkdir -p work/shards
+          gh release download index -R "$GITHUB_REPOSITORY" -p ci-verified.json -O work/prev-ci-verified.json --clobber || echo '{}' > work/prev-ci-verified.json
+      - name: 下载各分片产物
+        if: ${{ !inputs.skip_ci_verify }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ci-verified-*
+          path: work/shards
+          merge-multiple: true
+      - name: 合并 CI 自动验证记录
+        run: |
+          node -e '
+            import fs from "node:fs";
+            import path from "node:path";
+            import { mergeCiVerified } from "./tools/build-index.mjs";
+            const parts = [JSON.parse(fs.readFileSync("work/prev-ci-verified.json", "utf8"))];
+            for (const f of fs.readdirSync("work/shards").filter((x) => x.endsWith(".json")).sort()) {
+              parts.push(JSON.parse(fs.readFileSync(path.join("work/shards", f), "utf8")));
+            }
+            const merged = mergeCiVerified(...parts);
+            fs.writeFileSync("work/ci-verified.json", JSON.stringify(merged, null, 2) + "\n");
+            console.log("合并 CI 验证记录：" + Object.keys(merged).length + " 个组件");
+          ' --input-type=module
       - name: 出索引并签名
         env:
           INDEX_SIGNING_KEY: ${{ secrets.INDEX_SIGNING_KEY }}
-        run: node tools/build-index.mjs --upload
+        run: node tools/build-index.mjs --devkit app/devkit --ci-verified work/ci-verified.json --upload

@@ -5,7 +5,8 @@
 //   node verify-device.mjs --pending --app … --by … [--out 结果.txt] [--pr]
 //     --pr：跑完直接把通过的记录并进 verified.json、开 PR（用 gh，要已登录且对市场仓库有写权限；
 //     没权限就照旧打印，手动提）。不用 clone 仓库，走 GitHub API。
-//     批量：索引里当前工具包有构建、还没验证（直接验或继承都算验过）的组件，按依赖顺序挨个验。
+//     批量：索引里当前工具包有构建、还没验证（真机直接验、ABI 继承、或非硬件组件的 CI arm64 自动验证都算已验；
+//     只剩硬件组件与 CI 未通过的少数几项）的组件，按依赖顺序挨个验。加 --include-ci 可把仅 CI 验过的也纳入真机复验。
 //     全部跑完打印一份合并好的记录（只含通过的），没通过的列在最后。开着屏幕等它跑完即可。
 //
 // 做的事：
@@ -29,6 +30,8 @@ const APP = opt("--app"), BY = opt("--by") || "", OUT = opt("--out"), KEEP = fla
 const IDS = (opt("--ids") || "").split(",").map((x) => x.trim()).filter((x) => /^[a-z0-9][a-z0-9-]{0,39}$/.test(x));
 // --all：索引里所有适配当前工具包、本机能用的组件（社区在前、预置在后）——验证清单从索引取，不靠人手列
 const ALL = flag("--all");
+// --include-ci：把索引里仅由 CI arm64 验过（还没有真机 verified.json 记录）的组件也纳入 --pending
+const INCLUDE_CI = flag("--include-ci");
 const PENDING = PENDING0 || IDS.length > 0 || ALL;
 // selftest 的时限（分钟）。blender 这类第一次运行要先下载、解包运行环境（几百 MB），5 分钟不够
 const SELFTEST_MIN = Number(opt("--selftest-timeout") || 5);
@@ -295,9 +298,20 @@ if (!PENDING) {
   records = r.record;
 } else {
   const ix = await list(true);
+  // 若传了 --include-ci，去索引查哪些组件目前只有 ci-arm64 验证（无真机记录）
+  let ciOnlySet = new Set();
+  if (INCLUDE_CI && !IDS.length && !ALL) {
+    try {
+      const pubIdx = await (await fetch("https://github.com/greyoak111/cccodroid-components/releases/download/index/components.json")).json();
+      for (const [id, c] of Object.entries(pubIdx.components || {})) {
+        const b = (c.builds || []).find((x) => String(x.base).startsWith(ix.devkit));
+        if (b && b.verified?.kind === "ci-arm64") ciOnlySet.add(id);
+      }
+    } catch {}
+  }
   const todo = IDS.length ? IDS.filter((id) => ix.items.some((c) => c.id === id))
     : ALL ? ix.items.filter((c) => c.available && !c.unsupported).sort((a, b) => (a.source === "preset") - (b.source === "preset") || a.id.localeCompare(b.id)).map((c) => c.id)
-    : ix.items.filter((c) => c.available && !c.verified && c.source !== "preset").map((c) => c.id);
+    : ix.items.filter((c) => c.available && !c.unsupported && (!c.verified || ciOnlySet.has(c.id)) && c.source !== "preset").map((c) => c.id);
   if (ALL) for (const c of ix.items.filter((c) => !c.available || c.unsupported)) log(`· 跳过 ${c.id}：${c.unsupported ? `要 ${c.unsupported} GPU，本机没有` : "没有适配当前工具包的构建"}`);
   if (IDS.length && todo.length < IDS.length) log(`⚠ 索引里没有：${IDS.filter((id) => !todo.includes(id)).join("、")}`);
   // 依赖排在前面：被依赖的先验，后面装依赖时用的就是刚验过的
