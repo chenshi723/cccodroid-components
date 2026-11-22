@@ -22,5 +22,6 @@
   "files": {
     "usr/bin/ccdb": { "src": "bin/ccdb", "mode": "755" }
   },
+  "skipBuild": "Termux 仓库 2026-11-22 撤掉了 valkey 包（redis 8.10.3 回归并 Conflicts/Breaks valkey），依赖解析失败；待迁移到 redis 或自托管后再删掉这一行",
   "notes": "Valkey 9.1.3（Termux main，1.1 MB 下载 / 4.4 MB 装后）。ccdb 是 Python 包装：init/start/stop/status/info/cli/selftest；只绑 127.0.0.1，默认端口 6380，数据在 ~/.cccodroid/databases/valkey。PostgreSQL 暂缺：底座 libicu 78.3 与仓库 postgresql 18.6 需要的 libicu 79.1 不匹配，bionic 和 glibc 两个 PostgreSQL 包都起不来（glibc 版还缺 libxml2.so.2）；等新工具包发布后加 revision。selftest 在 $TMPDIR 起临时 Valkey（随机端口），SET/GET 后停掉。"
 }

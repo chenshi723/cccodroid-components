@@ -29,6 +29,7 @@ for (const b of bases()) {
   console.log(`\n══ 底座 ${b.tag}（${baseSha.slice(0, 12)}，${lock.target}）`);
   for (const r of recipes()) {
     if (opt("only") && r.id !== opt("only")) continue;
+    if (r.skipBuild) { console.log(`· ${r.id}: 跳过构建（${r.skipBuild}）`); continue; }
     const dk = (extra) => run("node", [path.join(DEVKIT, "devkit.mjs"), "component", "--recipe", r.dir, "--target", lock.target, "--base", lockFile, ...extra], { stdio: ["ignore", "pipe", "inherit"] });
     let version;
     try { version = /COMPONENT_VERSION=(\S+)/.exec(dk(["--dry"]))[1]; }

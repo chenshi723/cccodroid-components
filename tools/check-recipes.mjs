@@ -4,7 +4,7 @@ import path from "node:path";
 import { recipes, modelsOf } from "./lib.mjs";
 
 const KNOWN = new Set(["schema", "id", "kind", "revision", "version", "name", "desc", "repos", "roots", "exclude", "files",
-  "fetch", "npm", "pip", "requires", "bin", "selftest", "needs", "license", "homepage", "maintainers", "notes", "category", "mcp"]);
+  "fetch", "npm", "pip", "requires", "bin", "selftest", "needs", "license", "homepage", "maintainers", "notes", "category", "mcp", "skipBuild"]);
 // 分类（App 扩展页的分类索引条按它分）：只认这几个，界面上有对应的译名
 const CATEGORIES = new Set(["dev", "office", "media", "science", "eda", "cad", "ai", "gpu", "net", "mcp", "other"]);
 const KINDS = new Set(["termux", "glibc"]);
@@ -49,6 +49,7 @@ for (const r of recipes()) {
   if (!r.license) err(n, "license 必填（上游软件的许可证）");
   if (!CATEGORIES.has(r.category)) err(n, `category 必填，只能是 ${[...CATEGORIES].join(" / ")}`);
   for (const k of Object.keys(r)) if (k !== "dir" && !KNOWN.has(k)) err(n, "不认识的字段: " + k);
+  if (r.skipBuild !== undefined && (typeof r.skipBuild !== "string" || !r.skipBuild.trim())) err(n, "skipBuild 要写一句跳过原因（非空字符串）");
   // mcp：装好后 App 自动用 claude mcp add 注册的 stdio 服务（卸载时注销）。bin 必须是本组件 bin 里的一个入口
   if (r.mcp !== undefined) {
     const m = r.mcp;
