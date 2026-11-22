@@ -278,6 +278,15 @@
         "checks": "installed from signed index; placed 13, shared 0; skill gpu-driver installed; selftest exit 0: ===== 总结 ===== Turnip=OK zink=OK render=PASS opencl=-; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "26.3.1-r4": {
+      "2bb52baec317": {
+        "date": "2026-11-22",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.15",
+        "checks": "installed from signed index; placed 14, shared 0; skill gpu-driver installed; selftest exit 0: ===== 总结 ===== Turnip=OK zink=OK render=PASS opencl=-; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "gpu-driver-mali": {
@@ -437,6 +446,15 @@
         "checks": "维护者决定沿用：devkit-2026.10.28 只加了 Go / Node.js 两个可选模块（整包不放）、升了 16 个底座包，没动可选组件，沿用 devkit-2026.10.22.3 上的真机验证。原记录：installed from signed index; placed 166, shared 0; skill gpu-bench installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged; deps installed for the test: gpu-driver",
         "by": "greyoak111",
         "carriedFromBase": "ae9d10a14013"
+      }
+    },
+    "3.1.26.09.26-r3": {
+      "2bb52baec317": {
+        "date": "2026-11-22",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.15",
+        "checks": "installed from signed index; placed 165, shared 0; skill gpu-bench installed; selftest exit 0: ===== 总结 ===== 全部通过; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -1114,6 +1132,15 @@
         "checks": "installed from signed index; placed 4937, shared 24; skill sci-python installed; selftest exit 0: ===== 总结 ===== numpy=OK scipy=OK matplotlib=OK pillow=OK pyarrow=OK fonts=CJK; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
+    },
+    "2.5.5-r2": {
+      "2bb52baec317": {
+        "date": "2026-11-22",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.15",
+        "checks": "installed from signed index; placed 4933, shared 24; skill sci-python installed; selftest exit 0: ===== 总结 ===== numpy=OK scipy=OK matplotlib=OK pillow=OK pyarrow=OK fonts=CJK; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      }
     }
   },
   "diagrams": {
@@ -1481,6 +1508,13 @@
         "app": "cccodroid 0.7.6",
         "checks": "installed from signed index; placed 963, shared 0; skill ml-tflite installed; selftest exit 0: ===== 总结 ===== tflite=2.21.0 numpy=2.5.4 model=PASS inference=PASS; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "2bb52baec317": {
+        "date": "2026-11-22",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.15",
+        "checks": "installed from signed index; placed 964, shared 0; skill ml-tflite installed; selftest exit 0: ===== 总结 ===== tflite=2.21.0 numpy=2.5.5 model=PASS inference=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -1502,6 +1536,13 @@
         "device": "HONOR PNM-AN10 / Android 17",
         "app": "cccodroid 0.7.6",
         "checks": "installed from signed index; placed 3032, shared 0; skill pandas installed; selftest exit 0: ===== 总结 ===== pandas=3.1.1 numpy=2.5.4 groupby=PASS csv=PASS; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "2bb52baec317": {
+        "date": "2026-11-22",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.15",
+        "checks": "installed from signed index; placed 3032, shared 0; skill pandas installed; selftest exit 0: ===== 总结 ===== pandas=3.1.1 numpy=2.5.5 groupby=PASS csv=PASS; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
@@ -1613,6 +1654,13 @@
         "app": "cccodroid 0.7.6",
         "checks": "installed from signed index; placed 14, shared 15162; skill musescore installed; selftest exit 0: ===== 总结 ===== musescore=OK pdf=OK midi=OK png=OK 版本=MuseScore4Development 4.7.7; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
+      },
+      "2bb52baec317": {
+        "date": "2026-11-22",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.15",
+        "checks": "installed from signed index; placed 11471, shared 3705; skill musescore installed; selftest exit 0: ===== 总结 ===== musescore=OK pdf=OK midi=OK png=OK 版本=MuseScore4Development 4.7.7; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
       }
     }
   },
@@ -1667,6 +1715,13 @@
         "device": "HONOR PNM-AN10 / Android 17",
         "app": "cccodroid 0.7.7",
         "checks": "installed from signed index; placed 11, shared 19065; skill melt installed; selftest exit 0: ===== 总结 ===== melt=OK qimage=OK mp4=OK 版本=7.42.0; removed cleanly; devkit base unchanged",
+        "by": "greyoak111"
+      },
+      "2bb52baec317": {
+        "date": "2026-11-22",
+        "device": "HONOR PNM-AN10 / Android 17",
+        "app": "cccodroid 0.7.15",
+        "checks": "installed from signed index; placed 11533, shared 7543; skill melt installed; selftest exit 0: ===== 总结 ===== melt=OK qimage=OK mp4=OK 版本=7.42.0; removed cleanly; devkit base unchanged",
         "by": "greyoak111"
       }
     }
